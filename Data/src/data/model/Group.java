@@ -11,4 +11,5 @@ package data.model;
  */
 public class Group {
     private String nom;
+    private String useless;
 }
