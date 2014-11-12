@@ -10,5 +10,5 @@ package data.model;
  * @author le-goc
  */
 public class Group {
-    
+    private String nom;
 }
