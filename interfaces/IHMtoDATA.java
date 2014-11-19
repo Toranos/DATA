@@ -1,5 +1,12 @@
 package DATA.interfaces;
 
+import java.util.List;
+
+import DATA.model.Comment;
+import DATA.model.Group;
+import DATA.model.Picture;
+import DATA.model.User;
+
 
 
 /**
@@ -43,7 +50,7 @@ public  interface IHMtoDATA
 	 * @ordered
 	 */
 	
-	public void addPicture(PictureService pictureService) ;
+	public void addPicture(Picture pictureService) ;
 	
 	/**
 	 * <!-- begin-user-doc -->
