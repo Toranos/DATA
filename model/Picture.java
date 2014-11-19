@@ -7,25 +7,33 @@ package DATA.model;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 /**
  *
  * @author le-goc
  */
 public class Picture {
+	private UUID uid;
     private String filename;
     private List<Note> listNotes;
     private List<Tag> listTags;
     private List<Comment> Comments;
     private List<Rule> listRules;
+    private UUID userId;
 
-    public Picture(String filename) {
+    public Picture(String filename, UUID userId) {
 		this.filename = filename;
 		this.listNotes = new ArrayList<Note>();
 		this.listRules = new ArrayList<Rule>();
 		this.listTags = new ArrayList<Tag>();
+		this.userId = userId;
 	}
 
+    public UUID getUid() {
+		return uid;
+	}
+    
 	public List<Rule> getListRules() {
 		return listRules;
 	}
