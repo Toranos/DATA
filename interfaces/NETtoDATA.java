@@ -1,5 +1,6 @@
 package DATA.interfaces;
 
+
 public interface NETtoDATA 
 {
 	
