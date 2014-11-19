@@ -64,13 +64,13 @@ public interface NETtoDATA {
 	 * Send connected user.
 	 * @param user
 	 */
-	public void HelloUser(User user) ;
+	public void helloUser(User user) ;
 	
 	/**
 	 * Inform that user is unconnected.
 	 * @param user
 	 */
-	public void GoodByeUser(User user) ;
+	public void goodByeUser(User user) ;
 	
 	/**
 	 * Inform that your friend remove you to his friend.
