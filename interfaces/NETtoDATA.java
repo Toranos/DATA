@@ -1,18 +1,20 @@
 package DATA.interfaces;
 
+import java.net.Inet4Address;
+import java.util.List;
 
-public interface NETtoDATA 
-{
-	
+import DATA.model.Comment;
+import DATA.model.Picture;
+import DATA.model.User;
+
+public interface NETtoDATA {
 	public void addComment(Comment comment) ;
 	
 
-	public List<IP> getConnectedIps() ;
+	public List<Inet4Address> getConnectedIps() ;
 	
-
 	public User getProfil() ;
 	
-
 	public void infoUser(User user, int idRequest) ;
 	
 
@@ -26,7 +28,4 @@ public interface NETtoDATA
 
 
 	public void setConnectedUser(User user) ;
-	
-	
 }
-
