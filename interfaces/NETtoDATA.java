@@ -1,4 +1,5 @@
-package data.interfaces;
+package DATA.interfaces;
+
 
 public interface NETtoDATA 
 {
