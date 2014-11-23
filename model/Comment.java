@@ -5,13 +5,20 @@
  */
 package DATA.model;
 
+import java.io.Serializable;
 import java.util.Date;
 
 /**
  *
  * @author le-goc
  */
-public class Comment {
+public class Comment implements Serializable {
+	
+	/**
+	* Serialization UID.
+	*/
+	public static final long serialVersionUID = 1L;
+	
     private String value;
     private Date dateTime;
 

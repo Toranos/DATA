@@ -5,6 +5,7 @@
  */
 package DATA.model;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,7 +13,7 @@ import java.util.List;
  *
  * @author le-goc
  */
-public class Picture {
+public class Picture implements Serializable {
     private String filename;
     private List<Note> listNotes;
     private List<Tag> listTags;

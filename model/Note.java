@@ -5,11 +5,19 @@
  */
 package DATA.model;
 
+import java.io.Serializable;
+
 /**
  *
  * @author le-goc
  */
-public class Note {
+public class Note implements Serializable {
+	
+	/**
+	* Serialization UID.
+	*/
+	public static final long serialVersionUID = 1L;
+	
     private int value;
     private User user;
     private Picture picture;

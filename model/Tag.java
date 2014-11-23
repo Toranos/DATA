@@ -5,11 +5,19 @@
  */
 package DATA.model;
 
+import java.io.Serializable;
+
 /**
  *
  * @author le-goc
  */
-public class Tag {
+public class Tag implements Serializable {
+	
+	/**
+	* Serialization UID.
+	*/
+	public static final long serialVersionUID = 1L;
+	
     private String value;
 
     public Tag(String value) {

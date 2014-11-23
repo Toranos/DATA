@@ -1,8 +1,15 @@
 package DATA.model;
 
+import java.io.Serializable;
 import java.util.UUID;
 
-public class PendingRequest {
+public class PendingRequest implements Serializable {
+	
+	/**
+	* Serialization UID.
+	*/
+	public static final long serialVersionUID = 1L;
+	
 	private UUID fromUID;
 	private UUID toUID;
 	
