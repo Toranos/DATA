@@ -54,7 +54,7 @@ public interface NETtoDATA {
 	public void resultPictures(List<Picture> pictures, int idRequest) ;
 
 	/**
-	 * Send picture acked by the User.
+	 * Send picture asked by the User.
 	 * @param picture
 	 * @param pageId
 	 */
