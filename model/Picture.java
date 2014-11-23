@@ -14,6 +14,12 @@ import java.util.List;
  * @author le-goc
  */
 public class Picture implements Serializable {
+	
+	/**
+	* Serialization UID.
+	*/
+	public static final long serialVersionUID = 1L;
+	
     private String filename;
     private List<Note> listNotes;
     private List<Tag> listTags;
