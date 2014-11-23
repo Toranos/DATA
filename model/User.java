@@ -5,6 +5,7 @@
  */
 package DATA.model;
 
+import java.io.Serializable;
 import java.net.Inet4Address;
 import java.util.ArrayList;
 import java.util.List;
@@ -14,7 +15,13 @@ import java.util.UUID;
  *
  * @author le-goc
  */
-public class User {
+public class User implements Serializable {
+	
+	/**
+	* Serialization UID.
+	*/
+	public static final long serialVersionUID = 1L;
+	
     private UUID uid;
     private String login;
     private String password;

@@ -1,6 +1,14 @@
 package DATA.model;
 
-public class Rule {
+import java.io.Serializable;
+
+public class Rule implements Serializable {
+	
+	/**
+	* Serialization UID.
+	*/
+	public static final long serialVersionUID = 1L;
+	
 	private boolean canView;
 	private boolean canRate;
 	private boolean canComment;

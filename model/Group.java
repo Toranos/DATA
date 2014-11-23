@@ -5,6 +5,7 @@
  */
 package DATA.model;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,7 +13,13 @@ import java.util.List;
  *
  * @author le-goc
  */
-public class Group {
+public class Group implements Serializable {
+	
+	/**
+	* Serialization UID.
+	*/
+	public static final long serialVersionUID = 1L;
+	
     private String nom;
     private List<User> users;
     
