@@ -23,11 +23,6 @@ public class DataService {
 	private User currentUser = null;
 	
 	/**
-	 * Instance of JSONService for import and export data.
-	 */
-	private JSONService json = null;
-	
-	/**
 	 * Return Singleton instance of DataService.
 	 * @return DataService.
 	 */
@@ -78,22 +73,5 @@ public class DataService {
 	public boolean getPathProfile(String p) {
 		pathProfile = p;
 		return true;
-	}
-	
-	/**
-	 * Load local data from JSON file.
-	 */
-	public void imports() {
-		if (json == null) {
-			json = new JSONService(this);
-		}
-		json.imports();
-	}
-	
-	public void exports() {
-		if (json == null) {
-			json = new JSONService(this);
-		}
-		json.exports();
 	}
 }
