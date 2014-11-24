@@ -160,6 +160,7 @@ public  interface IHMtoDATA
 	
 	/**
 	 * Sign Up a new user, start the server and connect the user
+	 * Required : User with firstname, lastname, login, password and avatar
 	 * @param u : A light User with the login information
 	 * @return true : signup OK
 	 * 		   false : signup KO
