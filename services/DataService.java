@@ -1,36 +1,50 @@
 package DATA.services;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.Serializable;
+
 import DATA.model.User;
 
 /**
  * Main service of data handler.
  * @author Yoann Chaumin
  */
-public class DataService {
+public class DataService implements Serializable {
+	
+	/**
+	 * Serialization UID.
+	 */
+	public static final long serialVersionUID = 1L;
+	
 	/**
 	 * Path of database file relative to the current application path. 
 	 */
-	private String pathProfile = "profile.json";
+	private static String profile = "profile.data";
 
 	/**
 	 * Singleton variable.
 	 */
-	private static DataService dataService = null;
+	private static DataService data = null;
 	
 	/**
 	 * Local and current User.
 	 */
-	private User currentUser = null;
+	private User user = null;
 	
 	/**
 	 * Return Singleton instance of DataService.
 	 * @return DataService.
 	 */
 	public static DataService getInstance() {
-		if (dataService == null) {
-			dataService = new DataService();
+		if (data == null) {
+			data = new DataService();
 		}
-		return dataService;
+		return data;
 	}
 	
 	/**
@@ -46,7 +60,7 @@ public class DataService {
 	 */
 	public User getUser() {
 		
-		return currentUser;
+		return user;
 	}
 	
 	/**
@@ -54,7 +68,7 @@ public class DataService {
 	 * @return User
 	 */
 	public boolean setUser(User u) {
-		currentUser = u;
+		user = u;
 		return true;
 	}
 	
@@ -63,7 +77,7 @@ public class DataService {
 	 * @return String
 	 */
 	public String getPathProfile() {
-		return pathProfile;
+		return profile;
 	}
 	
 	/**
@@ -71,7 +85,51 @@ public class DataService {
 	 * @return User
 	 */
 	public boolean getPathProfile(String p) {
-		pathProfile = p;
+		profile = p;
 		return true;
+	}
+
+	public void exports() {
+		ObjectOutputStream oos = null;
+		try {
+			final FileOutputStream file = new FileOutputStream(data.getPathProfile());
+			oos = new ObjectOutputStream(file);
+			oos.writeObject(data);
+			oos.flush();
+		} catch (final java.io.IOException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if (oos != null) {
+					oos.flush();
+					oos.close();
+				}
+			} catch (final IOException ex) {
+				ex.printStackTrace();
+			}
+		}
+	}
+	
+	public static void imports() {
+		File fichier =  new File(profile) ;
+		ObjectInputStream ois = null;
+		try {
+			ois = new ObjectInputStream(new FileInputStream(fichier));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		try {
+			data = (DataService) ois.readObject();
+		} catch (ClassNotFoundException | IOException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if (ois != null) {
+					ois.close();
+				}
+			} catch (final IOException ex) {
+				ex.printStackTrace();
+			}
+		}
 	}
 }
