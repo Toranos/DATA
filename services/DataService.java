@@ -2,6 +2,7 @@ package DATA.services;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -91,51 +92,42 @@ public class DataService implements Serializable {
 
 	/**
 	 * Save data into file.
+	 * @throws IOException 
 	 */
-	public void exports() {
+	public void exports() throws IOException {
 		ObjectOutputStream oos = null;
-		try {
-			final FileOutputStream file = new FileOutputStream(data.getPathProfile());
-			oos = new ObjectOutputStream(file);
-			oos.writeObject(data);
-			oos.flush();
-		} catch (final java.io.IOException e) {
-			e.printStackTrace();
-		} finally {
-			try {
-				if (oos != null) {
-					oos.flush();
-					oos.close();
-				}
-			} catch (final IOException ex) {
-				ex.printStackTrace();
-			}
-		}
+		final FileOutputStream file = new FileOutputStream(profile);
+		oos = new ObjectOutputStream(file);
+		oos.writeObject(data);
+		oos.flush();
+		oos.close();
 	}
 	
 	/**
 	 * Load data from local file.
+	 * @throws IOException 
+	 * @throws FileNotFoundException 
+	 * @throws ClassNotFoundException 
 	 */
-	public static void imports() {
-		File fichier =  new File(profile) ;
+	public static void imports() throws FileNotFoundException, IOException, ClassNotFoundException {
+		File file =  new File(profile) ;
 		ObjectInputStream ois = null;
-		try {
-			ois = new ObjectInputStream(new FileInputStream(fichier));
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		try {
-			data = (DataService) ois.readObject();
-		} catch (ClassNotFoundException | IOException e) {
-			e.printStackTrace();
-		} finally {
-			try {
-				if (ois != null) {
-					ois.close();
-				}
-			} catch (final IOException ex) {
-				ex.printStackTrace();
-			}
-		}
+		ois = new ObjectInputStream(new FileInputStream(file));
+		data = (DataService) ois.readObject();
+		ois.close();
+	}
+	
+	/**
+	 * Load data from local file.
+	 * @param f File File to load.
+	 * @throws IOException 
+	 * @throws FileNotFoundException 
+	 * @throws ClassNotFoundException 
+	 */
+	public static void imports(File file) throws FileNotFoundException, IOException, ClassNotFoundException {
+		ObjectInputStream ois = null;
+		ois = new ObjectInputStream(new FileInputStream(file));
+		data = (DataService) ois.readObject();
+		ois.close();
 	}
 }
