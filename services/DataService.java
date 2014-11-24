@@ -89,6 +89,9 @@ public class DataService implements Serializable {
 		return true;
 	}
 
+	/**
+	 * Save data into file.
+	 */
 	public void exports() {
 		ObjectOutputStream oos = null;
 		try {
@@ -110,6 +113,9 @@ public class DataService implements Serializable {
 		}
 	}
 	
+	/**
+	 * Load data from local file.
+	 */
 	public static void imports() {
 		File fichier =  new File(profile) ;
 		ObjectInputStream ois = null;
