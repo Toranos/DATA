@@ -232,8 +232,7 @@ public class IHMtoDATAImpl implements IHMtoDATA {
 		} catch (BadInformationException e){
 			return false;
 		}
-		login(u.getLogin(), u.getPassword());
-		return true;
+		return login(u.getLogin(), u.getPassword());
 	}
 
 	/* (non-Javadoc)
