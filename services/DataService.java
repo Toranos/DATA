@@ -85,7 +85,7 @@ public class DataService implements Serializable {
 	 * Define path profile. 
 	 * @return User
 	 */
-	public boolean getPathProfile(String p) {
+	public boolean setPathProfile(String p) {
 		profile = p;
 		return true;
 	}
