@@ -31,8 +31,8 @@ public class User implements Serializable {
     private String birthDate;
     private List<Picture> listPictures;
     private List<Group> listGroups;
-    private List<InetAddress> listIP;
-    private List<InetAddress> listConnectedUser;
+    private List<String> listIP;
+    private List<String> listConnectedUser;
     private List<PendingRequest> listPendingRequests;
     
     public User() {
@@ -54,9 +54,9 @@ public class User implements Serializable {
 		this.avatar = avatar;
 		this.birthDate = birthDate;
 		this.uid = UUID.randomUUID();
-		this.listConnectedUser = new ArrayList<InetAddress>();
+		this.listConnectedUser = new ArrayList<String>();
 		this.listGroups = new ArrayList<Group>();
-		this.listIP = new ArrayList<InetAddress>();
+		this.listIP = new ArrayList<String>();
 		this.listPictures = new ArrayList<Picture>();
 		this.listPendingRequests = new ArrayList<PendingRequest>();
 	}
@@ -111,16 +111,16 @@ public class User implements Serializable {
 	public void setListGroups(List<Group> listGroups) {
 		this.listGroups = listGroups;
 	}
-	public List<InetAddress> getListIP() {
+	public List<String> getListIP() {
 		return listIP;
 	}
-	public void setListIP(List<InetAddress> listIP) {
+	public void setListIP(List<String> listIP) {
 		this.listIP = listIP;
 	}
-	public List<InetAddress> getListConnectedUser() {
+	public List<String> getListConnectedUser() {
 		return listConnectedUser;
 	}
-	public void setListConnectedUser(List<InetAddress> listConnectedUser) {
+	public void setListConnectedUser(List<String> listConnectedUser) {
 		this.listConnectedUser = listConnectedUser;
 	}
 	public List<PendingRequest> getListPendingRequests() {

@@ -91,12 +91,8 @@ public class UserServiceTest {
 		
 		//Everything ok
 		user = new User("test", "test", "test", "test", "test", "test");
-		List<InetAddress> adress = new ArrayList<InetAddress>();
-		try {
-			adress.add(Inet4Address.getByName("127.0.0.1"));
-		} catch (UnknownHostException e1) {
-			fail("Adress IP incorrect");
-		}
+		List<String> adress = new ArrayList<String>();
+		adress.add("127.0.0.1");
 		user.setListIP(adress);
 		try {
 			user = service.createUser(user);
