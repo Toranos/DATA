@@ -6,11 +6,14 @@ package DATA.internal;
 import java.util.List;
 import java.util.UUID;
 
+import DATA.exceptions.BadInformationException;
 import DATA.interfaces.IHMtoDATA;
 import DATA.model.Comment;
 import DATA.model.Group;
 import DATA.model.Picture;
 import DATA.model.User;
+import DATA.services.DataService;
+import DATA.services.UserService;
 
 /**
  * @author le-goc
@@ -222,7 +225,14 @@ public class IHMtoDATAImpl implements IHMtoDATA {
 	@Override
 	public boolean signup(User u) {
 		// TODO Auto-generated method stub
-		return false;
+		UserService userService = new UserService();
+		try {
+			u = userService.createUser(u);
+		} catch (BadInformationException e){
+			return false;
+		}
+		login(u.getLogin(), u.getPassword());
+		return true;
 	}
 
 	/* (non-Javadoc)

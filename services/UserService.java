@@ -26,20 +26,23 @@ public class UserService {
 	 * @throws BadInformationException	When incorrect information found
 	 */
 	public User createUser(User u) throws BadInformationException {
-		if(u == null) throw new BadInformationException("This is a null pointer");
-		
-		if(u.getFirstname() == null || u.getFirstname().equals("")) 
-			throw new BadInformationException("First name is empty");
-		
-		if(u.getLastname() == null || u.getLastname().equals(""))
-			throw new BadInformationException("Last name is empty");
-		
-		if(u.getLogin() == null || u.getLogin().equals(""))
-			throw new BadInformationException("Login is empty");
-		
-		if(u.getPassword() == null || u.getPassword().equals(""))
+		if(u == null)
+			throw new BadInformationException("User is null");
+		if(!checkCredentialNotEmpty(u.getLogin(), u.getPassword()))
+			throw new BadInformationException("Login/password empty");
+		if(u.getListIP() == null || u.getListIP().isEmpty())
 			throw new BadInformationException("Password is empty");
 		return u;
+	}
+	
+	public boolean checkCredentialNotEmpty(String login, String password) {
+		if(login == null || login.equals("")){
+			return false;
+		}
+		if(password == null || password.equals("")){
+			return false;
+		}
+		return true;
 	}
 
 }
