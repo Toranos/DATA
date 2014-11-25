@@ -41,5 +41,21 @@ public class UserService {
 			throw new BadInformationException("Password is empty");
 		return u;
 	}
+	
+	/**
+	 * Check if the user information is correct for sign in
+	 * @param u	The user to check
+	 * @return	The user with correct information
+	 * @throws BadInformationException	When incorrect information found
+	 */
+	public User checkProfile(User u) throws BadInformationException {
+		User currentUser = createUser(u);
+		
+		if (currentUser.getLogin().equals(data.getUser().getLogin())
+		&& currentUser.getPassword().equals(data.getUser().getPassword())) {
+			return data.getUser();
+		}
+		return currentUser;
+	}
 
 }
