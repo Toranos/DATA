@@ -156,7 +156,7 @@ public  interface IHMtoDATA
 	 * @Brief Update user in the JSON file
 	 * @param parameter
 	 */
-	public void updateProfile(User parameter) ;
+	public void updateProfile(User u) ;
 	
 	/**
 	 * Sign Up a new user, start the server and connect the user
