@@ -216,9 +216,18 @@ public class IHMtoDATAImpl implements IHMtoDATA {
 	 * @see DATA.interfaces.IHMtoDATA#updateProfile(DATA.model.User)
 	 */
 	@Override
-	public void updateProfile(User parameter) {
-		// TODO Auto-generated method stub
-
+	public void updateProfile(User u) {
+		User CurrentUser = DataService.getInstance().getUser();
+		CurrentUser.setLogin(u.getLogin());
+		CurrentUser.setPassword(u.getPassword());
+		CurrentUser.setFirstname(u.getFirstname());
+		CurrentUser.setLastname(u.getLastname());
+		CurrentUser.setAvatar(u.getAvatar());
+		CurrentUser.setBirthDate(u.getBirthDate());
+	  
+		if (DataService.getInstance().setUser(CurrentUser)){
+			DataService.getInstance().exports();
+		}
 	}
 
 	/* (non-Javadoc)
