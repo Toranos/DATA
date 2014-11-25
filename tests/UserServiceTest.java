@@ -93,7 +93,6 @@ public class UserServiceTest {
 		user = new User("test", "test", "test", "test", "test", "test");
 		List<String> adress = new ArrayList<String>();
 		adress.add("127.0.0.1");
-
 		user.setListIP(adress);
 		try {
 			user = service.createUser(user);
