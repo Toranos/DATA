@@ -36,14 +36,20 @@ public class DataServiceTest {
 	 */
 	@Test
 	public void exportimportTest() {
-		User user = new User("value1", "value2", "valeur2", "valeur3", "valeur4", "valeur5");
+		User user = new User("value1", "value2", "valeur3", "valeur4", "valeur5", "valeur6");
 		service.setPathProfile("src/DATA/tests/profile/profile.data");
 		try {
 			service.setUser(user);
 			service.exports();
 			try {
 				DataService.imports();
-				assertEquals("User correpsond", user, DataService.getInstance().getUser());
+				User test = DataService.getInstance().getUser();
+				assertEquals("User lastname", user.getLastname(), test.getLastname());
+				assertEquals("User firstname", user.getFirstname(), test.getFirstname());
+				assertEquals("User login", user.getLogin(), test.getLogin());
+				assertEquals("User password", user.getPassword(), test.getPassword());
+				assertEquals("User avatar", user.getAvatar(), test.getAvatar());
+				assertEquals("User birthday", user.getBirthDate(), test.getBirthDate());
 			} catch (Exception e) {
 				fail("Not Expected Import Exception");
 			}
