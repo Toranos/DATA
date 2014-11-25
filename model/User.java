@@ -129,4 +129,27 @@ public class User implements Serializable {
 	public void setListPendingRequests(List<PendingRequest> listPendingRequests) {
 		this.listPendingRequests = listPendingRequests;
 	}
+	
+	/**
+	 * Create a lightUser (UID, login, firstname and lastname) from a complete User
+	 * The other fields are null
+	 * @return The light user
+	 */
+	public User getLightUser() {
+		User temp = new User();
+		temp.uid = this.uid;
+		temp.login = this.login;
+		temp.firstname = this.firstname;
+		temp.lastname = this.lastname;
+		return temp;
+	}
+	
+	/**
+	 * Return a String from a user : firstname + space + lastname
+	 * @return String : firstname + space + lastname
+	 */
+	@Override
+	public String toString() {
+		return this.firstname + " " + this.lastname;
+	}
 }
