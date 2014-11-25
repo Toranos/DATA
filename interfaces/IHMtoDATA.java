@@ -177,6 +177,12 @@ public  interface IHMtoDATA
 	public boolean login(String username, String password);
 	
 	/**
+	 * List all users in group and connected users
+	 * @return List of User's groups with connected users group
+	 */
+	public List<Group> getAllUsers();
+	
+	/**
 	 * Logout the current user
 	 * Save its state
 	 * @return true : OK

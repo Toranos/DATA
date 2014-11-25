@@ -3,6 +3,7 @@
  */
 package DATA.internal;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -14,6 +15,7 @@ import DATA.model.Picture;
 import DATA.model.User;
 import DATA.services.DataService;
 import DATA.services.UserService;
+import NET.NetLocalizer;
 
 /**
  * @author le-goc
@@ -224,7 +226,6 @@ public class IHMtoDATAImpl implements IHMtoDATA {
 	 */
 	@Override
 	public boolean signup(User u) {
-		// TODO Auto-generated method stub
 		UserService userService = new UserService();
 		try {
 			u = userService.createUser(u);
@@ -240,10 +241,37 @@ public class IHMtoDATAImpl implements IHMtoDATA {
 	 */
 	@Override
 	public boolean login(String username, String password) {
-		// TODO Auto-generated method stub
+		UserService userService = new UserService();
+		User u;
+		try {
+			u = userService.checkProfile(username, password);
+			if(u != null) {
+				NetLocalizer netLocalizer = new NetLocalizer();
+				netLocalizer.startAndConnectTo(u);
+				return true;
+			}
+		} catch (BadInformationException e){
+			return false;
+		}
 		return false;
 	}
 
+	/* (non-Javadoc)
+	 * @see DATA.interfaces.IHMtoDATA#getAllUsers(java.lang.String, java.lang.String)
+	 */
+	@Override
+	public List<Group> getAllUsers() {
+		List<Group> groups = new ArrayList<Group>(DataService.getInstance().getUser().getListGroups());
+		NetLocalizer netLocalizer = new NetLocalizer();
+		Group connectedUsers = new Group("Utilisateurs connectés");
+		connectedUsers.setUsers(netLocalizer.getConnectedUsers());
+		if (connectedUsers.getUsers() != null 
+			&& !connectedUsers.getUsers().isEmpty()) {
+			groups.add(connectedUsers);
+		}
+		return groups;
+	}
+	
 	/* (non-Javadoc)
 	 * @see DATA.interfaces.IHMtoDATA#logout()
 	 */
