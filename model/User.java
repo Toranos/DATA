@@ -6,7 +6,7 @@
 package DATA.model;
 
 import java.io.Serializable;
-import java.net.Inet4Address;
+import java.net.InetAddress;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -31,13 +31,19 @@ public class User implements Serializable {
     private String birthDate;
     private List<Picture> listPictures;
     private List<Group> listGroups;
-    private List<Inet4Address> listIP;
-    private List<Inet4Address> listConnectedUser;
+    private List<InetAddress> listIP;
+    private List<InetAddress> listConnectedUser;
     private List<PendingRequest> listPendingRequests;
     
     public User() {
     	
 	}
+    
+    public User(String login, String password) {
+    	this.login = login;
+		this.password = password;
+		this.uid = UUID.randomUUID();
+    }
     
 	public User(String login, String password, String firstname,
 			String lastname, String avatar, String birthDate) {
@@ -48,9 +54,9 @@ public class User implements Serializable {
 		this.avatar = avatar;
 		this.birthDate = birthDate;
 		this.uid = UUID.randomUUID();
-		this.listConnectedUser = new ArrayList<Inet4Address>();
+		this.listConnectedUser = new ArrayList<InetAddress>();
 		this.listGroups = new ArrayList<Group>();
-		this.listIP = new ArrayList<Inet4Address>();
+		this.listIP = new ArrayList<InetAddress>();
 		this.listPictures = new ArrayList<Picture>();
 		this.listPendingRequests = new ArrayList<PendingRequest>();
 	}
@@ -105,16 +111,16 @@ public class User implements Serializable {
 	public void setListGroups(List<Group> listGroups) {
 		this.listGroups = listGroups;
 	}
-	public List<Inet4Address> getListIP() {
+	public List<InetAddress> getListIP() {
 		return listIP;
 	}
-	public void setListIP(List<Inet4Address> listIP) {
+	public void setListIP(List<InetAddress> listIP) {
 		this.listIP = listIP;
 	}
-	public List<Inet4Address> getListConnectedUser() {
+	public List<InetAddress> getListConnectedUser() {
 		return listConnectedUser;
 	}
-	public void setListConnectedUser(List<Inet4Address> listConnectedUser) {
+	public void setListConnectedUser(List<InetAddress> listConnectedUser) {
 		this.listConnectedUser = listConnectedUser;
 	}
 	public List<PendingRequest> getListPendingRequests() {
