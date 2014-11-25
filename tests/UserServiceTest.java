@@ -5,6 +5,15 @@ package DATA.tests;
 
 import static org.junit.Assert.*;
 
+import java.net.Inet4Address;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.List;
+import java.util.ListIterator;
+
 import org.junit.Before;
 import org.junit.Test;
 
@@ -82,6 +91,13 @@ public class UserServiceTest {
 		
 		//Everything ok
 		user = new User("test", "test", "test", "test", "test", "test");
+		List<InetAddress> adress = new ArrayList<InetAddress>();
+		try {
+			adress.add(Inet4Address.getByName("127.0.0.1"));
+		} catch (UnknownHostException e1) {
+			fail("Adress IP incorrect");
+		}
+		user.setListIP(adress);
 		try {
 			user = service.createUser(user);
 		} catch (BadInformationException e) {
