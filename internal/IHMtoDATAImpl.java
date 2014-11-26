@@ -312,7 +312,7 @@ public class IHMtoDATAImpl implements IHMtoDATA {
 	 */
 	@Override
 	public List<Group> getAllUsers() {
-		List<Group> groups = new ArrayList<Group>(data.getUser().getListGroups());
+		List<Group> groups = data.getUser().getListGroups();
 		NetLocalizer netLocalizer = new NetLocalizer();
 		Group connectedUsers = new Group(Group.DEFAULT_GROUP_NAME);
 		boolean isInGroup;
@@ -331,7 +331,7 @@ public class IHMtoDATAImpl implements IHMtoDATA {
 				connectedUsers.getUsers().add(user);
 			}
 		}
-
+		groups.add(connectedUsers);
 		return groups;
 	}
 	
