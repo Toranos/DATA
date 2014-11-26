@@ -35,6 +35,7 @@ public class UserService {
 		if (u.getListIP() == null || u.getListIP().isEmpty()) {
 			throw new BadInformationException("Password is empty");
 		}
+		data.setUser(u);
 		return u;
 	}
 	
