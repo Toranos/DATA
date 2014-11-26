@@ -14,6 +14,7 @@ import DATA.exceptions.BadInformationException;
 import DATA.interfaces.IHMtoDATA;
 import DATA.model.Comment;
 import DATA.model.Group;
+import DATA.model.Note;
 import DATA.model.Picture;
 import DATA.model.User;
 import DATA.services.DataService;
@@ -45,6 +46,12 @@ public class IHMtoDATAImpl implements IHMtoDATA {
 	public void addComment(Comment comment, int idRequest) {
 		// TODO Auto-generated method stub
 
+	}
+	
+	@Override
+	public void addNote(Note note, int idRequest) {
+		// TODO Auto-generated method stub
+		
 	}
 
 	/* (non-Javadoc)
@@ -316,5 +323,4 @@ public class IHMtoDATAImpl implements IHMtoDATA {
 		// TODO Auto-generated method stub
 		return false;
 	}
-
 }

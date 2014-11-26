@@ -6,6 +6,7 @@ import java.util.UUID;
 
 import DATA.model.Comment;
 import DATA.model.Group;
+import DATA.model.Note;
 import DATA.model.Picture;
 import DATA.model.User;
 
@@ -22,6 +23,13 @@ public  interface IHMtoDATA
 	 * @param idRequest	The idRequest
 	 */
 	public void addComment(Comment comment, int idRequest) ;
+	
+	/**
+	 * Add a new comment for a picture 
+	 * @param comment	The comment
+	 * @param idRequest	The idRequest
+	 */
+	public void addNote(Note note, int idRequest) ;
 	
 	/**
 	 * Add a new group for the current user

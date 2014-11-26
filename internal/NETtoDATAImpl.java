@@ -8,6 +8,7 @@ import java.util.List;
 
 import DATA.interfaces.NETtoDATA;
 import DATA.model.Comment;
+import DATA.model.Note;
 import DATA.model.Picture;
 import DATA.model.User;
 
@@ -114,6 +115,18 @@ public class NETtoDATAImpl implements NETtoDATA {
 	public void notFriendAnymore(User user) {
 		// TODO Auto-generated method stub
 
+	}
+
+	@Override
+	public void addNote(Note note) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public List<Picture> getPictures() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

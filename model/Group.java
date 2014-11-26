@@ -8,6 +8,7 @@ package DATA.model;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 /**
  *
@@ -22,10 +23,12 @@ public class Group implements Serializable {
 	
     private String nom;
     private List<User> users;
+    private UUID uid;
     
     public Group(String nom) {
 		this.nom = nom;
 		this.users = new ArrayList<User>();
+		this.uid = UUID.randomUUID();
 	}
     
 	public List<User> getUsers() {
@@ -43,4 +46,8 @@ public class Group implements Serializable {
     public void setNom(String nom) {
         this.nom = nom;
     }
+
+	public UUID getUid() {
+		return uid;
+	}
 }
