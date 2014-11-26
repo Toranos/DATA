@@ -3,6 +3,7 @@
  */
 package DATA.internal;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -216,7 +217,7 @@ public class IHMtoDATAImpl implements IHMtoDATA {
 	 * @see DATA.interfaces.IHMtoDATA#updateProfile(DATA.model.User)
 	 */
 	@Override
-	public void updateProfile(User u) {
+	public void updateProfile(User u) throws IOException{
 		User CurrentUser = DataService.getInstance().getUser();
 		CurrentUser.setLogin(u.getLogin());
 		CurrentUser.setPassword(u.getPassword());

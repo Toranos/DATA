@@ -1,5 +1,6 @@
 package DATA.interfaces;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.UUID;
 
@@ -63,7 +64,7 @@ public  interface IHMtoDATA
 	/**
 	 * Save the current user in a JSON file
 	 */
-	public void export() ;
+	public void export() throws IOException;
 	
 	/**
 	 * Get the user information
@@ -144,7 +145,7 @@ public  interface IHMtoDATA
 	* @param parameter
 	* @return User
 	 */
-	public User import_(String parameter) ;
+	public User import_(String parameter) throws IOException;
 	
 	/**
 	 * @Brief Update current picture
@@ -156,7 +157,7 @@ public  interface IHMtoDATA
 	 * @Brief Update user in the JSON file
 	 * @param parameter
 	 */
-	public void updateProfile(User u) ;
+	public void updateProfile(User u) throws IOException;
 	
 	/**
 	 * Sign Up a new user, start the server and connect the user
