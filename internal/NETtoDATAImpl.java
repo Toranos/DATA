@@ -107,7 +107,7 @@ public class NETtoDATAImpl implements NETtoDATA {
 	@Override
 	public void helloUser(User user) {
 		user.setConnected(true);
-		Main.getDATAtoIHMimpl().receiveConnectedUser(user,-1);
+		Main.getDATAtoIHMimpl().receiveConnectedUser(user);
 	}
 
 	/* (non-Javadoc)
@@ -116,7 +116,7 @@ public class NETtoDATAImpl implements NETtoDATA {
 	@Override
 	public void goodByeUser(User user) {
 		user.setConnected(false);
-		Main.getDATAtoIHMimpl().receiveConnectedUser(user,-1);
+		Main.getDATAtoIHMimpl().receiveConnectedUser(user);
 	}
 
 	/* (non-Javadoc)
