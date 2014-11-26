@@ -15,6 +15,7 @@ import DATA.interfaces.IHMtoDATA;
 import DATA.model.Comment;
 import DATA.model.Group;
 import DATA.model.Note;
+import DATA.model.PendingRequest;
 import DATA.model.Picture;
 import DATA.model.User;
 import DATA.services.DataService;
@@ -77,8 +78,7 @@ public class IHMtoDATAImpl implements IHMtoDATA {
 	 */
 	@Override
 	public void addUserInGroup(User user, Group group) {
-		// TODO Auto-generated method stub
-
+		data.getUser().getListPendingRequests().add(new PendingRequest(data.getUser().getUid(), user.getUid(), group.getUid()));
 	}
 
 	/* (non-Javadoc)
@@ -157,8 +157,7 @@ public class IHMtoDATAImpl implements IHMtoDATA {
 	 */
 	@Override
 	public List<Group> getGroups() {
-		// TODO Auto-generated method stub
-		return null;
+		return data.getUser().getListGroups();
 	}
 
 	/* (non-Javadoc)
@@ -313,14 +312,26 @@ public class IHMtoDATAImpl implements IHMtoDATA {
 	 */
 	@Override
 	public List<Group> getAllUsers() {
-		List<Group> groups = new ArrayList<Group>(DataService.getInstance().getUser().getListGroups());
+		List<Group> groups = new ArrayList<Group>(data.getUser().getListGroups());
 		NetLocalizer netLocalizer = new NetLocalizer();
-		Group connectedUsers = new Group("Utilisateurs connectés");
-		connectedUsers.setUsers(netLocalizer.getConnectedUsers());
-		if (connectedUsers.getUsers() != null 
-			&& !connectedUsers.getUsers().isEmpty()) {
-			groups.add(connectedUsers);
+		Group connectedUsers = new Group(Group.DEFAULT_GROUP_NAME);
+		boolean isInGroup;
+		for (User user : netLocalizer.getConnectedUsers()) {
+			isInGroup = false;
+			for(Group group : groups) {
+				for(User userGroup : group.getUsers()) {
+					if (userGroup.getUid().equals(user.getUid())) {
+						userGroup.setConnected(true);
+						isInGroup = true;
+					}
+				}
+			}
+			if (!isInGroup) {
+				user.setConnected(true);
+				connectedUsers.getUsers().add(user);
+			}
 		}
+
 		return groups;
 	}
 	
@@ -342,5 +353,10 @@ public class IHMtoDATAImpl implements IHMtoDATA {
 	public boolean editProfile(User u) {
 		// TODO Auto-generated method stub
 		return false;
+	}
+
+	@Override
+	public void acceptUserInGroup(User user, Group group) {
+		group.getUsers().add(user);
 	}
 }

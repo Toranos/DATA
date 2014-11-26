@@ -29,7 +29,7 @@ public class PictureService {
 	public Picture getPictureById(UUID pictureUid) throws BadInformationException {
 		List<Picture> pictures = data.getUser().getListPictures();
 		for (Picture pic : pictures) {
-			if (pic.getUid() == pictureUid) {
+			if (pic.getUid().equals(pictureUid)) {
 				return pic;
 			}
 		}
