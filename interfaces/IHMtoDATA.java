@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.List;
 import java.util.UUID;
 
+import DATA.exceptions.BadInformationException;
 import DATA.model.Comment;
 import DATA.model.Group;
 import DATA.model.Picture;
@@ -158,7 +159,7 @@ public  interface IHMtoDATA
 	 * @Brief Update user in the JSON file
 	 * @param parameter
 	 */
-	public void updateProfile(User u) throws IOException;
+	public void updateProfile(User u) throws IOException, BadInformationException;
 	
 	/**
 	 * Sign Up a new user, start the server and connect the user
