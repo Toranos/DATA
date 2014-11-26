@@ -144,8 +144,9 @@ public  interface IHMtoDATA
 	* @Brief Import a user from JSON file’s path
 	* @param parameter
 	* @return User
+	 * @throws ClassNotFoundException 
 	 */
-	public User import_(String parameter) throws IOException;
+	public User import_(String parameter) throws IOException, ClassNotFoundException;
 	
 	/**
 	 * @Brief Update current picture
