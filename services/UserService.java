@@ -1,5 +1,6 @@
 package DATA.services;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 
 import DATA.exceptions.BadInformationException;
@@ -12,13 +13,11 @@ import DATA.model.User;
  */
 public class UserService {
 	
-	private DataService data;
-	
 	/**
 	 * Public constructor for UserService
 	 */
 	public UserService() {
-		this.data = DataService.getInstance();
+	
 	}
 	
 	/**
@@ -39,9 +38,9 @@ public class UserService {
 			throw new BadInformationException("Password is empty");
 		}
 		*/
-		data.setUser(u);
+		DataService.getInstance().setUser(u);
 		try {
-			data.exports();
+			DataService.getInstance().exports();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -60,9 +59,21 @@ public class UserService {
 		if (!checkCredentialNotEmpty(username, password)) {
 			throw new BadInformationException("Login/password empty");
 		}
-		if (username.equals(data.getUser().getLogin())
-		&& password.equals(data.getUser().getPassword())) {
-			return data.getUser();
+		try {
+			DataService.imports();
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		if (username.equals(DataService.getInstance().getUser().getLogin())
+		&& password.equals(DataService.getInstance().getUser().getPassword())) {
+			return DataService.getInstance().getUser();
 		}
 		return null;
 	}

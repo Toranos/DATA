@@ -36,6 +36,7 @@ public class User implements Serializable {
     private List<PendingRequest> listPendingRequests;
     
     public User() {
+		this.uid = UUID.randomUUID();
 		this.listConnectedUser = new ArrayList<String>();
 		this.listGroups = new ArrayList<Group>();
 		this.listGroups.add(new Group(Group.FRIENDS_GROUP_NAME));
