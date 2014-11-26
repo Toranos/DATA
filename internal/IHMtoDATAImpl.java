@@ -3,6 +3,8 @@
  */
 package DATA.internal;
 
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -24,6 +26,18 @@ import NET.NetLocalizer;
  */
 public class IHMtoDATAImpl implements IHMtoDATA {
 
+	/**
+	 * Instance of DataService.
+	 */
+	private DataService data = null;
+	
+	/** 
+	 * Constructor.
+	 */
+	public IHMtoDATAImpl() {
+		data = DataService.getInstance();
+	}
+	
 	/* (non-Javadoc)
 	 * @see DATA.interfaces.IHMtoDATA#addComment(DATA.model.Comment, int)
 	 */
@@ -91,9 +105,8 @@ public class IHMtoDATAImpl implements IHMtoDATA {
 	 * @see DATA.interfaces.IHMtoDATA#export()
 	 */
 	@Override
-	public void export() {
-		// TODO Auto-generated method stub
-
+	public void export() throws IOException {
+		data.exports();
 	}
 
 	/* (non-Javadoc)
@@ -199,9 +212,11 @@ public class IHMtoDATAImpl implements IHMtoDATA {
 	 * @see DATA.interfaces.IHMtoDATA#import_(java.lang.String)
 	 */
 	@Override
-	public User import_(String parameter) {
+	public User import_(String parameter) throws FileNotFoundException, ClassNotFoundException, IOException {
 		// TODO Auto-generated method stub
-		return null;
+		File f = new File(parameter);
+		data.imports(f);
+		return data.getUser();
 	}
 
 	/* (non-Javadoc)
@@ -218,7 +233,7 @@ public class IHMtoDATAImpl implements IHMtoDATA {
 	 */
 	@Override
 	public void updateProfile(User u) throws IOException{
-		User CurrentUser = DataService.getInstance().getUser();
+		User CurrentUser = data.getUser();
 		CurrentUser.setLogin(u.getLogin());
 		CurrentUser.setPassword(u.getPassword());
 		CurrentUser.setFirstname(u.getFirstname());
@@ -226,8 +241,8 @@ public class IHMtoDATAImpl implements IHMtoDATA {
 		CurrentUser.setAvatar(u.getAvatar());
 		CurrentUser.setBirthDate(u.getBirthDate());
 	  
-		if (DataService.getInstance().setUser(CurrentUser)){
-			DataService.getInstance().exports();
+		if (data.setUser(CurrentUser)){
+			data.exports();
 		}
 	}
 
