@@ -190,7 +190,7 @@ public  interface IHMtoDATA
 	 * @return true : OK
 	 * 			false : KO
 	 */
-	public boolean logout();
+	public boolean logout() throws IOException;
 	
 	/**
 	 * Edit the current profile

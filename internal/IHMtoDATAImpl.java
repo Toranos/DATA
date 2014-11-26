@@ -301,9 +301,11 @@ public class IHMtoDATAImpl implements IHMtoDATA {
 	 * @see DATA.interfaces.IHMtoDATA#logout()
 	 */
 	@Override
-	public boolean logout() {
-		// TODO Auto-generated method stub
-		return false;
+	public boolean logout() throws IOException {
+		DataService.getInstance().exports();
+		NetLocalizer netLocalizer = new NetLocalizer();
+		netLocalizer.disconnect();
+		return true;
 	}
 
 	/* (non-Javadoc)
