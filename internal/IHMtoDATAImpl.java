@@ -239,16 +239,36 @@ public class IHMtoDATAImpl implements IHMtoDATA {
 	 * @see DATA.interfaces.IHMtoDATA#updateProfile(DATA.model.User)
 	 */
 	@Override
-	public void updateProfile(User u) throws IOException{
-		User CurrentUser = data.getUser();
-		CurrentUser.setLogin(u.getLogin());
-		CurrentUser.setPassword(u.getPassword());
-		CurrentUser.setFirstname(u.getFirstname());
-		CurrentUser.setLastname(u.getLastname());
-		CurrentUser.setAvatar(u.getAvatar());
-		CurrentUser.setBirthDate(u.getBirthDate());
+	public void updateProfile(User u) throws IOException, BadInformationException {
+		UserService userService = new UserService();
+		User currentUser = data.getUser();
+		if (u == null || u.equals("")) {
+			throw new BadInformationException("User empty");
+		}
+		if (!userService.checkCredentialNotEmpty(u.getLogin(), u.getPassword())) {
+			throw new BadInformationException("Login/password empty");
+		}
+		if (u.getFirstname() == null || u.getFirstname().equals("")) {
+			throw new BadInformationException("Firstname empty");
+		}
+		if (u.getLastname() == null || u.getLastname().equals("")) {
+			throw new BadInformationException("Lastname empty");
+		}
+		if (u.getAvatar() == null || u.getAvatar().equals("")) {
+			throw new BadInformationException("Avatar empty");
+		}
+		if (u.getBirthDate() == null || u.getBirthDate().equals("")) {
+			throw new BadInformationException("BirthDate empty");
+		}
+		
+		currentUser.setLogin(u.getLogin());
+		currentUser.setPassword(u.getPassword());
+		currentUser.setFirstname(u.getFirstname());
+		currentUser.setLastname(u.getLastname());
+		currentUser.setAvatar(u.getAvatar());
+		currentUser.setBirthDate(u.getBirthDate());
 	  
-		if (data.setUser(CurrentUser)){
+		if (data.setUser(currentUser)){
 			data.exports();
 		}
 	}
