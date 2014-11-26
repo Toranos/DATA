@@ -32,12 +32,14 @@ public class UserService {
 		if (!checkCredentialNotEmpty(u.getLogin(), u.getPassword())) {
 			throw new BadInformationException("Login/password empty");
 		}
+		/*
 		if (u.getListIP() == null || u.getListIP().isEmpty()) {
 			throw new BadInformationException("Password is empty");
 		}
+		*/
 		data.setUser(u);
 		return u;
-	}
+	} 
 	
 	/**
 	 * Check if the user information is correct for sign in
@@ -51,7 +53,7 @@ public class UserService {
 			throw new BadInformationException("Login/password empty");
 		}
 		if (username.equals(data.getUser().getLogin())
-		&& username.equals(data.getUser().getPassword())) {
+		&& password.equals(data.getUser().getPassword())) {
 			return data.getUser();
 		}
 		return null;
