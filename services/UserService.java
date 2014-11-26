@@ -1,5 +1,7 @@
 package DATA.services;
 
+import java.io.IOException;
+
 import DATA.exceptions.BadInformationException;
 import DATA.model.User;
 
@@ -38,6 +40,12 @@ public class UserService {
 		}
 		*/
 		data.setUser(u);
+		try {
+			data.exports();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		return u;
 	} 
 	
