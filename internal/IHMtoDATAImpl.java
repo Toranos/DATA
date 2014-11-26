@@ -43,13 +43,13 @@ public class IHMtoDATAImpl implements IHMtoDATA {
 	 * @see DATA.interfaces.IHMtoDATA#addComment(DATA.model.Comment, int)
 	 */
 	@Override
-	public void addComment(Comment comment, int idRequest) {
+	public void addComment(Comment comment) {
 		// TODO Auto-generated method stub
 
 	}
 	
 	@Override
-	public void addNote(Note note, int idRequest) {
+	public void addNote(Note note) {
 		// TODO Auto-generated method stub
 		
 	}
@@ -68,8 +68,7 @@ public class IHMtoDATAImpl implements IHMtoDATA {
 	 */
 	@Override
 	public void addPicture(Picture picture) {
-		// TODO Auto-generated method stub
-
+		DataService.getInstance().getUser().getListPictures().add(picture);
 	}
 
 	/* (non-Javadoc)
@@ -315,7 +314,7 @@ public class IHMtoDATAImpl implements IHMtoDATA {
 	public List<Group> getAllUsers() {
 		List<Group> groups = new ArrayList<Group>(DataService.getInstance().getUser().getListGroups());
 		NetLocalizer netLocalizer = new NetLocalizer();
-		Group connectedUsers = new Group("Utilisateurs connectés");
+		Group connectedUsers = new Group("Autres utilisateurs");
 		connectedUsers.setUsers(netLocalizer.getConnectedUsers());
 		if (connectedUsers.getUsers() != null 
 			&& !connectedUsers.getUsers().isEmpty()) {

@@ -3,14 +3,16 @@
  */
 package DATA.internal;
 
-import java.net.Inet4Address;
 import java.util.List;
+import java.util.UUID;
 
 import DATA.interfaces.NETtoDATA;
 import DATA.model.Comment;
 import DATA.model.Note;
 import DATA.model.Picture;
+import DATA.model.Tag;
 import DATA.model.User;
+import IHM.Main;
 
 /**
  * @author le-goc
@@ -31,7 +33,7 @@ public class NETtoDATAImpl implements NETtoDATA {
 	 * @see DATA.interfaces.NETtoDATA#getConnectedIps()
 	 */
 	@Override
-	public List<Inet4Address> getConnectedIps() {
+	public List<String> getConnectedIps() {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -77,8 +79,7 @@ public class NETtoDATAImpl implements NETtoDATA {
 	 */
 	@Override
 	public void resultPictures(List<Picture> pictures, int idRequest) {
-		// TODO Auto-generated method stub
-
+		Main.getDATAtoIHMimpl().receivePictures(pictures, idRequest);
 	}
 
 	/* (non-Javadoc)
@@ -86,8 +87,7 @@ public class NETtoDATAImpl implements NETtoDATA {
 	 */
 	@Override
 	public void sendPicture(Picture picture, int pageId) {
-		// TODO Auto-generated method stub
-
+		Main.getDATAtoIHMimpl().receivePicture(picture, pageId);
 	}
 
 	/* (non-Javadoc)
@@ -125,6 +125,18 @@ public class NETtoDATAImpl implements NETtoDATA {
 
 	@Override
 	public List<Picture> getPictures() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<Picture> getPictures(List<Tag> tags) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Picture getPictureById(UUID id) {
 		// TODO Auto-generated method stub
 		return null;
 	}

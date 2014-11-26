@@ -23,14 +23,14 @@ public  interface IHMtoDATA
 	 * @param comment	The comment
 	 * @param idRequest	The idRequest
 	 */
-	public void addComment(Comment comment, int idRequest) ;
+	public void addComment(Comment comment) ;
 	
 	/**
 	 * Add a new comment for a picture 
 	 * @param comment	The comment
 	 * @param idRequest	The idRequest
 	 */
-	public void addNote(Note note, int idRequest) ;
+	public void addNote(Note note) ;
 	
 	/**
 	 * Add a new group for the current user
@@ -188,7 +188,8 @@ public  interface IHMtoDATA
 	public boolean login(String username, String password);
 	
 	/**
-	 * List all users in group and connected users
+	 * Return a list of all groups of the current user + the default group
+	 * The default group containing all the connected users is "Autres utilisateurs"
 	 * @return List of User's groups with connected users group
 	 */
 	public List<Group> getAllUsers();

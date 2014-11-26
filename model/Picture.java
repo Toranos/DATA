@@ -27,7 +27,7 @@ public class Picture implements Serializable {
     private List<Comment> Comments;
     private List<Rule> listRules;
     private UUID uid;
-
+    
     public Picture(String filename) {
 		this.filename = filename;
 		this.listNotes = new ArrayList<Note>();
