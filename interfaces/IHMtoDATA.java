@@ -4,8 +4,10 @@ import java.io.IOException;
 import java.util.List;
 import java.util.UUID;
 
+import DATA.exceptions.BadInformationException;
 import DATA.model.Comment;
 import DATA.model.Group;
+import DATA.model.Note;
 import DATA.model.Picture;
 import DATA.model.User;
 
@@ -21,7 +23,14 @@ public  interface IHMtoDATA
 	 * @param comment	The comment
 	 * @param idRequest	The idRequest
 	 */
-	public void addComment(Comment comment, int idRequest) ;
+	public void addComment(Comment comment) ;
+	
+	/**
+	 * Add a new comment for a picture 
+	 * @param comment	The comment
+	 * @param idRequest	The idRequest
+	 */
+	public void addNote(Note note) ;
 	
 	/**
 	 * Add a new group for the current user
@@ -158,7 +167,7 @@ public  interface IHMtoDATA
 	 * @Brief Update user in the JSON file
 	 * @param parameter
 	 */
-	public void updateProfile(User u) throws IOException;
+	public void updateProfile(User u) throws IOException, BadInformationException;
 	
 	/**
 	 * Sign Up a new user, start the server and connect the user
@@ -179,7 +188,8 @@ public  interface IHMtoDATA
 	public boolean login(String username, String password);
 	
 	/**
-	 * List all users in group and connected users
+	 * Return a list of all groups of the current user + the default group
+	 * The default group containing all the connected users is "Autres utilisateurs"
 	 * @return List of User's groups with connected users group
 	 */
 	public List<Group> getAllUsers();
