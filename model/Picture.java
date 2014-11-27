@@ -20,22 +20,28 @@ public class Picture implements Serializable {
 	* Serialization UID.
 	*/
 	public static final long serialVersionUID = 1L;
-	
+
     private String filename;
     private List<Note> listNotes;
     private List<Tag> listTags;
     private List<Comment> Comments;
     private List<Rule> listRules;
+    private UUID userId;
     private UUID uid;
-    
-    public Picture(String filename) {
+        
+    public Picture(String filename, UUID userId) {
 		this.filename = filename;
 		this.listNotes = new ArrayList<Note>();
 		this.listRules = new ArrayList<Rule>();
 		this.listTags = new ArrayList<Tag>();
+		this.userId = userId;
 		this.uid = UUID.randomUUID();
 	}
 
+    public UUID getUid() {
+		return uid;
+	}
+    
 	public List<Rule> getListRules() {
 		return listRules;
 	}
@@ -75,8 +81,4 @@ public class Picture implements Serializable {
     public void setComments(List<Comment> Comments) {
         this.Comments = Comments;
     }
-
-	public UUID getUid() {
-		return uid;
-	}
 }
