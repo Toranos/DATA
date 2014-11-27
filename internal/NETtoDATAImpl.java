@@ -63,7 +63,7 @@ public class NETtoDATAImpl implements NETtoDATA {
 	 */
 	@Override
 	public void receiveFriendRequest(User user) {
-		Main.getDATAtoIHMimpl().receiveFriendRequest(user, -1);
+		Main.getDATAtoIHMimpl().receiveFriendRequest(user, null);
 	}
 
 	/* (non-Javadoc)
@@ -116,7 +116,7 @@ public class NETtoDATAImpl implements NETtoDATA {
 	@Override
 	public void goodByeUser(User user) {
 		user.setConnected(false);
-		Main.getDATAtoIHMimpl().receiveConnectedUser(user);
+		Main.getDATAtoIHMimpl().receiveUnconnectedUser(user);
 	}
 
 	/* (non-Javadoc)

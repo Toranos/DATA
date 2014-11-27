@@ -73,6 +73,8 @@ public class IHMtoDATAImpl implements IHMtoDATA {
 	@Override
 	public void addUserInGroup(User user, Group group) {
 		DataService.getInstance().getUser().getListPendingRequests().add(new PendingRequest(DataService.getInstance().getUser().getUid(), user.getUid(), group.getUid()));
+//		NetLocalizer netLocalizer = new NetLocalizer();
+//		netLocalizer.addFriend(user.getUid().toString());
 	}
 
 	/* (non-Javadoc)
@@ -305,7 +307,7 @@ public class IHMtoDATAImpl implements IHMtoDATA {
 	 */
 	@Override
 	public List<Group> getAllUsers() {
-		List<Group> groups = new ArrayList<Group>(DataService.getInstance().getUser().getListGroups());
+		List<Group> groups = DataService.getInstance().getUser().getListGroups();
 		NetLocalizer netLocalizer = new NetLocalizer();
 		Group connectedUsers = new Group(Group.DEFAULT_GROUP_NAME);
 		boolean isInGroup;
