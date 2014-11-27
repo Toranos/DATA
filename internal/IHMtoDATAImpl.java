@@ -88,9 +88,9 @@ public class IHMtoDATAImpl implements IHMtoDATA {
 	 */
 	@Override
 	public void addUserInGroup(User user, Group group) {
-		DataService.getInstance().getUser().getListPendingRequests().add(new PendingRequest(DataService.getInstance().getUser().getUid(), user.getUid(), group.getUid()));
-//		NetLocalizer netLocalizer = new NetLocalizer();
-//		netLocalizer.addFriend(user.getUid().toString());
+		DataService.getInstance().getUser().getListPendingRequests().add(new PendingRequest(user.getUid(), group.getUid()));
+		NetLocalizer netLocalizer = new NetLocalizer();
+		netLocalizer.addFriend(user.getUid().toString());
 	}
 
 	/*

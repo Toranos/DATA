@@ -16,6 +16,7 @@ import DATA.model.Tag;
 import DATA.model.User;
 import DATA.services.DataService;
 import IHM.Main;
+import NET.NetLocalizer;
 
 /**
  * @author le-goc
@@ -111,6 +112,13 @@ public class NETtoDATAImpl implements NETtoDATA {
 	public void helloUser(User user) {
 		user.setConnected(true);
 		Main.getDATAtoIHMimpl().receiveConnectedUser(user);
+		User currentUser = DataService.getInstance().getUser();
+		for (PendingRequest pendingReq : currentUser.getListPendingRequests()) {
+			if(pendingReq.getToUID().equals(user.getUid())){
+				NetLocalizer netLocalizer = new NetLocalizer();
+				netLocalizer.addFriend(user.getUid().toString());
+			}
+		}
 	}
 
 	/* (non-Javadoc)
