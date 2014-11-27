@@ -59,6 +59,12 @@ public  interface IHMtoDATA
 	public void acceptUserInGroup(User user, Group group) ;
 	
 	/**
+	 * Refuse
+	 * @param user	The user to refuse
+	 */
+	public void refuseUser(User user) ;
+	
+	/**
 	 * Delete a group and all its users
 	 * @param group	The gorup to delete
 	 */

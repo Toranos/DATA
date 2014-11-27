@@ -16,6 +16,7 @@ import DATA.model.Tag;
 import DATA.model.User;
 import DATA.services.DataService;
 import IHM.Main;
+import NET.NetLocalizer;
 
 /**
  * @author le-goc
@@ -64,24 +65,28 @@ public class NETtoDATAImpl implements NETtoDATA {
 	 */
 	@Override
 	public void receiveFriendRequest(User user) {
-		Main.getDATAtoIHMimpl().receiveFriendRequest(user, null);
+		Main.getDATAtoIHMimpl().receiveFriendRequest(user);
 	}
 
 	/* (non-Javadoc)
 	 * @see DATA.interfaces.NETtoDATA#receiveFriendResponse(DATA.model.User)
 	 */
 	@Override
-	public void receiveFriendResponse(User user) {
+	public void receiveFriendResponse(User user, boolean friends) {
 		User currentUser = DataService.getInstance().getUser();
 		for (PendingRequest pendingReq : currentUser.getListPendingRequests()) {
 			if(user.getUid().equals(pendingReq.getToUID())){
-				for(Group group : currentUser.getListGroups()){
-					if(group.getUid().equals(pendingReq.getGroupUID())){
-						group.getUsers().add(user);
+				if(friends){
+					for(Group group : currentUser.getListGroups()){
+						if(group.getUid().equals(pendingReq.getGroupUID())){
+							group.getUsers().add(user);
+						}
 					}
 				}
+				currentUser.getListPendingRequests().remove(pendingReq);
 			}
 		}
+		Main.getDATAtoIHMimpl().receiveFriendResponse(user,friends);
 	}
 
 	/* (non-Javadoc)
@@ -107,6 +112,13 @@ public class NETtoDATAImpl implements NETtoDATA {
 	public void helloUser(User user) {
 		user.setConnected(true);
 		Main.getDATAtoIHMimpl().receiveConnectedUser(user);
+		User currentUser = DataService.getInstance().getUser();
+		for (PendingRequest pendingReq : currentUser.getListPendingRequests()) {
+			if(pendingReq.getToUID().equals(user.getUid())){
+				NetLocalizer netLocalizer = new NetLocalizer();
+				netLocalizer.addFriend(user.getUid().toString());
+			}
+		}
 	}
 
 	/* (non-Javadoc)
