@@ -43,15 +43,15 @@ public class IHMtoDATAImpl implements IHMtoDATA {
 	 * @see DATA.interfaces.IHMtoDATA#addComment(DATA.model.Comment, int)
 	 */
 	@Override
-	public void addComment(Comment comment, int idRequest) {
-		// TODO Auto-generated method stub
-
+	public void addComment(Comment comment) {
+		NetLocalizer netLocalizer = new NetLocalizer();
+		netLocalizer.addComment(comment, comment.getPictureUserId());
 	}
 	
 	@Override
-	public void addNote(Note note, int idRequest) {
-		// TODO Auto-generated method stub
-		
+	public void addNote(Note note) {
+		NetLocalizer netLocalizer = new NetLocalizer();
+		netLocalizer.addNote(note, note.getPictureUserId());
 	}
 
 	/* (non-Javadoc)

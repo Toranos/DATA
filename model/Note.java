@@ -6,6 +6,7 @@
 package DATA.model;
 
 import java.io.Serializable;
+import java.util.UUID;
 
 /**
  *
@@ -18,14 +19,18 @@ public class Note implements Serializable {
 	*/
 	public static final long serialVersionUID = 1L;
 	
-    private int value;
-    private User user;
-    private Picture picture;
+    private int value;  
+    private UUID uid;
+    private UUID NoteUserId;
+    private UUID PictureId;
+    private UUID PictureUserId;
     
-	public Note(int value, User user, Picture picture) {
+	public Note(int value, UUID NoteUserId, UUID PictureId, UUID PictureUserId) {
 		this.value = value;
-		this.user = user;
-		this.picture = picture;
+		this.uid = UUID.randomUUID();
+		this.NoteUserId = NoteUserId;
+		this.PictureId = PictureId;
+		this.PictureUserId = PictureUserId;
 	}
 
 	public int getValue() {
@@ -36,19 +41,31 @@ public class Note implements Serializable {
 		this.value = value;
 	}
 
-	public User getUser() {
-		return user;
+	public UUID getUid() {
+		return uid;
 	}
 
-	public void setUser(User user) {
-		this.user = user;
+	public UUID getNoteUserId() {
+		return NoteUserId;
 	}
 
-	public Picture getPicture() {
-		return picture;
+	public void setNoteUserId(UUID noteUserId) {
+		NoteUserId = noteUserId;
 	}
 
-	public void setPicture(Picture picture) {
-		this.picture = picture;
+	public UUID getPictureId() {
+		return PictureId;
+	}
+
+	public void setPictureId(UUID pictureId) {
+		PictureId = pictureId;
+	}
+
+	public UUID getPictureUserId() {
+		return PictureUserId;
+	}
+
+	public void setPictureUserId(UUID pictureUserId) {
+		PictureUserId = pictureUserId;
 	}
 }

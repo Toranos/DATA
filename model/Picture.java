@@ -27,13 +27,23 @@ public class Picture implements Serializable {
     private List<Comment> Comments;
     private List<Rule> listRules;
     private UUID uid;
+    private UUID userId;
 
-    public Picture(String filename) {
+    public Picture(String filename, UUID userId) {
 		this.filename = filename;
 		this.listNotes = new ArrayList<Note>();
 		this.listRules = new ArrayList<Rule>();
 		this.listTags = new ArrayList<Tag>();
 		this.uid = UUID.randomUUID();
+		this.userId = userId;
+	}
+
+	public UUID getUserId() {
+		return userId;
+	}
+
+	public void setUserId(UUID userId) {
+		this.userId = userId;
 	}
 
 	public List<Rule> getListRules() {

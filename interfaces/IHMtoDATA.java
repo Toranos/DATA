@@ -1,6 +1,7 @@
 package DATA.interfaces;
 
 import java.io.IOException;
+import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
@@ -23,14 +24,14 @@ public  interface IHMtoDATA
 	 * @param comment	The comment
 	 * @param idRequest	The idRequest
 	 */
-	public void addComment(Comment comment, int idRequest) ;
+	public void addComment(Comment comment) ;
 	
 	/**
 	 * Add a new comment for a picture 
 	 * @param comment	The comment
 	 * @param idRequest	The idRequest
 	 */
-	public void addNote(Note note, int idRequest) ;
+	public void addNote(Note note);
 	
 	/**
 	 * Add a new group for the current user
