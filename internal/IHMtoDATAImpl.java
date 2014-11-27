@@ -15,6 +15,7 @@ import DATA.interfaces.IHMtoDATA;
 import DATA.model.Comment;
 import DATA.model.Group;
 import DATA.model.Note;
+import DATA.model.PendingRequest;
 import DATA.model.Picture;
 import DATA.model.User;
 import DATA.services.DataService;
@@ -32,11 +33,11 @@ public class IHMtoDATAImpl implements IHMtoDATA {
 	 */
 	private DataService data = null;
 
-	/**
+	
+	/** 
 	 * Constructor.
 	 */
 	public IHMtoDATAImpl() {
-		data = DataService.getInstance();
 	}
 
 	/*
@@ -85,8 +86,9 @@ public class IHMtoDATAImpl implements IHMtoDATA {
 	 */
 	@Override
 	public void addUserInGroup(User user, Group group) {
-		// TODO Auto-generated method stub
-
+		DataService.getInstance().getUser().getListPendingRequests().add(new PendingRequest(DataService.getInstance().getUser().getUid(), user.getUid(), group.getUid()));
+//		NetLocalizer netLocalizer = new NetLocalizer();
+//		netLocalizer.addFriend(user.getUid().toString());
 	}
 
 	/*
@@ -130,7 +132,7 @@ public class IHMtoDATAImpl implements IHMtoDATA {
 	 */
 	@Override
 	public void export() throws IOException {
-		data.exports();
+		DataService.getInstance().exports();
 	}
 
 	/*
@@ -185,8 +187,7 @@ public class IHMtoDATAImpl implements IHMtoDATA {
 	 */
 	@Override
 	public List<Group> getGroups() {
-		// TODO Auto-generated method stub
-		return null;
+		return DataService.getInstance().getUser().getListGroups();
 	}
 
 	/*
@@ -251,8 +252,7 @@ public class IHMtoDATAImpl implements IHMtoDATA {
 	 */
 	@Override
 	public User getCurrentUser() {
-		// TODO Auto-generated method stub
-		return null;
+		return DataService.getInstance().getUser();
 	}
 
 	/*
@@ -265,8 +265,8 @@ public class IHMtoDATAImpl implements IHMtoDATA {
 			ClassNotFoundException, IOException {
 		// TODO Auto-generated method stub
 		File f = new File(parameter);
-		data.imports(f);
-		return data.getUser();
+		DataService.getInstance().imports(f);
+		return DataService.getInstance().getUser();
 	}
 
 	/*
@@ -289,7 +289,7 @@ public class IHMtoDATAImpl implements IHMtoDATA {
 	public void updateProfile(User u) throws IOException,
 			BadInformationException {
 		UserService userService = new UserService();
-		User currentUser = data.getUser();
+		User currentUser = DataService.getInstance().getUser();
 		if (u == null || u.equals("")) {
 			throw new BadInformationException("User empty");
 		}
@@ -316,8 +316,8 @@ public class IHMtoDATAImpl implements IHMtoDATA {
 		currentUser.setAvatar(u.getAvatar());
 		currentUser.setBirthDate(u.getBirthDate());
 
-		if (data.setUser(currentUser)) {
-			data.exports();
+		if (DataService.getInstance().setUser(currentUser)){
+			DataService.getInstance().exports();
 		}
 	}
 
@@ -399,9 +399,9 @@ public class IHMtoDATAImpl implements IHMtoDATA {
 	 */
 	@Override
 	public boolean logout() throws IOException {
-		DataService.getInstance().exports();
 		NetLocalizer netLocalizer = new NetLocalizer();
-		netLocalizer.disconnect();
+		DataService.getInstance().getUser().setListConnectedUser(netLocalizer.disconnect());
+		DataService.getInstance().exports();
 		return true;
 	}
 
@@ -414,5 +414,10 @@ public class IHMtoDATAImpl implements IHMtoDATA {
 	public boolean editProfile(User u) {
 		// TODO Auto-generated method stub
 		return false;
+	}
+
+	@Override
+	public void acceptUserInGroup(User user, Group group) {
+		group.getUsers().add(user);
 	}
 }

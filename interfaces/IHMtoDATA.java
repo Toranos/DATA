@@ -52,6 +52,13 @@ public  interface IHMtoDATA
 	public void addUserInGroup(User user, Group group) ;
 	
 	/**
+	 * Accept a user in a group
+	 * @param user	The user to add
+	 * @param group	The group
+	 */
+	public void acceptUserInGroup(User user, Group group) ;
+	
+	/**
 	 * Delete a group and all its users
 	 * @param group	The gorup to delete
 	 */

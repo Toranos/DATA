@@ -8,10 +8,13 @@ import java.util.UUID;
 
 import DATA.interfaces.NETtoDATA;
 import DATA.model.Comment;
+import DATA.model.Group;
 import DATA.model.Note;
+import DATA.model.PendingRequest;
 import DATA.model.Picture;
 import DATA.model.Tag;
 import DATA.model.User;
+import DATA.services.DataService;
 import IHM.Main;
 
 /**
@@ -61,8 +64,7 @@ public class NETtoDATAImpl implements NETtoDATA {
 	 */
 	@Override
 	public void receiveFriendRequest(User user) {
-		// TODO Auto-generated method stub
-
+		Main.getDATAtoIHMimpl().receiveFriendRequest(user, null);
 	}
 
 	/* (non-Javadoc)
@@ -70,8 +72,16 @@ public class NETtoDATAImpl implements NETtoDATA {
 	 */
 	@Override
 	public void receiveFriendResponse(User user) {
-		// TODO Auto-generated method stub
-
+		User currentUser = DataService.getInstance().getUser();
+		for (PendingRequest pendingReq : currentUser.getListPendingRequests()) {
+			if(user.getUid().equals(pendingReq.getToUID())){
+				for(Group group : currentUser.getListGroups()){
+					if(group.getUid().equals(pendingReq.getGroupUID())){
+						group.getUsers().add(user);
+					}
+				}
+			}
+		}
 	}
 
 	/* (non-Javadoc)
@@ -95,8 +105,8 @@ public class NETtoDATAImpl implements NETtoDATA {
 	 */
 	@Override
 	public void helloUser(User user) {
-		// TODO Auto-generated method stub
-
+		user.setConnected(true);
+		Main.getDATAtoIHMimpl().receiveConnectedUser(user);
 	}
 
 	/* (non-Javadoc)
@@ -104,8 +114,8 @@ public class NETtoDATAImpl implements NETtoDATA {
 	 */
 	@Override
 	public void goodByeUser(User user) {
-		// TODO Auto-generated method stub
-
+		user.setConnected(false);
+		Main.getDATAtoIHMimpl().receiveUnconnectedUser(user);
 	}
 
 	/* (non-Javadoc)

@@ -28,6 +28,7 @@ public class User implements Serializable {
     private String lastname;
     private String avatar;
     private String birthDate;
+    private Boolean connected = false;
     private List<Picture> listPictures;
     private List<Group> listGroups;
     private List<String> listIP;
@@ -35,13 +36,25 @@ public class User implements Serializable {
     private List<PendingRequest> listPendingRequests;
     
     public User() {
-    	
+		this.uid = UUID.randomUUID();
+		this.listConnectedUser = new ArrayList<String>();
+		this.listGroups = new ArrayList<Group>();
+		this.listGroups.add(new Group(Group.FRIENDS_GROUP_NAME));
+		this.listIP = new ArrayList<String>();
+		this.listPictures = new ArrayList<Picture>();
+		this.listPendingRequests = new ArrayList<PendingRequest>();
 	}
     
     public User(String login, String password) {
     	this.login = login;
 		this.password = password;
 		this.uid = UUID.randomUUID();
+		this.listConnectedUser = new ArrayList<String>();
+		this.listGroups = new ArrayList<Group>();
+		this.listGroups.add(new Group(Group.FRIENDS_GROUP_NAME));
+		this.listIP = new ArrayList<String>();
+		this.listPictures = new ArrayList<Picture>();
+		this.listPendingRequests = new ArrayList<PendingRequest>();
     }
     
 	public User(String login, String password, String firstname,
@@ -55,6 +68,7 @@ public class User implements Serializable {
 		this.uid = UUID.randomUUID();
 		this.listConnectedUser = new ArrayList<String>();
 		this.listGroups = new ArrayList<Group>();
+		this.listGroups.add(new Group(Group.FRIENDS_GROUP_NAME));
 		this.listIP = new ArrayList<String>();
 		this.listPictures = new ArrayList<Picture>();
 		this.listPendingRequests = new ArrayList<PendingRequest>();
@@ -150,5 +164,13 @@ public class User implements Serializable {
 	@Override
 	public String toString() {
 		return this.firstname + " " + this.lastname;
+	}
+
+	public boolean isConnected() {
+		return connected;
+	}
+
+	public void setConnected(boolean connected) {
+		this.connected = connected;
 	}
 }
