@@ -51,8 +51,9 @@ public interface NETtoDATA {
 	/**
 	 * Inform that the current User of friend response.
 	 * @param idSender
+	 * @param accept TRUE if the remote user had accepted the request.
 	 */
-	public void receiveFriendResponse(User user) ;
+	public void receiveFriendResponse(User user, boolean accept) ;
 	
 	/**
 	 * Send list pictures asked by the User. 
@@ -105,4 +106,10 @@ public interface NETtoDATA {
 	 * @param user
 	 */
 	public void notFriendAnymore(User user) ;
+	
+	/**
+	 * Inform that request isn't sent and need to be save to send again later. 
+	 * @param u
+	 */
+	public void FriendResquestNotSent(UUID uid) ;
 }
