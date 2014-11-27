@@ -335,9 +335,9 @@ public class IHMtoDATAImpl implements IHMtoDATA {
 	 */
 	@Override
 	public boolean logout() throws IOException {
-		DataService.getInstance().exports();
 		NetLocalizer netLocalizer = new NetLocalizer();
-		netLocalizer.disconnect();
+		DataService.getInstance().getUser().setListConnectedUser(netLocalizer.disconnect());
+		DataService.getInstance().exports();
 		return true;
 	}
 
