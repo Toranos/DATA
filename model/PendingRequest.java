@@ -1,14 +1,23 @@
 package DATA.model;
 
+import java.io.Serializable;
 import java.util.UUID;
 
-public class PendingRequest {
+public class PendingRequest implements Serializable {
+	
+	/**
+	* Serialization UID.
+	*/
+	public static final long serialVersionUID = 1L;
+	
 	private UUID fromUID;
 	private UUID toUID;
+	private UUID groupUID;
 	
-	public PendingRequest(UUID fromUID, UUID toUID) {
+	public PendingRequest(UUID fromUID, UUID toUID, UUID groupUID) {
 		this.fromUID = fromUID;
 		this.toUID = toUID;
+		this.setGroupUID(groupUID);
 	}
 	
 	public UUID getFromUID() {
@@ -22,6 +31,14 @@ public class PendingRequest {
 	}
 	public void setToUID(UUID toUID) {
 		this.toUID = toUID;
+	}
+
+	public UUID getGroupUID() {
+		return groupUID;
+	}
+
+	public void setGroupUID(UUID groupUID) {
+		this.groupUID = groupUID;
 	}
 	
 

@@ -5,6 +5,7 @@
  */
 package DATA.model;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -13,21 +14,28 @@ import java.util.UUID;
  *
  * @author le-goc
  */
-public class Picture {
-	private UUID uid;
+public class Picture implements Serializable {
+	
+	/**
+	* Serialization UID.
+	*/
+	public static final long serialVersionUID = 1L;
+
     private String filename;
     private List<Note> listNotes;
     private List<Tag> listTags;
     private List<Comment> Comments;
     private List<Rule> listRules;
     private UUID userId;
-
+    private UUID uid;
+        
     public Picture(String filename, UUID userId) {
 		this.filename = filename;
 		this.listNotes = new ArrayList<Note>();
 		this.listRules = new ArrayList<Rule>();
 		this.listTags = new ArrayList<Tag>();
 		this.userId = userId;
+		this.uid = UUID.randomUUID();
 	}
 
     public UUID getUid() {
@@ -72,5 +80,5 @@ public class Picture {
 
     public void setComments(List<Comment> Comments) {
         this.Comments = Comments;
-    } 
+    }
 }
