@@ -4,6 +4,7 @@ import java.net.Inet4Address;
 import java.util.List;
 
 import DATA.model.Comment;
+import DATA.model.Note;
 import DATA.model.Picture;
 import DATA.model.User;
 
@@ -14,6 +15,12 @@ public interface NETtoDATA {
 	 * @param comment
 	 */
 	public void addComment(Comment comment) ;
+	
+	/**
+	 * Send a comment to a remote picture. 
+	 * @param comment
+	 */
+	public void addNote(Note note) ;
 	
 	/**
 	 * Return the list of saved IPs.
@@ -59,6 +66,12 @@ public interface NETtoDATA {
 	 * @param pageId
 	 */
 	public void sendPicture(Picture picture, int pageId) ;
+	
+	/**
+	 * Get local pictures for NET
+	 * @return The picture List
+	 */
+	public List<Picture> getPictures() ;
 
 	/**
 	 * Send connected user.
