@@ -27,9 +27,14 @@ public class Picture implements Serializable {
     private List<Comment> Comments;
     private List<Rule> listRules;
     private UUID uid;
+<<<<<<< HEAD
     private UUID userId;
 
     public Picture(String filename, UUID userId) {
+=======
+    
+    public Picture(String filename) {
+>>>>>>> ce61dc170392c70285c3272e1b0e8f2be77af0a6
 		this.filename = filename;
 		this.listNotes = new ArrayList<Note>();
 		this.listRules = new ArrayList<Rule>();

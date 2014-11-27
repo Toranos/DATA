@@ -21,13 +21,18 @@ public class PictureService {
 	}
 	
 	/**
-	 * Retreive local picture by its ID
+	 * Retrieve local picture by its ID
 	 * @param UUID of the Picture
 	 * @return	The picture identified
 	 * @throws BadInformationException	When incorrect information found
 	 */
-	public Picture getPictureById(UUID picture) throws BadInformationException {
-		//List<Picture> pictures = data.getUser().getListPictures();
+	public Picture getPictureById(UUID pictureUid) throws BadInformationException {
+		List<Picture> pictures = data.getUser().getListPictures();
+		for (Picture pic : pictures) {
+			if (pic.getUid() == pictureUid) {
+				return pic;
+			}
+		}
 		return null;
 	}
 }

@@ -31,7 +31,11 @@ public  interface IHMtoDATA
 	 * @param comment	The comment
 	 * @param idRequest	The idRequest
 	 */
+<<<<<<< HEAD
 	public void addNote(Note note);
+=======
+	public void addNote(Note note) ;
+>>>>>>> ce61dc170392c70285c3272e1b0e8f2be77af0a6
 	
 	/**
 	 * Add a new group for the current user
@@ -189,7 +193,8 @@ public  interface IHMtoDATA
 	public boolean login(String username, String password);
 	
 	/**
-	 * List all users in group and connected users
+	 * Return a list of all groups of the current user + the default group
+	 * The default group containing all the connected users is "Autres utilisateurs"
 	 * @return List of User's groups with connected users group
 	 */
 	public List<Group> getAllUsers();
