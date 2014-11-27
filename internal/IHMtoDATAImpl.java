@@ -436,7 +436,7 @@ public class IHMtoDATAImpl implements IHMtoDATA {
 	}
 
 	@Override
-	public void refuseUserInGroup(User user) {
+	public void refuseUser(User user) {
 		NetLocalizer netLocalizer = new NetLocalizer();
 		netLocalizer.acceptOrNotFriendship(user.getUid().toString(), false);
 	}
