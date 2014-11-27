@@ -21,6 +21,8 @@ import DATA.model.User;
 import DATA.services.DataService;
 import DATA.services.UserService;
 import NET.NetLocalizer;
+import NET.exceptions.BusinessException;
+import NET.exceptions.TechnicalException;
 
 /**
  * @author le-goc
@@ -351,7 +353,12 @@ public class IHMtoDATAImpl implements IHMtoDATA {
 			u = userService.checkProfile(username, password);
 			if (u != null) {
 				NetLocalizer netLocalizer = new NetLocalizer();
-				netLocalizer.startAndConnectTo(u);
+				try {
+					netLocalizer.startAndConnectTo(u);
+				} catch (BusinessException | TechnicalException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 				return true;
 			}
 		} catch (BadInformationException e) {
@@ -400,7 +407,12 @@ public class IHMtoDATAImpl implements IHMtoDATA {
 	@Override
 	public boolean logout() throws IOException {
 		NetLocalizer netLocalizer = new NetLocalizer();
-		DataService.getInstance().getUser().setListConnectedUser(netLocalizer.disconnect());
+		try {
+			DataService.getInstance().getUser().setListConnectedUser(netLocalizer.disconnect());
+		} catch (BusinessException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		DataService.getInstance().exports();
 		return true;
 	}
