@@ -1,10 +1,13 @@
 package DATA.interfaces;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.UUID;
 
+import DATA.exceptions.BadInformationException;
 import DATA.model.Comment;
 import DATA.model.Group;
+import DATA.model.Note;
 import DATA.model.Picture;
 import DATA.model.User;
 
@@ -20,7 +23,14 @@ public  interface IHMtoDATA
 	 * @param comment	The comment
 	 * @param idRequest	The idRequest
 	 */
-	public void addComment(Comment comment, int idRequest) ;
+	public void addComment(Comment comment) ;
+	
+	/**
+	 * Add a new comment for a picture 
+	 * @param comment	The comment
+	 * @param idRequest	The idRequest
+	 */
+	public void addNote(Note note) ;
 	
 	/**
 	 * Add a new group for the current user
@@ -40,6 +50,19 @@ public  interface IHMtoDATA
 	 * @param group	The group
 	 */
 	public void addUserInGroup(User user, Group group) ;
+	
+	/**
+	 * Accept a user in a group
+	 * @param user	The user to add
+	 * @param group	The group
+	 */
+	public void acceptUserInGroup(User user, Group group) ;
+	
+	/**
+	 * Refuse
+	 * @param user	The user to refuse
+	 */
+	public void refuseUser(User user) ;
 	
 	/**
 	 * Delete a group and all its users
@@ -63,7 +86,7 @@ public  interface IHMtoDATA
 	/**
 	 * Save the current user in a JSON file
 	 */
-	public void export() ;
+	public void export() throws IOException;
 	
 	/**
 	 * Get the user information
@@ -143,8 +166,9 @@ public  interface IHMtoDATA
 	* @Brief Import a user from JSON file’s path
 	* @param parameter
 	* @return User
+	 * @throws ClassNotFoundException 
 	 */
-	public User import_(String parameter) ;
+	public User import_(String parameter) throws IOException, ClassNotFoundException;
 	
 	/**
 	 * @Brief Update current picture
@@ -156,7 +180,7 @@ public  interface IHMtoDATA
 	 * @Brief Update user in the JSON file
 	 * @param parameter
 	 */
-	public void updateProfile(User parameter) ;
+	public void updateProfile(User u) throws IOException, BadInformationException;
 	
 	/**
 	 * Sign Up a new user, start the server and connect the user
@@ -177,7 +201,8 @@ public  interface IHMtoDATA
 	public boolean login(String username, String password);
 	
 	/**
-	 * List all users in group and connected users
+	 * Return a list of all groups of the current user + the default group
+	 * The default group containing all the connected users is "Autres utilisateurs"
 	 * @return List of User's groups with connected users group
 	 */
 	public List<Group> getAllUsers();
@@ -188,7 +213,7 @@ public  interface IHMtoDATA
 	 * @return true : OK
 	 * 			false : KO
 	 */
-	public boolean logout();
+	public boolean logout() throws IOException;
 	
 	/**
 	 * Edit the current profile

@@ -3,13 +3,20 @@
  */
 package DATA.internal;
 
-import java.net.Inet4Address;
 import java.util.List;
+import java.util.UUID;
 
 import DATA.interfaces.NETtoDATA;
 import DATA.model.Comment;
+import DATA.model.Group;
+import DATA.model.Note;
+import DATA.model.PendingRequest;
 import DATA.model.Picture;
+import DATA.model.Tag;
 import DATA.model.User;
+import DATA.services.DataService;
+import IHM.Main;
+import NET.NetLocalizer;
 
 /**
  * @author le-goc
@@ -30,7 +37,7 @@ public class NETtoDATAImpl implements NETtoDATA {
 	 * @see DATA.interfaces.NETtoDATA#getConnectedIps()
 	 */
 	@Override
-	public List<Inet4Address> getConnectedIps() {
+	public List<String> getConnectedIps() {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -58,17 +65,28 @@ public class NETtoDATAImpl implements NETtoDATA {
 	 */
 	@Override
 	public void receiveFriendRequest(User user) {
-		// TODO Auto-generated method stub
-
+		Main.getDATAtoIHMimpl().receiveFriendRequest(user);
 	}
 
 	/* (non-Javadoc)
 	 * @see DATA.interfaces.NETtoDATA#receiveFriendResponse(DATA.model.User)
 	 */
 	@Override
-	public void receiveFriendResponse(User user) {
-		// TODO Auto-generated method stub
-
+	public void receiveFriendResponse(User user, boolean friends) {
+		User currentUser = DataService.getInstance().getUser();
+		for (PendingRequest pendingReq : currentUser.getListPendingRequests()) {
+			if(user.getUid().equals(pendingReq.getToUID())){
+				if(friends){
+					for(Group group : currentUser.getListGroups()){
+						if(group.getUid().equals(pendingReq.getGroupUID())){
+							group.getUsers().add(user);
+						}
+					}
+				}
+				currentUser.getListPendingRequests().remove(pendingReq);
+			}
+		}
+		Main.getDATAtoIHMimpl().receiveFriendResponse(user,friends);
 	}
 
 	/* (non-Javadoc)
@@ -76,8 +94,7 @@ public class NETtoDATAImpl implements NETtoDATA {
 	 */
 	@Override
 	public void resultPictures(List<Picture> pictures, int idRequest) {
-		// TODO Auto-generated method stub
-
+		Main.getDATAtoIHMimpl().receivePictures(pictures, idRequest);
 	}
 
 	/* (non-Javadoc)
@@ -85,8 +102,7 @@ public class NETtoDATAImpl implements NETtoDATA {
 	 */
 	@Override
 	public void sendPicture(Picture picture, int pageId) {
-		// TODO Auto-generated method stub
-
+		Main.getDATAtoIHMimpl().receivePicture(picture, pageId);
 	}
 
 	/* (non-Javadoc)
@@ -94,8 +110,15 @@ public class NETtoDATAImpl implements NETtoDATA {
 	 */
 	@Override
 	public void helloUser(User user) {
-		// TODO Auto-generated method stub
-
+		user.setConnected(true);
+		Main.getDATAtoIHMimpl().receiveConnectedUser(user);
+		User currentUser = DataService.getInstance().getUser();
+		for (PendingRequest pendingReq : currentUser.getListPendingRequests()) {
+			if(pendingReq.getToUID().equals(user.getUid())){
+				NetLocalizer netLocalizer = new NetLocalizer();
+				netLocalizer.addFriend(user.getUid().toString());
+			}
+		}
 	}
 
 	/* (non-Javadoc)
@@ -103,8 +126,8 @@ public class NETtoDATAImpl implements NETtoDATA {
 	 */
 	@Override
 	public void goodByeUser(User user) {
-		// TODO Auto-generated method stub
-
+		user.setConnected(false);
+		Main.getDATAtoIHMimpl().receiveUnconnectedUser(user);
 	}
 
 	/* (non-Javadoc)
@@ -114,6 +137,30 @@ public class NETtoDATAImpl implements NETtoDATA {
 	public void notFriendAnymore(User user) {
 		// TODO Auto-generated method stub
 
+	}
+
+	@Override
+	public void addNote(Note note) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public List<Picture> getPictures() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<Picture> getPictures(List<Tag> tags) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Picture getPictureById(UUID id) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

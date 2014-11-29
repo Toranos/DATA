@@ -1,7 +1,7 @@
 package DATA.exceptions;
 
 /**
- * Exception for inofrmation missing during signing up
+ * Exception for information missing during signing up
  * @author le-goc
  *
  */

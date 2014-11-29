@@ -1,10 +1,12 @@
 package DATA.interfaces;
 
-import java.net.Inet4Address;
 import java.util.List;
+import java.util.UUID;
 
 import DATA.model.Comment;
+import DATA.model.Note;
 import DATA.model.Picture;
+import DATA.model.Tag;
 import DATA.model.User;
 
 public interface NETtoDATA {
@@ -16,10 +18,16 @@ public interface NETtoDATA {
 	public void addComment(Comment comment) ;
 	
 	/**
+	 * Send a comment to a remote picture. 
+	 * @param comment
+	 */
+	public void addNote(Note note) ;
+	
+	/**
 	 * Return the list of saved IPs.
 	 * @return List<Inet4Address>
 	 */
-	public List<Inet4Address> getConnectedIps() ;
+	public List<String> getConnectedIps() ;
 	
 	/**
 	 * Return current local user. 
@@ -44,7 +52,7 @@ public interface NETtoDATA {
 	 * Inform that the current User of friend response.
 	 * @param idSender
 	 */
-	public void receiveFriendResponse(User user) ;
+	public void receiveFriendResponse(User user, boolean friends) ;
 	
 	/**
 	 * Send list pictures asked by the User. 
@@ -59,6 +67,26 @@ public interface NETtoDATA {
 	 * @param pageId
 	 */
 	public void sendPicture(Picture picture, int pageId) ;
+
+	/**
+	 * Get local pictures with a given ID
+	 * @param The picture ID
+	 * @return The picture 
+	 */
+	public Picture getPictureById(UUID id);
+	
+	/**
+	 * Get local pictures for NET
+	 * @return The picture List
+	 */
+	public List<Picture> getPictures() ;
+	
+	/**
+	 * Get local pictures for NET
+	 * @param The list of tags
+	 * @return The picture List
+	 */
+	public List<Picture> getPictures(List<Tag> tags);
 
 	/**
 	 * Send connected user.

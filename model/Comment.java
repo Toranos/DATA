@@ -7,6 +7,7 @@ package DATA.model;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.UUID;
 
 /**
  *
@@ -21,10 +22,13 @@ public class Comment implements Serializable {
 	
     private String value;
     private Date dateTime;
+    private UUID uid;
+    private User user;
 
-    public Comment(String value, Date dateTime) {
+    public Comment(String value, Date dateTime, User user) {
 		this.value = value;
 		this.dateTime = dateTime;
+		this.uid = UUID.randomUUID();
 	}
 
 	public String getValue() {
@@ -42,4 +46,16 @@ public class Comment implements Serializable {
     public void setDateTime(Date dateTime) {
         this.dateTime = dateTime;
     }
+
+	public UUID getUid() {
+		return uid;
+	}
+
+	public User getUser() {
+		return user;
+	}
+
+	public void setUser(User user) {
+		this.user = user;
+	}
 }
