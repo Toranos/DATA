@@ -10,25 +10,27 @@ public class PendingRequest implements Serializable {
 	*/
 	public static final long serialVersionUID = 1L;
 	
-	private UUID fromUID;
 	private UUID toUID;
+	private UUID groupUID;
 	
-	public PendingRequest(UUID fromUID, UUID toUID) {
-		this.fromUID = fromUID;
+	public PendingRequest(UUID toUID, UUID groupUID) {
 		this.toUID = toUID;
+		this.setGroupUID(groupUID);
 	}
-	
-	public UUID getFromUID() {
-		return fromUID;
-	}
-	public void setFromUID(UUID fromUID) {
-		this.fromUID = fromUID;
-	}
+
 	public UUID getToUID() {
 		return toUID;
 	}
 	public void setToUID(UUID toUID) {
 		this.toUID = toUID;
+	}
+
+	public UUID getGroupUID() {
+		return groupUID;
+	}
+
+	public void setGroupUID(UUID groupUID) {
+		this.groupUID = groupUID;
 	}
 	
 

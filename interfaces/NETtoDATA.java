@@ -52,7 +52,7 @@ public interface NETtoDATA {
 	 * Inform that the current User of friend response.
 	 * @param idSender
 	 */
-	public void receiveFriendResponse(User user) ;
+	public void receiveFriendResponse(User user, boolean friends) ;
 	
 	/**
 	 * Send list pictures asked by the User. 

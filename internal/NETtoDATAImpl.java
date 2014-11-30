@@ -3,25 +3,22 @@
  */
 package DATA.internal;
 
-<<<<<<< HEAD
+
 import java.util.Iterator;
-=======
->>>>>>> ce61dc170392c70285c3272e1b0e8f2be77af0a6
 import java.util.List;
 import java.util.UUID;
 
 import DATA.interfaces.NETtoDATA;
 import DATA.model.Comment;
+import DATA.model.Group;
 import DATA.model.Note;
+import DATA.model.PendingRequest;
 import DATA.model.Picture;
 import DATA.model.Tag;
 import DATA.model.User;
-<<<<<<< HEAD
 import DATA.services.DataService;
-=======
 import IHM.Main;
->>>>>>> ce61dc170392c70285c3272e1b0e8f2be77af0a6
-
+import NET.NetLocalizer;
 /**
  * @author le-goc
  *
@@ -96,17 +93,28 @@ public class NETtoDATAImpl implements NETtoDATA {
 	 */
 	@Override
 	public void receiveFriendRequest(User user) {
-		// TODO Auto-generated method stub
-
+		Main.getDATAtoIHMimpl().receiveFriendRequest(user);
 	}
 
 	/* (non-Javadoc)
 	 * @see DATA.interfaces.NETtoDATA#receiveFriendResponse(DATA.model.User)
 	 */
 	@Override
-	public void receiveFriendResponse(User user) {
-		// TODO Auto-generated method stub
-
+	public void receiveFriendResponse(User user, boolean friends) {
+		User currentUser = DataService.getInstance().getUser();
+		for (PendingRequest pendingReq : currentUser.getListPendingRequests()) {
+			if(user.getUid().equals(pendingReq.getToUID())){
+				if(friends){
+					for(Group group : currentUser.getListGroups()){
+						if(group.getUid().equals(pendingReq.getGroupUID())){
+							group.getUsers().add(user);
+						}
+					}
+				}
+				currentUser.getListPendingRequests().remove(pendingReq);
+			}
+		}
+		Main.getDATAtoIHMimpl().receiveFriendResponse(user,friends);
 	}
 
 	/* (non-Javadoc)
@@ -130,8 +138,15 @@ public class NETtoDATAImpl implements NETtoDATA {
 	 */
 	@Override
 	public void helloUser(User user) {
-		// TODO Auto-generated method stub
-
+		user.setConnected(true);
+		Main.getDATAtoIHMimpl().receiveConnectedUser(user);
+		User currentUser = DataService.getInstance().getUser();
+		for (PendingRequest pendingReq : currentUser.getListPendingRequests()) {
+			if(pendingReq.getToUID().equals(user.getUid())){
+				NetLocalizer netLocalizer = new NetLocalizer();
+				netLocalizer.addFriend(user.getUid().toString());
+			}
+		}
 	}
 
 	/* (non-Javadoc)
@@ -139,8 +154,8 @@ public class NETtoDATAImpl implements NETtoDATA {
 	 */
 	@Override
 	public void goodByeUser(User user) {
-		// TODO Auto-generated method stub
-
+		user.setConnected(false);
+		Main.getDATAtoIHMimpl().receiveUnconnectedUser(user);
 	}
 
 	/* (non-Javadoc)

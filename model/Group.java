@@ -20,7 +20,10 @@ public class Group implements Serializable {
 	* Serialization UID.
 	*/
 	public static final long serialVersionUID = 1L;
-	
+
+    public static final String DEFAULT_GROUP_NAME = "Autres";
+    public static final String FRIENDS_GROUP_NAME = "Amis";
+    
     private String nom;
     private List<User> users;
     private UUID uid;
