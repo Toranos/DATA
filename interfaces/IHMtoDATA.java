@@ -22,20 +22,14 @@ public  interface IHMtoDATA
 	/**
 	 * Add a new comment for a picture 
 	 * @param comment	The comment
-	 * @param idRequest	The idRequest
 	 */
 	public void addComment(Comment comment) ;
 	
 	/**
 	 * Add a new comment for a picture 
 	 * @param comment	The comment
-	 * @param idRequest	The idRequest
 	 */
-<<<<<<< HEAD
-	public void addNote(Note note);
-=======
 	public void addNote(Note note) ;
->>>>>>> ce61dc170392c70285c3272e1b0e8f2be77af0a6
 	
 	/**
 	 * Add a new group for the current user
