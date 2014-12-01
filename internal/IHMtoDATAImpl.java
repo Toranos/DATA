@@ -10,6 +10,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+import javax.swing.ImageIcon;
+
 import DATA.exceptions.BadInformationException;
 import DATA.interfaces.IHMtoDATA;
 import DATA.model.Comment;
@@ -77,6 +79,7 @@ public class IHMtoDATAImpl implements IHMtoDATA {
 	 */
 	@Override
 	public void addPicture(Picture picture) {
+		picture.setImageIcon(new ImageIcon(picture.getFilename(), "Une icone d'image"));
 		DataService.getInstance().getUser().getListPictures().add(picture);
 	}
 

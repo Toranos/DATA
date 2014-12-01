@@ -10,6 +10,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+import javax.swing.ImageIcon;
+
 /**
  *
  * @author le-goc
@@ -35,6 +37,14 @@ public class Picture implements Serializable {
      * Id of the picture
      */
     private UUID uid; 
+    
+    /**
+     * The byte array containing the image in HD
+     * Is null by default unless the HD definition is needed
+     */
+    private byte[][] pixels;
+    
+    private ImageIcon imageIcon;
 
     public Picture(String filename, UUID userId) {
 		this.filename = filename;
@@ -97,4 +107,20 @@ public class Picture implements Serializable {
     public void setComments(List<Comment> Comments) {
         this.Comments = Comments;
     }
+
+	public byte[][] getPixels() {
+		return pixels;
+	}
+
+	public void setPixels(byte[][] pixels) {
+		this.pixels = pixels;
+	}
+
+	public ImageIcon getImageIcon() {
+		return imageIcon;
+	}
+
+	public void setImageIcon(ImageIcon imageIcon) {
+		this.imageIcon = imageIcon;
+	}
 }
