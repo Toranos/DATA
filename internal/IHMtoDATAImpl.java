@@ -50,13 +50,45 @@ public class IHMtoDATAImpl implements IHMtoDATA {
 	 * @see DATA.interfaces.IHMtoDATA#addComment(DATA.model.Comment, int)
 	 */
 	@Override
-	public void addComment(Comment comment) {
+	public void addComment(Comment comment) throws BadInformationException {
+		if (comment == null || comment.equals("")) {
+			throw new BadInformationException("Comment empty");
+		}
+		if (comment.getUid() == null || comment.getUid().equals("")) {
+			throw new BadInformationException("Uid empty");
+		}
+		if (comment.getCommentUserId() == null || comment.getCommentUserId().equals("")) {
+			throw new BadInformationException("CommentUserId empty");
+		}
+		if (comment.getPictureId() == null || comment.getPictureId().equals("")) {
+			throw new BadInformationException("PictureId empty");
+		}
+		if (comment.getPictureUserId() == null || comment.getPictureUserId().equals("")) {
+			throw new BadInformationException("PictureUserId empty");
+		}
+	    
 		NetLocalizer netLocalizer = new NetLocalizer();
 		netLocalizer.addComment(comment, comment.getPictureUserId());
 	}
 
 	@Override
-	public void addNote(Note note) {
+	public void addNote(Note note) throws BadInformationException {
+		if (note == null || note.equals("")) {
+			throw new BadInformationException("Note empty");
+		}
+		if (note.getUid() == null || note.getUid().equals("")) {
+			throw new BadInformationException("Uid empty");
+		}
+		if (note.getNoteUserId() == null || note.getNoteUserId().equals("")) {
+			throw new BadInformationException("NoteUserId empty");
+		}
+		if (note.getPictureId() == null || note.getPictureId().equals("")) {
+			throw new BadInformationException("PictureId empty");
+		}
+		if (note.getPictureUserId() == null || note.getPictureUserId().equals("")) {
+			throw new BadInformationException("PictureUserId empty");
+		}
+		
 		NetLocalizer netLocalizer = new NetLocalizer();
 		netLocalizer.addNote(note, note.getPictureUserId());
 	}

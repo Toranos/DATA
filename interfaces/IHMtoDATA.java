@@ -23,13 +23,13 @@ public  interface IHMtoDATA
 	 * Add a new comment for a picture 
 	 * @param comment	The comment
 	 */
-	public void addComment(Comment comment) ;
+	public void addComment(Comment comment) throws BadInformationException ;
 	
 	/**
-	 * Add a new comment for a picture 
-	 * @param comment	The comment
+	 * Add a new note for a picture 
+	 * @param note	The note
 	 */
-	public void addNote(Note note) ;
+	public void addNote(Note note) throws BadInformationException ;
 	
 	/**
 	 * Add a new group for the current user
