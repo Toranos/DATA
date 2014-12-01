@@ -90,7 +90,7 @@ public class IHMtoDATAImpl implements IHMtoDATA {
 	public void addUserInGroup(User user, Group group) {
 		DataService.getInstance().getUser().getListPendingRequests().add(new PendingRequest(user.getUid(), group.getUid()));
 		NetLocalizer netLocalizer = new NetLocalizer();
-		netLocalizer.addFriend(user.getUid().toString());
+		netLocalizer.addFriend(user.getUid());
 	}
 
 	/*
@@ -432,12 +432,12 @@ public class IHMtoDATAImpl implements IHMtoDATA {
 	public void acceptUserInGroup(User user, Group group) {
 		NetLocalizer netLocalizer = new NetLocalizer();
 		group.getUsers().add(user);
-		netLocalizer.acceptOrNotFriendship(user.getUid().toString(), true);
+		netLocalizer.acceptOrNotFriendship(user.getUid(), true);
 	}
 
 	@Override
 	public void refuseUser(User user) {
 		NetLocalizer netLocalizer = new NetLocalizer();
-		netLocalizer.acceptOrNotFriendship(user.getUid().toString(), false);
+		netLocalizer.acceptOrNotFriendship(user.getUid(), false);
 	}
 }
