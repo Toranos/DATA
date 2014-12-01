@@ -49,14 +49,14 @@ public class IHMtoDATAImpl implements IHMtoDATA {
 	 */
 	@Override
 	public void addComment(Comment comment) {
-		// TODO Auto-generated method stub
-
+		NetLocalizer netLocalizer = new NetLocalizer();
+		netLocalizer.addComment(comment, comment.getPictureUserId());
 	}
 
 	@Override
 	public void addNote(Note note) {
-		// TODO Auto-generated method stub
-
+		NetLocalizer netLocalizer = new NetLocalizer();
+		netLocalizer.addNote(note, note.getPictureUserId());
 	}
 
 	/*

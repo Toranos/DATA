@@ -3,6 +3,8 @@
  */
 package DATA.internal;
 
+
+import java.util.Iterator;
 import java.util.List;
 import java.util.UUID;
 
@@ -17,20 +19,46 @@ import DATA.model.User;
 import DATA.services.DataService;
 import IHM.Main;
 import NET.NetLocalizer;
-
 /**
  * @author le-goc
  *
  */
 public class NETtoDATAImpl implements NETtoDATA {
+	
+	/**
+	 * Instance of DataService.
+	 */
+	private DataService data = null;
+	
+	/** 
+	 * Constructor.
+	 */
+	public NETtoDATAImpl() {
+		data = DataService.getInstance();
+	}
 
 	/* (non-Javadoc)
 	 * @see DATA.interfaces.NETtoDATA#addComment(DATA.model.Comment)
 	 */
 	@Override
 	public void addComment(Comment comment) {
-		// TODO Auto-generated method stub
-
+		User currentUser = data.getUser();
+		Iterator<Picture> iter = currentUser.getListPictures().iterator();
+	    while (iter.hasNext()) {
+	    	if (iter.next().getUid() == comment.getPictureId()) {
+	    		iter.next().getComments().add(comment);
+	    	}
+	    }
+	}
+	
+	public void addNote(Note note) {
+		User currentUser = data.getUser();
+		Iterator<Picture> iter = currentUser.getListPictures().iterator();
+	    while (iter.hasNext()) {
+	    	if (iter.next().getUid() == note.getPictureId()) {
+	    		iter.next().getListNotes().add(note);
+	    	}
+	    }
 	}
 
 	/* (non-Javadoc)
@@ -137,12 +165,6 @@ public class NETtoDATAImpl implements NETtoDATA {
 	public void notFriendAnymore(User user) {
 		// TODO Auto-generated method stub
 
-	}
-
-	@Override
-	public void addNote(Note note) {
-		// TODO Auto-generated method stub
-		
 	}
 
 	@Override

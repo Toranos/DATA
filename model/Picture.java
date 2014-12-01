@@ -26,9 +26,16 @@ public class Picture implements Serializable {
     private List<Tag> listTags;
     private List<Comment> Comments;
     private List<Rule> listRules;
+    /**
+     * Id of the user who owns picture
+     */
     private UUID userId;
-    private UUID uid;
-        
+    
+    /**
+     * Id of the picture
+     */
+    private UUID uid; 
+
     public Picture(String filename, UUID userId) {
 		this.filename = filename;
 		this.listNotes = new ArrayList<Note>();
@@ -36,6 +43,15 @@ public class Picture implements Serializable {
 		this.listTags = new ArrayList<Tag>();
 		this.userId = userId;
 		this.uid = UUID.randomUUID();
+		this.userId = userId;
+	}
+
+	public UUID getUserId() {
+		return userId;
+	}
+
+	public void setUserId(UUID userId) {
+		this.userId = userId;
 	}
 
     public UUID getUid() {

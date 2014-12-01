@@ -19,9 +19,9 @@ public interface NETtoDATA {
 	
 	/**
 	 * Send a comment to a remote picture. 
-	 * @param comment
+	 * @param note
 	 */
-	public void addNote(Note note) ;
+	public void addNote(Note note);
 	
 	/**
 	 * Return the list of saved IPs.
