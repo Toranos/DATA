@@ -144,7 +144,7 @@ public class NETtoDATAImpl implements NETtoDATA {
 		for (PendingRequest pendingReq : currentUser.getListPendingRequests()) {
 			if(pendingReq.getToUID().equals(user.getUid())){
 				NetLocalizer netLocalizer = new NetLocalizer();
-				netLocalizer.addFriend(user.getUid().toString());
+				netLocalizer.addFriend(user.getUid());
 			}
 		}
 	}
