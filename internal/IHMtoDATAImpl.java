@@ -85,7 +85,7 @@ public class IHMtoDATAImpl implements IHMtoDATA {
 		if (note.getUid() == null || note.getUid().equals("")) {
 			throw new BadInformationException("Uid empty");
 		}
-		if (note.getNoteUserId() == null || note.getNoteUserId().equals("")) {
+		if (note.getNoteUser() == null || note.getNoteUser().equals("")) {
 			throw new BadInformationException("NoteUserId empty");
 		}
 		if (note.getPictureId() == null || note.getPictureId().equals("")) {
