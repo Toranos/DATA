@@ -12,6 +12,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.UUID;
 
+import javafx.scene.image.Image;
+
 import javax.swing.ImageIcon;
 
 /**
@@ -47,7 +49,7 @@ public class Picture implements Serializable {
      */
     private byte[][] pixels;
     
-    private ImageIcon imageIcon;
+    private Image imageIcon;
 
     public Picture(String filename, String description, User user) {
 		this.filename = filename;
@@ -70,13 +72,11 @@ public class Picture implements Serializable {
     
     public float getNoteAverage() {
     	int numberOfNote = 0, sumNote = 0;
-    	
     	Iterator<Note> iter = this.getListNotes().iterator();
 	    while (iter.hasNext()) {
 	    	numberOfNote++;
 	    	sumNote+=iter.next().getValue();
 	    }
-	    
     	if (numberOfNote == 0) {
     		return 0;
     	} else {
@@ -152,11 +152,11 @@ public class Picture implements Serializable {
 		this.pixels = pixels;
 	}
 
-	public ImageIcon getImageIcon() {
+	public Image getImageIcon() {
 		return imageIcon;
 	}
 
-	public void setImageIcon(ImageIcon imageIcon) {
+	public void setImageIcon(Image imageIcon) {
 		this.imageIcon = imageIcon;
 	}
 }

@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.List;
 import java.util.UUID;
 
+import DATA.exceptions.BadInformationException;
 import DATA.model.Comment;
 import DATA.model.Note;
 import DATA.model.Picture;
@@ -73,19 +74,22 @@ public interface NETtoDATA {
 	 * Get local pictures with a given ID
 	 * @param The picture ID
 	 * @return The picture 
+	 * @throws BadInformationException 
 	 */
 	public Picture getPictureById(UUID id);
 	
 	/**
 	 * Get local pictures for NET
 	 * @return The picture List
+	 * @throws BadInformationException 
 	 */
-	public List<Picture> getPictures() ;
+	public List<Picture> getPictures();
 	
 	/**
 	 * Get local pictures for NET
 	 * @param The list of tags
 	 * @return The picture List
+	 * @throws BadInformationException 
 	 */
 	public List<Picture> getPictures(List<Tag> tags);
 
