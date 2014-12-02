@@ -152,5 +152,12 @@ public class UserServiceTest {
 		}
 		assertEquals("Same Uid, same user", user.getUid(), service.getCurrentUser().getUid());
 	}
+	
+	@Test
+	public void testUserInGroup(){
+		//TODO : Create a fake user in DataSQervice with a group named "Friends"
+		//		Try to get the users for the group "Friends" -> need to return the good list
+		//		Try to get the users for the group "Group unknown" and check if null is returned
+	}
 
 }

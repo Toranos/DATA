@@ -43,6 +43,19 @@ public class Comment implements Serializable {
 		this.PictureId = PictureId;
 		this.PictureUserId = PictureUserId;
 	}
+    
+    /**
+     * Constructor by copy
+     * @param c	The comment to copy
+     */
+    public Comment(Comment c){
+    	this.value = c.value;
+    	this.dateTime = c.dateTime;
+    	this.uid = c.uid;
+    	this.CommentUser = new User(c.CommentUser);
+    	this.PictureId = c.PictureId;
+    	this.PictureUserId = c.PictureUserId;
+    }
 
 	public UUID getPictureId() {
 		return PictureId;
@@ -87,4 +100,50 @@ public class Comment implements Serializable {
 	public void setCommentUser(User commentUser) {
 		CommentUser = commentUser;
 	}
+	
+	/* (non-Javadoc)
+	 * @see java.lang.Object#equals(java.lang.Object)
+	 */
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Comment other = (Comment) obj;
+		if (CommentUser == null) {
+			if (other.CommentUser != null)
+				return false;
+		} else if (!CommentUser.equals(other.CommentUser))
+			return false;
+		if (PictureId == null) {
+			if (other.PictureId != null)
+				return false;
+		} else if (!PictureId.equals(other.PictureId))
+			return false;
+		if (PictureUserId == null) {
+			if (other.PictureUserId != null)
+				return false;
+		} else if (!PictureUserId.equals(other.PictureUserId))
+			return false;
+		if (dateTime == null) {
+			if (other.dateTime != null)
+				return false;
+		} else if (!dateTime.equals(other.dateTime))
+			return false;
+		if (uid == null) {
+			if (other.uid != null)
+				return false;
+		} else if (!uid.equals(other.uid))
+			return false;
+		if (value == null) {
+			if (other.value != null)
+				return false;
+		} else if (!value.equals(other.value))
+			return false;
+		return true;
+	}
+	
 }

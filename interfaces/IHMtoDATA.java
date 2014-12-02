@@ -93,7 +93,7 @@ public  interface IHMtoDATA
 	 * @param idUser	: The user ID
 	 * @param idRequest	: The request ID (for IHM)
 	 */
-	public void getUserById(UUID idUser, String idRequest) ;
+	public void getUserById(UUID idUser, int idRequest) ;
 	
 	/**
 	 * Get all the users in the specified group

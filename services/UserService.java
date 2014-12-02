@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.util.List;
 
 import DATA.exceptions.BadInformationException;
+import DATA.model.Group;
 import DATA.model.User;
 
 /**
@@ -175,5 +176,20 @@ public class UserService {
 
 	public void setConnectedUsers(List<String> connectedUsers) {
 		DataService.getInstance().getUser().setListConnectedUser(connectedUsers);
+	}
+
+	/**
+	 * Return the user list for a given group
+	 * @param g		The group
+	 * @return		The user list from the group g
+	 * 				Null if the group is not find
+	 */
+	public List<User> getUserInGroup(Group g) {
+		for(Group userGroup : DataService.getInstance().getUser().getListGroups()) {
+			if(userGroup.equals(g)) {
+				return userGroup.getUsers();
+			}
+		}
+		return null;
 	}
 }

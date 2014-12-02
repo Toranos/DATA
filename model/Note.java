@@ -32,6 +32,14 @@ public class Note implements Serializable {
 		this.PictureId = PictureId;
 		this.PictureUserId = PictureUserId;
 	}
+	
+	public Note(Note n) {
+		this.value = n.value;
+		this.uid = n.uid;
+		this.NoteUser = new User(n.NoteUser);
+		this.PictureId = n.PictureId;
+		this.PictureUserId = n.PictureUserId;
+	}
 
 	public int getValue() {
 		return value;
@@ -67,5 +75,42 @@ public class Note implements Serializable {
 
 	public void setPictureUserId(UUID pictureUserId) {
 		PictureUserId = pictureUserId;
+	}
+
+	/* (non-Javadoc)
+	 * @see java.lang.Object#equals(java.lang.Object)
+	 */
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Note other = (Note) obj;
+		if (NoteUser == null) {
+			if (other.NoteUser != null)
+				return false;
+		} else if (!NoteUser.equals(other.NoteUser))
+			return false;
+		if (PictureId == null) {
+			if (other.PictureId != null)
+				return false;
+		} else if (!PictureId.equals(other.PictureId))
+			return false;
+		if (PictureUserId == null) {
+			if (other.PictureUserId != null)
+				return false;
+		} else if (!PictureUserId.equals(other.PictureUserId))
+			return false;
+		if (uid == null) {
+			if (other.uid != null)
+				return false;
+		} else if (!uid.equals(other.uid))
+			return false;
+		if (value != other.value)
+			return false;
+		return true;
 	}
 }
