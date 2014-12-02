@@ -23,7 +23,7 @@ public class Comment implements Serializable {
     private String value;
     private Date dateTime;
     private UUID uid;
-    private User CommentUserId;
+    private User CommentUser;
     private UUID PictureId;
     private UUID PictureUserId;
 
@@ -31,15 +31,15 @@ public class Comment implements Serializable {
      * 
      * @param value
      * @param dateTime
-     * @param CommentUserId
+     * @param CommentUser
      * @param PictureId
      * @param PictureUserId
      */
-    public Comment(String value, Date dateTime, User CommentUserId, UUID PictureId, UUID PictureUserId) {
+    public Comment(String value, Date dateTime, User CommentUser, UUID PictureId, UUID PictureUserId) {
 		this.value = value;
 		this.dateTime = dateTime;
 		this.uid = UUID.randomUUID();
-		this.CommentUserId = CommentUserId;
+		this.CommentUser = CommentUser;
 		this.PictureId = PictureId;
 		this.PictureUserId = PictureUserId;
 	}
@@ -80,11 +80,11 @@ public class Comment implements Serializable {
 		return uid;
 	}
 
-	public User getCommentUserId() {
-		return CommentUserId;
+	public User getCommentUser() {
+		return CommentUser;
 	}
 
-	public void setCommentUserId(User commentUserId) {
-		CommentUserId = commentUserId;
+	public void setCommentUser(User commentUser) {
+		CommentUser = commentUser;
 	}
 }
