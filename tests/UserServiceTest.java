@@ -5,6 +5,7 @@ package DATA.tests;
 
 import static org.junit.Assert.*;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -100,7 +101,12 @@ public class UserServiceTest {
 	 */
 	@Test
 	public void checkProfileTest() {
-		DataService.getInstance().setUser(new User("test", "test", "test", "test", "test", "test"));
+		try {
+			service.updateProfile(new User("test", "test", "test", "test", "test", "test"));
+		} catch (IOException | BadInformationException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
 		// Null login test
 		User user = new User(null, "test", "test", "test", "test", "test");
 		try {
@@ -144,7 +150,7 @@ public class UserServiceTest {
 		} catch (BadInformationException e) {
 			fail("EveryThing is normally OK");
 		}
-		assertEquals("Same Uid, same user", user.getUid(), DataService.getInstance().getUser().getUid());
+		assertEquals("Same Uid, same user", user.getUid(), service.getCurrentUser().getUid());
 	}
 
 }
