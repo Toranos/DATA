@@ -41,7 +41,7 @@ public class DataService implements Serializable {
 	 * Return Singleton instance of DataService.
 	 * @return DataService.
 	 */
-	public static DataService getInstance() {
+	protected static DataService getInstance() {
 		if (data == null) {
 			data = new DataService();
 		}

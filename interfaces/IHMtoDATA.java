@@ -1,6 +1,7 @@
 package DATA.interfaces;
 
 import java.io.IOException;
+import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
@@ -9,6 +10,7 @@ import DATA.model.Comment;
 import DATA.model.Group;
 import DATA.model.Note;
 import DATA.model.Picture;
+import DATA.model.Tag;
 import DATA.model.User;
 
 /**
@@ -21,16 +23,14 @@ public  interface IHMtoDATA
 	/**
 	 * Add a new comment for a picture 
 	 * @param comment	The comment
-	 * @param idRequest	The idRequest
 	 */
-	public void addComment(Comment comment) ;
+	public void addComment(Comment comment) throws BadInformationException ;
 	
 	/**
-	 * Add a new comment for a picture 
-	 * @param comment	The comment
-	 * @param idRequest	The idRequest
+	 * Add a new note for a picture 
+	 * @param note	The note
 	 */
-	public void addNote(Note note) ;
+	public void addNote(Note note) throws BadInformationException ;
 	
 	/**
 	 * Add a new group for the current user
@@ -42,7 +42,7 @@ public  interface IHMtoDATA
 	 * Add a picture for the current user
 	 * @param picture	The picture
 	 */
-	public void addPicture(Picture picture) ;
+	public void addPicture(Picture picture) throws IOException ;
 	
 	/**
 	 * Add a user in a group
@@ -148,7 +148,7 @@ public  interface IHMtoDATA
 	 * @param listtag
 	 * @param idRequest
 	 */
-	public void getPictures(List<String> listtag, int idRequest) ;
+	public void getPictures(List<Tag> listtag, int idRequest) ;
 	
 	/**
 	 * @Brief Request all the pictures from all connected users

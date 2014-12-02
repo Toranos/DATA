@@ -5,10 +5,14 @@
  */
 package DATA.model;
 
+import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.UUID;
+
+import javax.swing.ImageIcon;
 
 /**
  *
@@ -22,23 +26,81 @@ public class Picture implements Serializable {
 	public static final long serialVersionUID = 1L;
 
     private String filename;
+    private String description;
     private List<Note> listNotes;
     private List<Tag> listTags;
     private List<Comment> Comments;
     private List<Rule> listRules;
-    private UUID userId;
-    private UUID uid;
-        
-    public Picture(String filename, UUID userId) {
+    /**
+     * LightUser with UUID, login, firstname, ...
+     */
+    private User user;
+    
+    /**
+     * Id of the picture
+     */
+    private UUID uid; 
+    
+    /**
+     * The byte array containing the image in HD
+     * Is null by default unless the HD definition is needed
+     */
+    private byte[][] pixels;
+    
+    private ImageIcon imageIcon;
+
+    public Picture(String filename, String description, User user) {
+		this.filename = filename;
+		this.description = description;
+		this.listNotes = new ArrayList<Note>();
+		this.listRules = new ArrayList<Rule>();
+		this.listTags = new ArrayList<Tag>();
+		this.user = user;
+		this.uid = UUID.randomUUID();
+	}
+    
+    public Picture(String filename, User user) {
 		this.filename = filename;
 		this.listNotes = new ArrayList<Note>();
 		this.listRules = new ArrayList<Rule>();
 		this.listTags = new ArrayList<Tag>();
-		this.userId = userId;
+		this.user = user;
 		this.uid = UUID.randomUUID();
 	}
+    
+    public float getNoteAverage() {
+    	int numberOfNote = 0, sumNote = 0;
+    	
+    	Iterator<Note> iter = this.getListNotes().iterator();
+	    while (iter.hasNext()) {
+	    	numberOfNote++;
+	    	sumNote+=iter.next().getValue();
+	    }
+	    
+    	if (numberOfNote == 0) {
+    		return 0;
+    	} else {
+    		return sumNote/numberOfNote;
+    	}
+    }
 
-    public UUID getUid() {
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
+	public User getUser() {
+		return user;
+	}
+
+	public void setUser(User user) {
+		this.user = user;
+	}
+
+	public UUID getUid() {
 		return uid;
 	}
     
@@ -81,4 +143,20 @@ public class Picture implements Serializable {
     public void setComments(List<Comment> Comments) {
         this.Comments = Comments;
     }
+
+	public byte[][] getPixels() {
+		return pixels;
+	}
+
+	public void setPixels(byte[][] pixels) {
+		this.pixels = pixels;
+	}
+
+	public ImageIcon getImageIcon() {
+		return imageIcon;
+	}
+
+	public void setImageIcon(ImageIcon imageIcon) {
+		this.imageIcon = imageIcon;
+	}
 }

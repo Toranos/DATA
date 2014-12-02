@@ -3,6 +3,9 @@
  */
 package DATA.internal;
 
+
+import java.io.IOException;
+import java.util.Iterator;
 import java.util.List;
 import java.util.UUID;
 
@@ -15,22 +18,46 @@ import DATA.model.Picture;
 import DATA.model.Tag;
 import DATA.model.User;
 import DATA.services.DataService;
+import DATA.services.GroupService;
+import DATA.services.PictureService;
+import DATA.services.UserService;
 import IHM.Main;
+import IHM.interfaces.DATAtoIHM;
+import IHM.interfaces.DATAtoIHMimpl;
 import NET.NetLocalizer;
-
 /**
  * @author le-goc
  *
  */
 public class NETtoDATAImpl implements NETtoDATA {
+	
+	private UserService userService;
+	private GroupService groupService;
+	private PictureService pictureService;
+	private DATAtoIHM dataToIhm;
+	private NetLocalizer netLocalizer;
+	
+	/** 
+	 * Constructor.
+	 */
+	public NETtoDATAImpl() {
+		userService = new UserService();
+		groupService = new GroupService();
+		pictureService = new PictureService();
+		dataToIhm = Main.getDATAtoIHMimpl();
+		netLocalizer = new NetLocalizer();
+	}
 
 	/* (non-Javadoc)
 	 * @see DATA.interfaces.NETtoDATA#addComment(DATA.model.Comment)
 	 */
 	@Override
 	public void addComment(Comment comment) {
-		// TODO Auto-generated method stub
-
+		pictureService.addComment(comment);
+	}
+	
+	public void addNote(Note note) {
+		pictureService.addNote(note);
 	}
 
 	/* (non-Javadoc)
@@ -47,8 +74,7 @@ public class NETtoDATAImpl implements NETtoDATA {
 	 */
 	@Override
 	public User getProfil() {
-		// TODO Auto-generated method stub
-		return null;
+		return userService.getCurrentUser();
 	}
 
 	/* (non-Javadoc)
@@ -65,7 +91,7 @@ public class NETtoDATAImpl implements NETtoDATA {
 	 */
 	@Override
 	public void receiveFriendRequest(User user) {
-		Main.getDATAtoIHMimpl().receiveFriendRequest(user);
+		dataToIhm.receiveFriendRequest(user);
 	}
 
 	/* (non-Javadoc)
@@ -73,20 +99,8 @@ public class NETtoDATAImpl implements NETtoDATA {
 	 */
 	@Override
 	public void receiveFriendResponse(User user, boolean friends) {
-		User currentUser = DataService.getInstance().getUser();
-		for (PendingRequest pendingReq : currentUser.getListPendingRequests()) {
-			if(user.getUid().equals(pendingReq.getToUID())){
-				if(friends){
-					for(Group group : currentUser.getListGroups()){
-						if(group.getUid().equals(pendingReq.getGroupUID())){
-							group.getUsers().add(user);
-						}
-					}
-				}
-				currentUser.getListPendingRequests().remove(pendingReq);
-			}
-		}
-		Main.getDATAtoIHMimpl().receiveFriendResponse(user,friends);
+		groupService.receiveFriendResponse(user,friends);
+		dataToIhm.receiveFriendResponse(user,friends);
 	}
 
 	/* (non-Javadoc)
@@ -94,15 +108,15 @@ public class NETtoDATAImpl implements NETtoDATA {
 	 */
 	@Override
 	public void resultPictures(List<Picture> pictures, int idRequest) {
-		Main.getDATAtoIHMimpl().receivePictures(pictures, idRequest);
+		dataToIhm.receivePictures(pictures, idRequest);
 	}
 
 	/* (non-Javadoc)
 	 * @see DATA.interfaces.NETtoDATA#sendPicture(DATA.model.Picture, int)
 	 */
 	@Override
-	public void sendPicture(Picture picture, int pageId) {
-		Main.getDATAtoIHMimpl().receivePicture(picture, pageId);
+	public void sendPicture(Picture picture, int idRequest) {
+		dataToIhm.receivePicture(picture, idRequest);
 	}
 
 	/* (non-Javadoc)
@@ -111,13 +125,9 @@ public class NETtoDATAImpl implements NETtoDATA {
 	@Override
 	public void helloUser(User user) {
 		user.setConnected(true);
-		Main.getDATAtoIHMimpl().receiveConnectedUser(user);
-		User currentUser = DataService.getInstance().getUser();
-		for (PendingRequest pendingReq : currentUser.getListPendingRequests()) {
-			if(pendingReq.getToUID().equals(user.getUid())){
-				NetLocalizer netLocalizer = new NetLocalizer();
-				netLocalizer.addFriend(user.getUid().toString());
-			}
+		dataToIhm.receiveConnectedUser(user);
+		if (groupService.checkUserPending(user) != null) {
+			netLocalizer.addFriend(user.getUid());
 		}
 	}
 
@@ -127,7 +137,7 @@ public class NETtoDATAImpl implements NETtoDATA {
 	@Override
 	public void goodByeUser(User user) {
 		user.setConnected(false);
-		Main.getDATAtoIHMimpl().receiveUnconnectedUser(user);
+		dataToIhm.receiveUnconnectedUser(user);
 	}
 
 	/* (non-Javadoc)
@@ -137,12 +147,6 @@ public class NETtoDATAImpl implements NETtoDATA {
 	public void notFriendAnymore(User user) {
 		// TODO Auto-generated method stub
 
-	}
-
-	@Override
-	public void addNote(Note note) {
-		// TODO Auto-generated method stub
-		
 	}
 
 	@Override
