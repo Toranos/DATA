@@ -9,6 +9,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.UUID;
 
+import DATA.exceptions.BadInformationException;
 import DATA.interfaces.NETtoDATA;
 import DATA.model.Comment;
 import DATA.model.Group;
@@ -151,20 +152,17 @@ public class NETtoDATAImpl implements NETtoDATA {
 
 	@Override
 	public List<Picture> getPictures() {
-		// TODO Auto-generated method stub
-		return null;
+		return pictureService.getPictures(null);
 	}
 
 	@Override
 	public List<Picture> getPictures(List<Tag> tags) {
-		// TODO Auto-generated method stub
-		return null;
+		return pictureService.getPictures(tags);
 	}
 
 	@Override
 	public Picture getPictureById(UUID id) {
-		// TODO Auto-generated method stub
-		return null;
+		return pictureService.getPictureById(id);
 	}
 
 }

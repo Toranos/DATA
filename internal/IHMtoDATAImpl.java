@@ -9,9 +9,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
-
-import javax.swing.ImageIcon;
-
 import DATA.exceptions.BadInformationException;
 import DATA.interfaces.IHMtoDATA;
 import DATA.model.Comment;
@@ -279,12 +276,7 @@ public class IHMtoDATAImpl implements IHMtoDATA {
 	@Override
 	public void getPictures(User user, int idRequest) {
 		if (userService.getCurrentUser().getUid().equals(user.getUid())) {
-			try {
-				dataToIhm.receivePictures(pictureService.getPictures(null), idRequest);
-			} catch (BadInformationException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+			dataToIhm.receivePictures(pictureService.getPictures(null), idRequest);
 		} else {
 			netLocalizer.getPictures(user.getUid(), idRequest);
 		}
@@ -297,12 +289,7 @@ public class IHMtoDATAImpl implements IHMtoDATA {
 	 */
 	@Override
 	public void getPictures(List<Tag> listtag, int idRequest) {
-		try {
-			dataToIhm.receivePictures(pictureService.getPictures(listtag), idRequest);
-		} catch (BadInformationException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		dataToIhm.receivePictures(pictureService.getPictures(listtag), idRequest);
 		netLocalizer.getPictures(listtag,idRequest);
 	}
 
