@@ -64,7 +64,7 @@ public class IHMtoDATAImpl implements IHMtoDATA {
 		if (comment.getUid() == null || comment.getUid().equals("")) {
 			throw new BadInformationException("Uid empty");
 		}
-		if (comment.getCommentUserId() == null || comment.getCommentUserId().equals("")) {
+		if (comment.getCommentUser().getUid() == null || comment.getCommentUser().getUid().equals("")) {
 			throw new BadInformationException("CommentUserId empty");
 		}
 		if (comment.getPictureId() == null || comment.getPictureId().equals("")) {
