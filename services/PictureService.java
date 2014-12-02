@@ -5,6 +5,9 @@ import java.util.UUID;
 
 import DATA.exceptions.BadInformationException;
 import DATA.model.Picture;
+import DATA.model.Tag;
+import DATA.model.User;
+import NET.NetLocalizer;
 
 /**
  * Service for pictures functionalities
@@ -33,6 +36,16 @@ public class PictureService {
 				return pic;
 			}
 		}
+		return null;
+	}
+	
+	/**
+	 * Retrieve local pictures by their tags
+	 * @param List Tag for the picture
+	 * @return	TList Picture identified
+	 * @throws BadInformationException	When incorrect information found
+	 */
+	public List<Picture> getPictures(List<Tag> listtag) {
 		return null;
 	}
 }
