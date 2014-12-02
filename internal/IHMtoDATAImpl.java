@@ -25,6 +25,8 @@ import DATA.services.DataService;
 import DATA.services.GroupService;
 import DATA.services.PictureService;
 import DATA.services.UserService;
+import IHM.Main;
+import IHM.interfaces.DATAtoIHM;
 import NET.NetLocalizer;
 import NET.exceptions.BusinessException;
 import NET.exceptions.TechnicalException;
@@ -39,6 +41,7 @@ public class IHMtoDATAImpl implements IHMtoDATA {
 	private UserService userService;
 	private GroupService groupService;
 	private PictureService pictureService;
+	private DATAtoIHM dataToIhm;
 	private NetLocalizer netLocalizer;
 	
 	/** 
@@ -48,6 +51,7 @@ public class IHMtoDATAImpl implements IHMtoDATA {
 		userService = new UserService();
 		groupService = new GroupService();
 		pictureService = new PictureService();
+		dataToIhm = Main.getDATAtoIHMimpl();
 		netLocalizer = new NetLocalizer();
 	}
 
@@ -253,9 +257,18 @@ public class IHMtoDATAImpl implements IHMtoDATA {
 	 * @see DATA.interfaces.IHMtoDATA#getPictureById(java.util.UUID, int)
 	 */
 	@Override
-	public void getPictureById(UUID picture, int idRequest) {
-		// TODO Auto-generated method stub
-
+	public void getPictureById(UUID pictureUid, int idRequest) {
+		try {
+			Picture myPic = pictureService.getPictureById(pictureUid);
+			if (myPic != null) {
+				dataToIhm.receivePicture(myPic, idRequest);
+			} else {
+				netLocalizer.getPictureById(pictureUid, idRequest);
+			}
+		} catch (BadInformationException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	/*
@@ -265,7 +278,16 @@ public class IHMtoDATAImpl implements IHMtoDATA {
 	 */
 	@Override
 	public void getPictures(User user, int idRequest) {
-		netLocalizer.getPictures(user.getUid(), idRequest);
+		if (userService.getCurrentUser().getUid().equals(user.getUid())) {
+			try {
+				dataToIhm.receivePictures(pictureService.getPictures(null), idRequest);
+			} catch (BadInformationException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		} else {
+			netLocalizer.getPictures(user.getUid(), idRequest);
+		}
 	}
 
 	/*
@@ -275,6 +297,12 @@ public class IHMtoDATAImpl implements IHMtoDATA {
 	 */
 	@Override
 	public void getPictures(List<Tag> listtag, int idRequest) {
+		try {
+			dataToIhm.receivePictures(pictureService.getPictures(listtag), idRequest);
+		} catch (BadInformationException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		netLocalizer.getPictures(listtag,idRequest);
 	}
 
@@ -285,6 +313,7 @@ public class IHMtoDATAImpl implements IHMtoDATA {
 	 */
 	@Override
 	public void getPictures(int idRequest) {
+		getPictures(userService.getCurrentUser(), idRequest);
 		netLocalizer.getPictures(idRequest);
 	}
 
