@@ -5,8 +5,10 @@
  */
 package DATA.model;
 
+import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.UUID;
 
@@ -24,14 +26,15 @@ public class Picture implements Serializable {
 	public static final long serialVersionUID = 1L;
 
     private String filename;
+    private String description;
     private List<Note> listNotes;
     private List<Tag> listTags;
     private List<Comment> Comments;
     private List<Rule> listRules;
     /**
-     * Id of the user who owns picture
+     * LightUser with UUID, login, firstname, ...
      */
-    private UUID userId;
+    private User user;
     
     /**
      * Id of the picture
@@ -46,25 +49,58 @@ public class Picture implements Serializable {
     
     private ImageIcon imageIcon;
 
-    public Picture(String filename, UUID userId) {
+    public Picture(String filename, String description, User user) {
+		this.filename = filename;
+		this.description = description;
+		this.listNotes = new ArrayList<Note>();
+		this.listRules = new ArrayList<Rule>();
+		this.listTags = new ArrayList<Tag>();
+		this.user = user;
+		this.uid = UUID.randomUUID();
+	}
+    
+    public Picture(String filename, User user) {
 		this.filename = filename;
 		this.listNotes = new ArrayList<Note>();
 		this.listRules = new ArrayList<Rule>();
 		this.listTags = new ArrayList<Tag>();
-		this.userId = userId;
+		this.user = user;
 		this.uid = UUID.randomUUID();
-		this.userId = userId;
+	}
+    
+    public float getNoteAverage() {
+    	int numberOfNote = 0, sumNote = 0;
+    	
+    	Iterator<Note> iter = this.getListNotes().iterator();
+	    while (iter.hasNext()) {
+	    	numberOfNote++;
+	    	sumNote+=iter.next().getValue();
+	    }
+	    
+    	if (numberOfNote == 0) {
+    		return 0;
+    	} else {
+    		return sumNote/numberOfNote;
+    	}
+    }
+
+	public String getDescription() {
+		return description;
 	}
 
-	public UUID getUserId() {
-		return userId;
+	public void setDescription(String description) {
+		this.description = description;
 	}
 
-	public void setUserId(UUID userId) {
-		this.userId = userId;
+	public User getUser() {
+		return user;
 	}
 
-    public UUID getUid() {
+	public void setUser(User user) {
+		this.user = user;
+	}
+
+	public UUID getUid() {
 		return uid;
 	}
     

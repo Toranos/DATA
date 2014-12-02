@@ -1,5 +1,6 @@
 package DATA.interfaces;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.UUID;
 
@@ -15,13 +16,13 @@ public interface NETtoDATA {
 	 * Send a comment to a remote picture. 
 	 * @param comment
 	 */
-	public void addComment(Comment comment) ;
+	public void addComment(Comment comment) throws IOException ;
 	
 	/**
 	 * Send a comment to a remote picture. 
 	 * @param note
 	 */
-	public void addNote(Note note);
+	public void addNote(Note note) throws IOException ;
 	
 	/**
 	 * Return the list of saved IPs.

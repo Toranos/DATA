@@ -4,6 +4,7 @@
 package DATA.internal;
 
 
+import java.io.IOException;
 import java.util.Iterator;
 import java.util.List;
 import java.util.UUID;
@@ -41,7 +42,7 @@ public class NETtoDATAImpl implements NETtoDATA {
 	 * @see DATA.interfaces.NETtoDATA#addComment(DATA.model.Comment)
 	 */
 	@Override
-	public void addComment(Comment comment) {
+	public void addComment(Comment comment) throws IOException {
 		User currentUser = data.getUser();
 		Iterator<Picture> iter = currentUser.getListPictures().iterator();
 	    while (iter.hasNext()) {
@@ -49,9 +50,10 @@ public class NETtoDATAImpl implements NETtoDATA {
 	    		iter.next().getComments().add(comment);
 	    	}
 	    }
+	    DataService.getInstance().exports();
 	}
 	
-	public void addNote(Note note) {
+	public void addNote(Note note) throws IOException {
 		User currentUser = data.getUser();
 		Iterator<Picture> iter = currentUser.getListPictures().iterator();
 	    while (iter.hasNext()) {
@@ -59,6 +61,7 @@ public class NETtoDATAImpl implements NETtoDATA {
 	    		iter.next().getListNotes().add(note);
 	    	}
 	    }
+	    DataService.getInstance().exports();
 	}
 
 	/* (non-Javadoc)
