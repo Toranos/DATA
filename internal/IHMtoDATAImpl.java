@@ -19,6 +19,7 @@ import DATA.model.Group;
 import DATA.model.Note;
 import DATA.model.PendingRequest;
 import DATA.model.Picture;
+import DATA.model.Tag;
 import DATA.model.User;
 import DATA.services.DataService;
 import DATA.services.UserService;
@@ -256,8 +257,8 @@ public class IHMtoDATAImpl implements IHMtoDATA {
 	 */
 	@Override
 	public void getPictures(User user, int idRequest) {
-		// TODO Auto-generated method stub
-
+		NetLocalizer netLocalizer = new NetLocalizer();
+		netLocalizer.getPictures(user.getUid(), idRequest);
 	}
 
 	/*
@@ -266,9 +267,9 @@ public class IHMtoDATAImpl implements IHMtoDATA {
 	 * @see DATA.interfaces.IHMtoDATA#getPictures(java.util.List, int)
 	 */
 	@Override
-	public void getPictures(List<String> listtag, int idRequest) {
-		// TODO Auto-generated method stub
-
+	public void getPictures(List<Tag> listtag, int idRequest) {
+		NetLocalizer netLocalizer = new NetLocalizer();
+		netLocalizer.getPictures(listtag,idRequest);
 	}
 
 	/*
@@ -278,8 +279,8 @@ public class IHMtoDATAImpl implements IHMtoDATA {
 	 */
 	@Override
 	public void getPictures(int idRequest) {
-		// TODO Auto-generated method stub
-
+		NetLocalizer netLocalizer = new NetLocalizer();
+		netLocalizer.getPictures(idRequest);
 	}
 
 	/*

@@ -10,6 +10,7 @@ import DATA.model.Comment;
 import DATA.model.Group;
 import DATA.model.Note;
 import DATA.model.Picture;
+import DATA.model.Tag;
 import DATA.model.User;
 
 /**
@@ -147,7 +148,7 @@ public  interface IHMtoDATA
 	 * @param listtag
 	 * @param idRequest
 	 */
-	public void getPictures(List<String> listtag, int idRequest) ;
+	public void getPictures(List<Tag> listtag, int idRequest) ;
 	
 	/**
 	 * @Brief Request all the pictures from all connected users
