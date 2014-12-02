@@ -35,6 +35,7 @@ import NET.exceptions.TechnicalException;
  */
 public class IHMtoDATAImpl implements IHMtoDATA {
 
+
 	private UserService userService;
 	private GroupService groupService;
 	private PictureService pictureService;
@@ -116,6 +117,12 @@ public class IHMtoDATAImpl implements IHMtoDATA {
 	@Override
 	public void addPicture(Picture picture) {
 		pictureService.addPicture(picture);
+		try {
+			userService.export_();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	/*
