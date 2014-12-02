@@ -41,7 +41,7 @@ public  interface IHMtoDATA
 	 * Add a picture for the current user
 	 * @param picture	The picture
 	 */
-	public void addPicture(Picture picture) ;
+	public void addPicture(Picture picture) throws IOException ;
 	
 	/**
 	 * Add a user in a group

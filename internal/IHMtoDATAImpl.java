@@ -110,9 +110,10 @@ public class IHMtoDATAImpl implements IHMtoDATA {
 	 * @see DATA.interfaces.IHMtoDATA#addPicture(DATA.model.Picture)
 	 */
 	@Override
-	public void addPicture(Picture picture) {
+	public void addPicture(Picture picture) throws IOException {
 		picture.setImageIcon(new ImageIcon(picture.getFilename(), "Une icone d'image"));
 		DataService.getInstance().getUser().getListPictures().add(picture);
+		DataService.getInstance().exports();
 	}
 
 	/*
