@@ -253,16 +253,11 @@ public class IHMtoDATAImpl implements IHMtoDATA {
 	 */
 	@Override
 	public void getPictureById(UUID pictureUid, int idRequest) {
-		try {
-			Picture myPic = pictureService.getPictureById(pictureUid);
-			if (myPic != null) {
-				dataToIhm.receivePicture(myPic, idRequest);
-			} else {
-				netLocalizer.getPictureById(pictureUid, idRequest);
-			}
-		} catch (BadInformationException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		Picture myPic = pictureService.getPictureById(pictureUid);
+		if (myPic != null) {
+			dataToIhm.receivePicture(myPic, idRequest);
+		} else {
+			netLocalizer.getPictureById(pictureUid, idRequest);
 		}
 	}
 
