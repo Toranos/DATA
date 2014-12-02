@@ -192,9 +192,8 @@ public class IHMtoDATAImpl implements IHMtoDATA {
 	 * java.lang.String)
 	 */
 	@Override
-	public void getUserById(UUID idUser, String idRequest) {
-		// TODO Auto-generated method stub
-
+	public void getUserById(UUID idUser, int idRequest) {
+		netLocalizer.getUserDetails(idUser, idRequest);
 	}
 
 	/*
@@ -204,8 +203,7 @@ public class IHMtoDATAImpl implements IHMtoDATA {
 	 */
 	@Override
 	public List<User> getUsersInGroup(Group g) {
-		// TODO Auto-generated method stub
-		return null;
+		return userService.getUserInGroup(g);
 	}
 
 	/*
