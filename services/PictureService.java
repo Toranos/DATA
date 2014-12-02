@@ -1,5 +1,6 @@
 package DATA.services;
 
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.UUID;
@@ -48,7 +49,25 @@ public class PictureService {
 	 * @throws BadInformationException	When incorrect information found
 	 */
 	public List<Picture> getPictures(List<Tag> listtag) throws BadInformationException {
-		return null;
+		List<Picture> resultPictures;
+		if(listtag != null && !listtag.isEmpty()) {
+			resultPictures = new ArrayList<Picture>();
+			//faire une autre fonction avec un return pour casser les 3 for
+			for (Picture picture : DataService.getInstance().getUser().getListPictures()) {
+				SEARCHLOOP: for (Tag tag : picture.getListTags()) {
+					for(Tag customTag : listtag) {
+						if(tag.getValue() != null && customTag.getValue() != null
+							&& tag.getValue().equals(customTag.getValue())) {
+							resultPictures.add(picture);
+							break SEARCHLOOP;
+						}
+					}
+				}
+			}
+		} else {
+			resultPictures = new ArrayList<Picture>(DataService.getInstance().getUser().getListPictures());
+		}
+		return resultPictures;
 	}
 	
 	/**
