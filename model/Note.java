@@ -21,11 +21,11 @@ public class Note implements Serializable {
 	
     private int value;  
     private UUID uid;
-    private UUID NoteUserId;
+    private User NoteUserId;
     private UUID PictureId;
     private UUID PictureUserId;
     
-	public Note(int value, UUID NoteUserId, UUID PictureId, UUID PictureUserId) {
+	public Note(int value, User NoteUserId, UUID PictureId, UUID PictureUserId) {
 		this.value = value;
 		this.uid = UUID.randomUUID();
 		this.NoteUserId = NoteUserId;
@@ -45,11 +45,11 @@ public class Note implements Serializable {
 		return uid;
 	}
 
-	public UUID getNoteUserId() {
+	public User getNoteUserId() {
 		return NoteUserId;
 	}
 
-	public void setNoteUserId(UUID noteUserId) {
+	public void setNoteUserId(User noteUserId) {
 		NoteUserId = noteUserId;
 	}
 
