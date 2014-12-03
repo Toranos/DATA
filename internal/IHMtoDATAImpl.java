@@ -21,6 +21,7 @@ import DATA.model.PendingRequest;
 import DATA.model.Picture;
 import DATA.model.User;
 import DATA.services.DataService;
+import DATA.services.GroupService;
 import DATA.services.UserService;
 import NET.NetLocalizer;
 import NET.exceptions.BusinessException;
@@ -36,6 +37,8 @@ public class IHMtoDATAImpl implements IHMtoDATA {
 	 * Instance of DataService.
 	 */
 	private DataService data = null;
+	
+	private GroupService groupService = null;
 
 	
 	/** 
@@ -100,7 +103,12 @@ public class IHMtoDATAImpl implements IHMtoDATA {
 	 */
 	@Override
 	public void addGroup(Group group) {
-		// TODO Auto-generated method stub
+		try {
+			groupService.addGroup(group);
+		} catch (BadInformationException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 
 	}
 
@@ -158,7 +166,7 @@ public class IHMtoDATAImpl implements IHMtoDATA {
 	 */
 	@Override
 	public void deleteUserFromGroup(User user, Group group) {
-		// TODO Auto-generated method stub
+		groupService.deleteUserFromGroup(user, group);
 
 	}
 
@@ -202,8 +210,7 @@ public class IHMtoDATAImpl implements IHMtoDATA {
 	 */
 	@Override
 	public List<User> getUserNotInGroup(Group group) {
-		// TODO Auto-generated method stub
-		return null;
+		return groupService.getUserNotInGroup(group);
 	}
 
 	/*
@@ -213,8 +220,7 @@ public class IHMtoDATAImpl implements IHMtoDATA {
 	 */
 	@Override
 	public Group getGroup(String group) {
-		// TODO Auto-generated method stub
-		return null;
+		return groupService.getGroup(group);
 	}
 
 	/*
