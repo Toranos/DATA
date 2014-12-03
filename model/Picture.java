@@ -5,6 +5,9 @@
  */
 package DATA.model;
 
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -12,8 +15,11 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.UUID;
 
+import com.sun.xml.internal.messaging.saaj.util.Base64;
+import javafx.embed.swing.SwingFXUtils;
 import javafx.scene.image.Image;
 
+import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 
 /**
@@ -49,7 +55,7 @@ public class Picture implements Serializable {
      */
     private byte[][] pixels;
     
-    private Image imageIcon;
+    private ImageIcon imageIcon;
 
     public Picture(String filename, String description, User user) {
 		this.filename = filename;
@@ -152,11 +158,41 @@ public class Picture implements Serializable {
 		this.pixels = pixels;
 	}
 
-	public Image getImageIcon() {
+	public ImageIcon getImageIcon() {
 		return imageIcon;
 	}
 
-	public void setImageIcon(Image imageIcon) {
+	public void setImageIcon(ImageIcon imageIcon) {
 		this.imageIcon = imageIcon;
 	}
+
+    public Image getIconAsImageObject() {
+        byte[] iconAsArray = ImageToBase64(this.getImageIcon());
+        ByteArrayInputStream in = new ByteArrayInputStream(iconAsArray);
+        try
+        {
+            BufferedImage read = ImageIO.read(in);
+            return SwingFXUtils.toFXImage(read, null);
+        } catch (IOException e)
+        {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+
+    private static byte[] ImageToBase64(ImageIcon i) {
+        try
+        {
+            BufferedImage bi = (BufferedImage) i.getImage();
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            ImageIO.write(bi, "png", baos);
+            byte[] dataToEncode = baos.toByteArray();
+            byte[] base64Data = Base64.encode(dataToEncode);
+            return base64Data;
+        } catch (IOException ioe)
+        {
+            return null;
+        }
+    }
 }
