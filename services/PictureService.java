@@ -5,6 +5,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.UUID;
 
+import javax.swing.ImageIcon;
+
 import javafx.scene.image.Image;
 import DATA.exceptions.BadInformationException;
 import DATA.model.Comment;
@@ -72,7 +74,7 @@ public class PictureService {
 	 * @param picture
 	 */
 	public void addPicture(Picture picture) {
-		picture.setImageIcon(new Image(picture.getFilename()));
+		picture.setImageIcon(new ImageIcon(picture.getFilename()));
 		DataService.getInstance().getUser().getListPictures().add(picture);
 	}
 	
