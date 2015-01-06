@@ -74,6 +74,18 @@ public class PictureService {
 		return resultPictures;
 	}
 	
+	public List<Picture> getPicturesByUser(List<User> listUser) {
+		List<Picture> resultPictures = new ArrayList<Picture>();
+		if(listUser != null && !listUser.isEmpty()) { 
+			for(Picture picture : DataService.getInstance().getUser().getListPictures()) {
+				if(picture.getUser().getUid() == DataService.getInstance().getUser().getUid()){
+					resultPictures.add(picture);
+				}
+			}
+		}
+		return resultPictures;
+	}
+	
 	/**
 	 * 
 	 * @param picture
@@ -133,6 +145,5 @@ public class PictureService {
 			System.exit(0);  
 		}
 		return packet;
-	}
-	
+	}	
 }
