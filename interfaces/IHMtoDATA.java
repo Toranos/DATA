@@ -150,7 +150,7 @@ public  interface IHMtoDATA
 	 */
 	public void getPictures(List<Tag> listtag, int idRequest) ;
 	
-	public void getPicturesByUsers(List<User> listUser, int idRequest);
+	public void getPicturesByUsers(List<String> listUser, int idRequest);
 	
 	/**
 	 * @Brief Request all the pictures from all connected users

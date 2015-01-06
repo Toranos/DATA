@@ -74,12 +74,12 @@ public class PictureService {
 		return resultPictures;
 	}
 	
-	public List<Picture> getPicturesByUser(List<User> listUser) {
+	public List<Picture> getPicturesByUser(List<String> listUser) {
 		List<Picture> resultPictures = new ArrayList<Picture>();
 		if(listUser != null && !listUser.isEmpty()) { 
-			for(Picture picture : DataService.getInstance().getUser().getListPictures()) {
-				if(picture.getUser().getUid() == DataService.getInstance().getUser().getUid()){
-					resultPictures.add(picture);
+			for(String user : listUser){
+				if(user.equals(DataService.getInstance().getUser().getLogin())){
+					return DataService.getInstance().getUser().getListPictures();
 				}
 			}
 		}
