@@ -66,19 +66,6 @@ public class DataService implements Serializable {
 	 */
 	private boolean enabled = true;
 	
-	
-	public static void main(String[] args) {
-		System.out.println("start");
-        try {
-        	DataService d = DataService.getInstance();
-        	d.save();
-			d.exports();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-        System.out.println("end");
-	}
-	
 	/**
 	 * Return Singleton instance of DataService.
 	 * @return DataService.
