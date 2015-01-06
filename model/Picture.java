@@ -53,9 +53,9 @@ public class Picture implements Serializable {
      * The byte array containing the image in HD
      * Is null by default unless the HD definition is needed
      */
-    private byte[][] pixels;
+    private byte[] pixels;
     
-    private ImageIcon imageIcon;
+    private byte[] icon;
 
     public Picture(String filename, String description, User user) {
 		this.filename = filename;
@@ -150,25 +150,24 @@ public class Picture implements Serializable {
         this.Comments = Comments;
     }
 
-	public byte[][] getPixels() {
+	public byte[] getPixels() {
 		return pixels;
 	}
 
-	public void setPixels(byte[][] pixels) {
+	public void setPixels(byte[] pixels) {
 		this.pixels = pixels;
 	}
 
-	public ImageIcon getImageIcon() {
-		return imageIcon;
+	public byte[] getIcon() {
+		return icon;
 	}
 
-	public void setImageIcon(ImageIcon imageIcon) {
-		this.imageIcon = imageIcon;
+	public void setIcon(byte[] icon) {
+		this.icon = icon;
 	}
 
-    public Image getIconAsImageObject() {
-        byte[] iconAsArray = ImageToBase64(this.getImageIcon());
-        ByteArrayInputStream in = new ByteArrayInputStream(iconAsArray);
+    public Image getImageObject() {
+        ByteArrayInputStream in = new ByteArrayInputStream(pixels);
         try
         {
             BufferedImage read = ImageIO.read(in);
@@ -181,18 +180,18 @@ public class Picture implements Serializable {
     }
 
 
-    private static byte[] ImageToBase64(ImageIcon i) {
-        try
-        {
-            BufferedImage bi = (BufferedImage) i.getImage();
-            ByteArrayOutputStream baos = new ByteArrayOutputStream();
-            ImageIO.write(bi, "png", baos);
-            byte[] dataToEncode = baos.toByteArray();
-            byte[] base64Data = Base64.encode(dataToEncode);
-            return base64Data;
-        } catch (IOException ioe)
-        {
-            return null;
-        }
-    }
+//    private static byte[] ImageToBase64(ImageIcon i) {
+//        try
+//        {
+//            BufferedImage bi = (BufferedImage) i.getImage();
+//            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+//            ImageIO.write(bi, "png", baos);
+//            byte[] dataToEncode = baos.toByteArray();
+//            byte[] base64Data = Base64.encode(dataToEncode);
+//            return base64Data;
+//        } catch (IOException ioe)
+//        {
+//            return null;
+//        }
+//    }
 }

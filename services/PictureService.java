@@ -74,7 +74,7 @@ public class PictureService {
 	 * @param picture
 	 */
 	public void addPicture(Picture picture) {
-		picture.setImageIcon(new ImageIcon(picture.getFilename()));
+//		picture.setIcon(new ImageIcon(picture.getFilename()));
 		DataService.getInstance().getUser().getListPictures().add(picture);
 	}
 	
