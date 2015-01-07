@@ -74,7 +74,7 @@ public class UserService {
 		 * BadInformationException("Password is empty"); }
 		 */
 		DataService.getInstance().setUser(u);
-		DataService.getInstance().setPathProfile(rootFile + u.getUid() + File.separator);
+		DataService.getInstance().setPathUser(new File(rootFile + u.getUid() + File.separator));
 		try {
 			DataService.getInstance().exports();
 		} catch (IOException e) {
@@ -107,7 +107,7 @@ public class UserService {
 			while ((line = br.readLine()) != null) {
 				String[] parts = line.split(" ");
 				if(parts[0].equals(username) && parts[1].equals(password)){
-					DataService.imports();
+					DataService.load();
 					return DataService.getInstance().getUser();
 				}
 			}
