@@ -80,8 +80,7 @@ public class NETtoDATAImpl implements NETtoDATA {
 	 */
 	@Override
 	public List<String> getConnectedIps() {
-		// TODO Auto-generated method stub
-		return null;
+		return userService.getConnectedUsers();
 	}
 
 	/* (non-Javadoc)
