@@ -1,6 +1,7 @@
 package DATA.services;
 
 import java.util.Iterator;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -99,5 +100,79 @@ public class GroupService {
 				currentUser.getListPendingRequests().remove(pendingReq);
 			}
 		}
+	}
+	
+	public void addGroup(Group group) throws BadInformationException{
+		if (group == null || group.equals("")) {
+			throw new BadInformationException("Group empty");
+		}
+		if (group.getUid() == null || group.getUid().equals("")) {
+			throw new BadInformationException("Uid empty");
+		}
+		if (group.getUsers() == null || group.getUsers().equals("")) {
+			throw new BadInformationException("Users empty");
+		}
+		if (group.getNom() == null || group.getNom().equals("")) {
+			throw new BadInformationException("PictureId empty");
+		}
+		List<Group> userGroups = DataService.getInstance().getUser().getListGroups();
+		for (Group userGroup : userGroups) {
+			if (userGroup.getNom() == group.getNom()){
+				throw new BadInformationException("Group Name already exists");
+			} else {
+				userGroups.add(group);
+			}
+		}
+	}
+	
+	public List<User> getUserNotInGroup(Group group){
+		List<User> usersNotInGroup= new ArrayList<User>();
+		boolean inGroup=false;
+		List<Group> userListGroups=DataService.getInstance().getUser().getListGroups();
+		for (Group userGroup : userListGroups){
+			if (userGroup.getNom() == Group.FRIENDS_GROUP_NAME){
+				for (User friend : userGroup.getUsers()){
+					for (User userInGroup : group.getUsers()){
+						if (friend == userInGroup) {
+							inGroup = true;
+						}
+					}
+					if (!inGroup){
+						usersNotInGroup.add(friend);
+					}
+				}
+			}
+		}
+		return usersNotInGroup;
+
+	}
+	
+	public void deleteUserFromGroup(User user, Group group){
+		List<Group> userListGroups=DataService.getInstance().getUser().getListGroups();
+		List<User> newListUsers= new ArrayList<User>();
+		if (group.getNom() == Group.FRIENDS_GROUP_NAME){
+			for (Group userGroup : userListGroups){
+				userGroup.getUsers().remove(user);
+			}
+		} else {
+			group.getUsers().remove(user);
+		}
+	}
+	
+	public Group getGroup(String group){
+		List<Group> userGroups = DataService.getInstance().getUser().getListGroups();
+		for (Group userGroup : userGroups){
+			if (userGroup.getNom() == group) {
+				return userGroup;
+			}
+		}
+		return null;
+	}
+	
+	public List<Group> getGroupsUserNotIn(User user){
+		
+		
+		return null;
+		
 	}
 }
