@@ -162,7 +162,7 @@ public class GroupService {
 	public Group getGroup(String group){
 		List<Group> userGroups = DataService.getInstance().getUser().getListGroups();
 		for (Group userGroup : userGroups){
-			if (userGroup.getNom() == group) {
+			if (userGroup.getNom().equals(group)) {
 				return userGroup;
 			}
 		}
