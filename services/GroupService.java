@@ -87,6 +87,7 @@ public class GroupService {
 	 * @param friends
 	 */
 	public void receiveFriendResponse(User user, boolean friends) {
+		PendingRequest pendReq = null;
 		User currentUser = DataService.getInstance().getUser();
 		for (PendingRequest pendingReq : currentUser.getListPendingRequests()) {
 			if(user.getUid().equals(pendingReq.getToUID())){
@@ -97,8 +98,11 @@ public class GroupService {
 						}
 					}
 				}
-				currentUser.getListPendingRequests().remove(pendingReq);
+				pendReq = pendingReq;
 			}
+		}
+		if(pendReq != null) {
+			currentUser.getListPendingRequests().remove(pendReq);
 		}
 	}
 	
