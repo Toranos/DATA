@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+
 import DATA.exceptions.BadInformationException;
 import DATA.interfaces.IHMtoDATA;
 import DATA.model.Comment;
@@ -206,8 +207,10 @@ public class IHMtoDATAImpl implements IHMtoDATA {
 	 */
 	@Override
 	public void deleteUserFromGroup(User user, Group group) {
-		// TODO Auto-generated method stub
-
+		groupService.deleteUserFromGroup(user, group);
+		if(group.getNom() == Group.FRIENDS_GROUP_NAME) {
+			netLocalizer.deleteFriend(user.getUid());
+		}
 	}
 
 	/*
@@ -248,20 +251,9 @@ public class IHMtoDATAImpl implements IHMtoDATA {
 	 */
 	@Override
 	public List<User> getUserNotInGroup(Group group) {
-		// TODO Auto-generated method stub
-		return null;
+		return groupService.getUserNotInGroup(group);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see DATA.interfaces.IHMtoDATA#getGroup(java.lang.String)
-	 */
-	@Override
-	public Group getGroup(String group) {
-		// TODO Auto-generated method stub
-		return null;
-	}
 
 	/*
 	 * (non-Javadoc)
@@ -280,8 +272,7 @@ public class IHMtoDATAImpl implements IHMtoDATA {
 	 */
 	@Override
 	public List<Group> getGroupsUserNotIn(User user) {
-		// TODO Auto-generated method stub
-		return null;
+		return groupService.getGroupsUserNotIn(user);
 	}
 
 	/*
@@ -505,5 +496,10 @@ public class IHMtoDATAImpl implements IHMtoDATA {
 	@Override
 	public void refuseUser(User user) {
 		netLocalizer.acceptOrNotFriendship(user.getUid(), false);
+	}
+
+	@Override
+	public Group getGroupByName(String name) {
+		return groupService.getGroup(name);
 	}
 }

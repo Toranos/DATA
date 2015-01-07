@@ -72,7 +72,7 @@ public class GroupService {
 	public List<Group> getGroups() {
 		return DataService.getInstance().getUser().getListGroups();
 	}
-
+	
 	public void acceptUser(User user, Group group) {
 		for (Group groupToAdd : DataService.getInstance().getUser().getListGroups()) {
 			if(groupToAdd.getUid().equals(group.getUid())) {
@@ -149,7 +149,6 @@ public class GroupService {
 	
 	public void deleteUserFromGroup(User user, Group group){
 		List<Group> userListGroups=DataService.getInstance().getUser().getListGroups();
-		List<User> newListUsers= new ArrayList<User>();
 		if (group.getNom() == Group.FRIENDS_GROUP_NAME){
 			for (Group userGroup : userListGroups){
 				userGroup.getUsers().remove(user);
@@ -162,7 +161,7 @@ public class GroupService {
 	public Group getGroup(String group){
 		List<Group> userGroups = DataService.getInstance().getUser().getListGroups();
 		for (Group userGroup : userGroups){
-			if (userGroup.getNom() == group) {
+			if (userGroup.getNom().equals(group)) {
 				return userGroup;
 			}
 		}
@@ -170,9 +169,21 @@ public class GroupService {
 	}
 	
 	public List<Group> getGroupsUserNotIn(User user){
+		List<Group> groups = this.getGroups();
+		List<Group> groupsUserNotIn= new ArrayList<>();
+		boolean userNotIn=true;
+		for (Group group : groups){
+			for (User u : group.getUsers()){
+				if (user==u){
+					userNotIn=false;
+				}
+			}
+			if (userNotIn){
+				groupsUserNotIn.add(group);
+			}
+		}
 		
-		
-		return null;
+		return groupsUserNotIn;
 		
 	}
 }

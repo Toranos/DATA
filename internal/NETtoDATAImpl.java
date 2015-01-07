@@ -168,8 +168,7 @@ public class NETtoDATAImpl implements NETtoDATA {
 	 */
 	@Override
 	public void notFriendAnymore(User user) {
-		// TODO Auto-generated method stub
-
+		groupService.deleteUserFromGroup(user, groupService.getGroup(Group.FRIENDS_GROUP_NAME));
 	}
 
 	@Override
