@@ -119,7 +119,7 @@ public  interface IHMtoDATA
 	* @param name of the group searched
 	* @return the Group searched
 	*/
-	public Group getGroup(String group) ;
+	public Group getGroupByName(String group) ;
 	
 	/**
 	* @Brief : Request all the group of the current user

@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+
 import DATA.exceptions.BadInformationException;
 import DATA.interfaces.IHMtoDATA;
 import DATA.model.Comment;
@@ -257,17 +258,6 @@ public class IHMtoDATAImpl implements IHMtoDATA {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see DATA.interfaces.IHMtoDATA#getGroup(java.lang.String)
-	 */
-	@Override
-	public Group getGroup(String group) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
 	 * @see DATA.interfaces.IHMtoDATA#getGroups()
 	 */
 	@Override
@@ -507,5 +497,10 @@ public class IHMtoDATAImpl implements IHMtoDATA {
 	@Override
 	public void refuseUser(User user) {
 		netLocalizer.acceptOrNotFriendship(user.getUid(), false);
+	}
+
+	@Override
+	public Group getGroupByName(String name) {
+		return groupService.getGroup(name);
 	}
 }

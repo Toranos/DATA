@@ -72,7 +72,7 @@ public class GroupService {
 	public List<Group> getGroups() {
 		return DataService.getInstance().getUser().getListGroups();
 	}
-
+	
 	public void acceptUser(User user, Group group) {
 		for (Group groupToAdd : DataService.getInstance().getUser().getListGroups()) {
 			if(groupToAdd.getUid().equals(group.getUid())) {
