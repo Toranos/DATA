@@ -85,13 +85,9 @@ public class DataService implements Serializable {
 	private boolean enabled = true;
 	
 	public static void main(String[] args) {
-		try {
-			DataService.imports(new File(exportFile));
-		} catch (ClassNotFoundException | IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		System.out.println("end");
+		DataService d = DataService.getInstance();
+		d.setPathUser(new File(/*System.getProperty("user.dir")*/"./"));
+		System.out.println(d.getPathUser().getCanonicalPath());
 	}
 	
 	/**
