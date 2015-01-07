@@ -117,7 +117,23 @@ public class PictureService {
 	 * 
 	 * @param comment
 	 */
-	public boolean addComment(Comment comment) {
+	public boolean addComment(Comment comment) throws BadInformationException {
+		if (comment == null || comment.equals("")) {
+			throw new BadInformationException("Comment empty");
+		}
+		if (comment.getUid() == null || comment.getUid().equals("")) {
+			throw new BadInformationException("Uid empty");
+		}
+		if (comment.getCommentUser().getUid() == null || comment.getCommentUser().getUid().equals("")) {
+			throw new BadInformationException("CommentUserId empty");
+		}
+		if (comment.getPictureId() == null || comment.getPictureId().equals("")) {
+			throw new BadInformationException("PictureId empty");
+		}
+		if (comment.getPictureUserId() == null || comment.getPictureUserId().equals("")) {
+			throw new BadInformationException("PictureUserId empty");
+		}
+		
 		User currentUser = DataService.getInstance().getUser();
 		if (currentUser.getUid().equals(comment.getPictureUserId())) {
 			Iterator<Picture> iterPicture = currentUser.getListPictures().iterator();
@@ -153,7 +169,23 @@ public class PictureService {
 	 * 
 	 * @param note
 	 */
-	public boolean addNote(Note note) {
+	public boolean addNote(Note note) throws BadInformationException {
+		if (note == null || note.equals("")) {
+			throw new BadInformationException("Note empty");
+		}
+		if (note.getUid() == null || note.getUid().equals("")) {
+			throw new BadInformationException("Uid empty");
+		}
+		if (note.getNoteUser() == null || note.getNoteUser().equals("")) {
+			throw new BadInformationException("NoteUserId empty");
+		}
+		if (note.getPictureId() == null || note.getPictureId().equals("")) {
+			throw new BadInformationException("PictureId empty");
+		}
+		if (note.getPictureUserId() == null || note.getPictureUserId().equals("")) {
+			throw new BadInformationException("PictureUserId empty");
+		}
+		
 		User currentUser = DataService.getInstance().getUser();
 		if (currentUser.getUid().equals(note.getPictureUserId())) {
 			Iterator<Picture> iterPicture = currentUser.getListPictures().iterator();

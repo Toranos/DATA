@@ -54,7 +54,11 @@ public class NETtoDATAImpl implements NETtoDATA {
 	 */
 	@Override
 	public void addComment(Comment comment) {
-		pictureService.addComment(comment);
+		try{
+			pictureService.addComment(comment);
+		} catch (BadInformationException e){
+			e.printStackTrace();
+		}
 	}
 	
 	/*
@@ -63,7 +67,11 @@ public class NETtoDATAImpl implements NETtoDATA {
 	 */
 	@Override
 	public void addNote(Note note) {
-		pictureService.addNote(note);
+		try{
+			pictureService.addNote(note);
+		} catch (BadInformationException e){
+			e.printStackTrace();
+		}
 	}
 	
 	/*
