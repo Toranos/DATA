@@ -251,9 +251,9 @@ public class IHMtoDATAImpl implements IHMtoDATA {
 	 */
 	@Override
 	public List<User> getUserNotInGroup(Group group) {
-		// TODO Auto-generated method stub
-		return null;
+		return groupService.getUserNotInGroup(group);
 	}
+
 
 	/*
 	 * (non-Javadoc)
@@ -272,8 +272,7 @@ public class IHMtoDATAImpl implements IHMtoDATA {
 	 */
 	@Override
 	public List<Group> getGroupsUserNotIn(User user) {
-		// TODO Auto-generated method stub
-		return null;
+		return groupService.getGroupsUserNotIn(user);
 	}
 
 	/*
