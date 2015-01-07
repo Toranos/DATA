@@ -134,20 +134,10 @@ public class GroupService {
 		List<User> newListUsers= new ArrayList<User>();
 		if (group.getNom() == Group.FRIENDS_GROUP_NAME){
 			for (Group userGroup : userListGroups){
-				for (User userInGroup : userGroup.getUsers()){
-					if(user != userInGroup){
-						newListUsers.add(userInGroup);
-					}
-				}
-				userGroup.setUsers(newListUsers);
+				userGroup.getUsers().remove(user);
 			}
 		} else {
-			for (User userInGroup : group.getUsers()){
-				if(user != userInGroup){
-					newListUsers.add(userInGroup);
-				}
-			}
-			group.setUsers(newListUsers);
+			group.getUsers().remove(user);
 		}
 	}
 	
@@ -159,5 +149,12 @@ public class GroupService {
 			}
 		}
 		return null;
+	}
+	
+	public List<Group> getGroupsUserNotIn(User user){
+		
+		
+		return null;
+		
 	}
 }
