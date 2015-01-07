@@ -17,8 +17,10 @@ import java.util.TimerTask;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
+import javafx.application.Application;
 import DATA.exceptions.BadInformationException;
 import DATA.model.User;
+import IHM.Main;
 
 /**
  * Main service of data handler.
@@ -65,7 +67,7 @@ public class DataService implements Serializable {
 	 * Variable checked if save is enabled or not. 
 	 */
 	private boolean enabled = true;
-	
+		
 	/**
 	 * Return Singleton instance of DataService.
 	 * @return DataService.
@@ -143,6 +145,22 @@ public class DataService implements Serializable {
        	 		}
        	 	}, nextSavingTime);
 		}
+	}
+	
+	/**
+	 * Force save data into file.
+	 * @throws IOException 
+	 */
+	public void forceSave() throws IOException {
+		ObjectOutputStream oos = null;
+		final FileOutputStream file = new FileOutputStream(profile);
+		oos = new ObjectOutputStream(file);
+		data.time = null;
+		oos.writeObject(data);
+		oos.flush();
+		oos.close();
+		time.cancel();
+		time = null;
 	}
 	
 	/**
