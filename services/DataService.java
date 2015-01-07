@@ -87,7 +87,6 @@ public class DataService implements Serializable {
 	public static void main(String[] args) {
 		DataService d = DataService.getInstance();
 		d.setPathUser(new File(/*System.getProperty("user.dir")*/"./"));
-		System.out.println(d.getPathUser().getCanonicalPath());
 	}
 	
 	/**
