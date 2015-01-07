@@ -285,6 +285,19 @@ public class IHMtoDATAImpl implements IHMtoDATA {
 		dataToIhm.receivePictures(pictureService.getPictures(listtag), idRequest);
 		netLocalizer.getPictures(listtag,idRequest);
 	}
+	
+	@Override
+	public void getPicturesByUsers(List<String> listUser, int idRequest) {
+		List<User> connectedUsers = netLocalizer.getConnectedUsers();
+		dataToIhm.receivePictures(pictureService.getPicturesByUser(listUser), idRequest);
+		for(String user : listUser){
+			for(User connected : connectedUsers){
+				if(connected.getLogin().equals(user)){
+					netLocalizer.getPictures(connected.getUid(), idRequest);
+				}
+			}
+		}
+	}
 
 	/*
 	 * (non-Javadoc)

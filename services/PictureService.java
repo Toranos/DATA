@@ -1,9 +1,16 @@
 package DATA.services;
 
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.UUID;
+
+import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
 
 import javafx.scene.image.Image;
 import DATA.exceptions.BadInformationException;
@@ -67,12 +74,25 @@ public class PictureService {
 		return resultPictures;
 	}
 	
+	public List<Picture> getPicturesByUser(List<String> listUser) {
+		List<Picture> resultPictures = new ArrayList<Picture>();
+		if(listUser != null && !listUser.isEmpty()) { 
+			for(String user : listUser){
+				if(user.equals(DataService.getInstance().getUser().getLogin())){
+					return DataService.getInstance().getUser().getListPictures();
+				}
+			}
+		}
+		return resultPictures;
+	}
+	
 	/**
 	 * 
 	 * @param picture
 	 */
 	public void addPicture(Picture picture) {
-		picture.setImageIcon(new Image(picture.getFilename()));
+		picture.setPixels(imageToByte(picture.getFilename()));
+//		picture.setIcon(new ImageIcon(picture.getFilename()));
 		DataService.getInstance().getUser().getListPictures().add(picture);
 	}
 	
@@ -104,4 +124,26 @@ public class PictureService {
 	    }
 	}
 	
+	public byte[] imageToByte(String filename){
+		byte[] packet = new byte[0];
+		try {
+			BufferedImage img = null;
+			ByteArrayOutputStream baos = new ByteArrayOutputStream();
+			try {
+				img = ImageIO.read(new File(filename));
+				ImageIO.write(
+						img,
+						filename.substring(
+								filename.lastIndexOf(".") + 1),
+						baos);
+				packet =  baos.toByteArray();
+			} catch (IOException ex) {
+				ex.printStackTrace();  
+			}
+		} catch (Exception e) {  
+			System.out.println("Exception during serialization: " + e);  
+			System.exit(0);  
+		}
+		return packet;
+	}	
 }
