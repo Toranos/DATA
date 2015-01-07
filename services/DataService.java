@@ -50,14 +50,14 @@ public class DataService implements Serializable {
 	private static final String exportFile = "export.zip";
 	
 	/**
+	 * Path of database file relative to the current application path. 
+	 */
+	private static final String profile = "profile.data";
+	
+	/**
 	 * Size of buffer for Zip.
 	 */
 	private static final int bufferZip = 2048;	
-	
-	/**
-	 * Path of database file relative to the current application path. 
-	 */
-	private static String profile = "profile.data";
 
 	/**
 	 * Singleton variable.
@@ -68,6 +68,11 @@ public class DataService implements Serializable {
 	 * Local and current User.
 	 */
 	private User user = null;
+	
+	/**
+	 * Current user path for profile and image.
+	 */
+	private File userPath = null;
 	
 	/**
 	 * Timer for avoiding overload of saving.
@@ -81,7 +86,7 @@ public class DataService implements Serializable {
 	
 	public static void main(String[] args) {
 		try {
-			DataService.imports(new File("export.zip"));
+			DataService.imports(new File(exportFile));
 		} catch (ClassNotFoundException | IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -126,20 +131,19 @@ public class DataService implements Serializable {
 	}
 	
 	/**
-	 * Return path profile. 
-	 * @return String
+	 * Return path user. 
+	 * @return File
 	 */
-	public String getPathProfile() {
-		return profile;
+	public File getPathUser() {
+		return userPath;
 	}
 	
 	/**
-	 * Define path profile. 
+	 * Define path user. 
 	 * @return User
 	 */
-	public boolean setPathProfile(String p) {
-		profile = p;
-		return true;
+	public void setPathUser(File p) {
+		userPath = p;
 	}
 
 	/**
