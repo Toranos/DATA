@@ -70,7 +70,7 @@ public class UserService {
 			throw new BadInformationException("Login/password empty");
 		}
 		try {
-			DataService.imports();
+			DataService.load();
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

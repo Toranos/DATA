@@ -15,6 +15,7 @@ import java.util.Date;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.zip.ZipEntry;
+import java.util.zip.ZipInputStream;
 import java.util.zip.ZipOutputStream;
 
 import javafx.application.Application;
@@ -44,6 +45,16 @@ public class DataService implements Serializable {
 	private static final String imageDir = "img";
 	
 	/**
+	 * Filename of export 
+	 */
+	private static final String exportFile = "export.zip";
+	
+	/**
+	 * Size of buffer for Zip.
+	 */
+	private static final int bufferZip = 2048;	
+	
+	/**
 	 * Path of database file relative to the current application path. 
 	 */
 	private static String profile = "profile.data";
@@ -67,7 +78,17 @@ public class DataService implements Serializable {
 	 * Variable checked if save is enabled or not. 
 	 */
 	private boolean enabled = true;
-		
+	
+	public static void main(String[] args) {
+		try {
+			DataService.imports(new File("export.zip"));
+		} catch (ClassNotFoundException | IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		System.out.println("end");
+	}
+	
 	/**
 	 * Return Singleton instance of DataService.
 	 * @return DataService.
@@ -169,7 +190,7 @@ public class DataService implements Serializable {
 	 * @throws FileNotFoundException 
 	 * @throws ClassNotFoundException 
 	 */
-	public static void imports() throws FileNotFoundException, IOException, ClassNotFoundException {
+	public static void load() throws IOException, ClassNotFoundException {
 		File file =  new File(profile) ;
 		ObjectInputStream ois = null;
 		ois = new ObjectInputStream(new FileInputStream(file));
@@ -178,24 +199,59 @@ public class DataService implements Serializable {
 	}
 	
 	/**
-	 * Load data from local file.
+	 * Import data from local file.
 	 * @param f File File to load.
 	 * @throws IOException 
 	 * @throws FileNotFoundException 
 	 * @throws ClassNotFoundException 
 	 */
-	public static void imports(File file) throws FileNotFoundException, IOException, ClassNotFoundException {
-		ObjectInputStream ois = null;
-		ois = new ObjectInputStream(new FileInputStream(file));
-		data = (DataService) ois.readObject();
-		ois.close();
+	public static void imports(File file) throws IOException, ClassNotFoundException {
+		
+		// Check if the file existe or is readable.
+		if (file.exists() == false || file.canRead() == false) {
+			throw new FileNotFoundException();
+		}
+		
+		// If the image dir does not exists, we create it.
+		File imageDir = new File(DataService.imageDir);
+		if (imageDir.exists() == false) {
+			imageDir.mkdirs();
+		}
+		
+		// Initialize Zip.
+		byte data[] = new byte[bufferZip];
+		FileOutputStream destDir = null;
+		BufferedOutputStream dest = new BufferedOutputStream(destDir);
+		FileInputStream fis = new FileInputStream(file.getPath());
+		BufferedInputStream buffi = new BufferedInputStream(fis);
+		ZipInputStream zis = new ZipInputStream(buffi);
+		ZipEntry entry;
+		int nbEntries = 0;
+		
+		// Get file.
+		while((entry = zis.getNextEntry()) != null) {
+			FileOutputStream fos = new FileOutputStream(entry.getName());
+			dest = new BufferedOutputStream(fos, bufferZip);
+			int count;
+			while ((count = zis.read(data, 0, bufferZip)) != -1) {
+				dest.write(data, 0, count);
+			}
+			dest.flush();
+			dest.close();
+			nbEntries++;
+		}
+		zis.close();
+		
+		// If file isn't Zip or is empty, throw exception.
+		if (nbEntries == 0) {
+			throw new IOException();
+		}
 	}
 
 	/**
 	 * Save all information into one zip file.
 	 */
 	public void exports() throws IOException {
-		final int BUFFER = 2048;	
 		File profile = new File(System.getProperty("user.dir")+File.separatorChar+DataService.profile);
 		
 		// If the profile does not exists, export is stopped.
@@ -204,8 +260,8 @@ public class DataService implements Serializable {
 		}
 		
 		// Intitialize Zip.
-		byte data[] = new byte[BUFFER];
-		FileOutputStream dest= new FileOutputStream("export.zip");
+		byte data[] = new byte[bufferZip];
+		FileOutputStream dest = new FileOutputStream(exportFile);
 		BufferedOutputStream buff = new BufferedOutputStream(dest);
 		ZipOutputStream out = new ZipOutputStream(buff);
 		out.setMethod(ZipOutputStream.DEFLATED);
@@ -213,11 +269,11 @@ public class DataService implements Serializable {
 		
 		// Add profile
 		FileInputStream fi = new FileInputStream(profile);
-	    BufferedInputStream buffi = new BufferedInputStream(fi, BUFFER);
+	    BufferedInputStream buffi = new BufferedInputStream(fi, bufferZip);
 	    ZipEntry entry = new ZipEntry(profile.getName());
 	    out.putNextEntry(entry);
 	    int count;
-	    while((count = buffi.read(data, 0, BUFFER)) != -1) {
+	    while((count = buffi.read(data, 0, bufferZip)) != -1) {
 	        out.write(data, 0, count);
 	    }
 	    out.closeEntry();
@@ -230,17 +286,16 @@ public class DataService implements Serializable {
 			// Add all images.
 			for(File f : img) {
 			    fi = new FileInputStream(f);
-			    buffi = new BufferedInputStream(fi, BUFFER);
+			    buffi = new BufferedInputStream(fi, bufferZip);
 			    entry = new ZipEntry(DataService.imageDir+File.separatorChar+f.getName());
 			    out.putNextEntry(entry);
-			    while((count = buffi.read(data, 0, BUFFER)) != -1) {
+			    while((count = buffi.read(data, 0, bufferZip)) != -1) {
 			        out.write(data, 0, count);
 			    }
 			    out.closeEntry();
 			    buffi.close();
 			}
 		}
-		
 		out.close();		
 	}
 }
