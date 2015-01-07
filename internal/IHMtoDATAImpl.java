@@ -74,8 +74,15 @@ public class IHMtoDATAImpl implements IHMtoDATA {
 		if (comment.getPictureUserId() == null || comment.getPictureUserId().equals("")) {
 			throw new BadInformationException("PictureUserId empty");
 		}
-	    
-		netLocalizer.addComment(comment, comment.getPictureUserId());
+		
+		if (pictureService.addComment(comment) == false) {
+			try {
+				netLocalizer.addComment(comment, comment.getPictureUserId());
+			} catch (Exception e){
+				e.printStackTrace();
+			}
+		}
+		
 	}
 
 	@Override
@@ -96,7 +103,13 @@ public class IHMtoDATAImpl implements IHMtoDATA {
 			throw new BadInformationException("PictureUserId empty");
 		}
 		
-		netLocalizer.addNote(note, note.getPictureUserId());
+		if (pictureService.addNote(note) == false) {
+			try {
+				netLocalizer.addNote(note, note.getPictureUserId());
+			} catch (Exception e){
+				e.printStackTrace();
+			}
+		}
 	}
 
 	/*
@@ -137,6 +150,21 @@ public class IHMtoDATAImpl implements IHMtoDATA {
 		groupService.addUserInGroup(user, group);
 		netLocalizer.addFriend(user.getUid());
 	}
+	
+	/*
+	 * (non-Javadoc)
+	 * @see DATA.interfaces.IHMtoDATA#deleteComment(DATA.model.Comment)
+	 */
+	@Override
+	public void deleteComment(Comment comment) {
+		pictureService.deleteComment(comment);
+		try {
+			userService.export_();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
 
 	/*
 	 * (non-Javadoc)
@@ -145,8 +173,13 @@ public class IHMtoDATAImpl implements IHMtoDATA {
 	 */
 	@Override
 	public void deleteGroup(Group group) {
-		// TODO Auto-generated method stub
-
+		groupService.deleteGroup(group);
+		try {
+			userService.export_();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	/*
@@ -156,8 +189,13 @@ public class IHMtoDATAImpl implements IHMtoDATA {
 	 */
 	@Override
 	public void deletePicture(Picture picture) {
-		// TODO Auto-generated method stub
-
+		pictureService.deletePicture(picture);
+		try {
+			userService.export_();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	/*

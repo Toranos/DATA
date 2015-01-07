@@ -57,8 +57,22 @@ public class NETtoDATAImpl implements NETtoDATA {
 		pictureService.addComment(comment);
 	}
 	
+	/*
+	 * (non-Javadoc)
+	 * @see DATA.interfaces.NETtoDATA#addNote(DATA.model.Note)
+	 */
+	@Override
 	public void addNote(Note note) {
 		pictureService.addNote(note);
+	}
+	
+	/*
+	 * (non-Javadoc)
+	 * @see DATA.interfaces.NETtoDATA#deleteComment(DATA.model.Comment)
+	 */
+	@Override
+	public void deleteComment(Comment comment){
+		pictureService.deleteComment(comment);
 	}
 
 	/* (non-Javadoc)
