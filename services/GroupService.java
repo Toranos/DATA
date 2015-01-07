@@ -1,5 +1,6 @@
 package DATA.services;
 
+import java.util.Iterator;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -34,6 +35,23 @@ public class GroupService {
 	
 	/**
 	 * 
+	 * @param group
+	 */
+	public void deleteGroup(Group group) {
+		if (group.getNom().equals("Autres") == false || group.getNom().equals("Amis")  == false) {
+			User currentUser = DataService.getInstance().getUser();
+			Iterator<Group> iter = currentUser.getListGroups().iterator();
+			while (iter.hasNext()) {
+		    	if (iter.next().getUid().equals(group.getUid())) {
+		    		iter.remove();
+		    		break;
+		    	}
+		    }
+		}
+	}
+	
+	/**
+	 * 
 	 * @param user
 	 * @param group
 	 */
@@ -54,7 +72,7 @@ public class GroupService {
 	public List<Group> getGroups() {
 		return DataService.getInstance().getUser().getListGroups();
 	}
-
+	
 	public void acceptUser(User user, Group group) {
 		for (Group groupToAdd : DataService.getInstance().getUser().getListGroups()) {
 			if(groupToAdd.getUid().equals(group.getUid())) {

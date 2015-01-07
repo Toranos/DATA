@@ -26,6 +26,12 @@ public interface NETtoDATA {
 	public void addNote(Note note) throws IOException ;
 	
 	/**
+	 * Delete a comment to a remote picture. 
+	 * @param comment
+	 */
+	public void deleteComment(Comment comment) throws IOException ;
+	
+	/**
 	 * Return the list of saved IPs.
 	 * @return List<Inet4Address>
 	 */

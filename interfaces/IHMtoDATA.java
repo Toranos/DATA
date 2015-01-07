@@ -65,8 +65,14 @@ public  interface IHMtoDATA
 	public void refuseUser(User user) ;
 	
 	/**
+	 * Delete a comment of a picture
+	 * @param comment
+	 */
+	public void deleteComment(Comment comment) ;
+	
+	/**
 	 * Delete a group and all its users
-	 * @param group	The gorup to delete
+	 * @param group	The group to delete
 	 */
 	public void deleteGroup(Group group) ;
 	
@@ -113,7 +119,7 @@ public  interface IHMtoDATA
 	* @param name of the group searched
 	* @return the Group searched
 	*/
-	public Group getGroup(String group) ;
+	public Group getGroupByName(String group) ;
 	
 	/**
 	* @Brief : Request all the group of the current user
