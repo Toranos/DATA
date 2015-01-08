@@ -120,8 +120,13 @@ public class IHMtoDATAImpl implements IHMtoDATA {
 	 */
 	@Override
 	public void addGroup(Group group) {
-		// TODO Auto-generated method stub
-
+		try {
+			groupService.addGroup(group);
+			dataToIhm.receiveReloadUserGroups();
+		} catch (BadInformationException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	/*
