@@ -461,6 +461,11 @@ public class IHMtoDATAImpl implements IHMtoDATA {
 	@Override
 	public boolean logout() throws IOException {
 		try {
+			for (Group group : groupService.getGroups()) {
+				for (User userGroup : group.getUsers()) {
+					userGroup.setConnected(false);
+				}
+			}
 			userService.setConnectedUsers(netLocalizer.disconnect());
 		} catch (BusinessException e) {
 			// TODO Auto-generated catch block
