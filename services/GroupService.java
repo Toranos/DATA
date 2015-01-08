@@ -130,12 +130,16 @@ public class GroupService {
 			throw new BadInformationException("PictureId empty");
 		}
 		List<Group> userGroups = DataService.getInstance().getUser().getListGroups();
+		boolean groupExists = false;
 		for (Group userGroup : userGroups) {
-			if (userGroup.getNom() == group.getNom()){
-				throw new BadInformationException("Group Name already exists");
-			} else {
-				userGroups.add(group);
-			}
+			if (userGroup.getNom().equals(group.getNom())){
+				groupExists = true;
+			} 
+		}
+		if(!groupExists) {
+			userGroups.add(group);
+		} else {
+			throw new BadInformationException("Group Name already exists");
 		}
 	}
 	
