@@ -68,7 +68,7 @@ public  interface IHMtoDATA
 	 * Delete a comment of a picture
 	 * @param comment
 	 */
-	public void deleteComment(Comment comment) ;
+	public void deleteComment(Comment comment) throws BadInformationException ;
 	
 	/**
 	 * Delete a group and all its users
