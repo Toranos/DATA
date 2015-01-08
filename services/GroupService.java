@@ -163,7 +163,7 @@ public class GroupService {
 	
 	public void deleteUserFromGroup(User user, Group group){
 		List<Group> userListGroups=DataService.getInstance().getUser().getListGroups();
-		if (group.getNom() == Group.FRIENDS_GROUP_NAME){
+		if (group.getNom().equals(Group.FRIENDS_GROUP_NAME)){
 			for (Group userGroup : userListGroups){
 				userGroup.getUsers().remove(user);
 			}

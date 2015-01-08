@@ -226,7 +226,7 @@ public class IHMtoDATAImpl implements IHMtoDATA {
 	@Override
 	public void deleteUserFromGroup(User user, Group group) {
 		groupService.deleteUserFromGroup(user, group);
-		if(group.getNom() == Group.FRIENDS_GROUP_NAME) {
+		if(group.getNom().equals(Group.FRIENDS_GROUP_NAME)) {
 			netLocalizer.deleteFriend(user.getUid());
 		}
 	}
