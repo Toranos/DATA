@@ -3,7 +3,6 @@
  */
 package DATA.internal;
 
-import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -14,11 +13,9 @@ import DATA.interfaces.IHMtoDATA;
 import DATA.model.Comment;
 import DATA.model.Group;
 import DATA.model.Note;
-import DATA.model.PendingRequest;
 import DATA.model.Picture;
 import DATA.model.Tag;
 import DATA.model.User;
-import DATA.services.DataService;
 import DATA.services.GroupService;
 import DATA.services.PictureService;
 import DATA.services.UserService;
@@ -119,7 +116,7 @@ public class IHMtoDATAImpl implements IHMtoDATA {
 	public void addPicture(Picture picture) {
 		pictureService.addPicture(picture);
 		try {
-			userService.export_();
+			userService.save();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -437,7 +434,7 @@ public class IHMtoDATAImpl implements IHMtoDATA {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		userService.export_();
+		userService.forceSave();
 		return true;
 	}
 

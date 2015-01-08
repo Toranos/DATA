@@ -150,7 +150,7 @@ public class DataService implements Serializable {
 		if (enabled) {
 			enabled = false;
 			ObjectOutputStream oos = null;
-			final FileOutputStream file = new FileOutputStream(profile);
+			final FileOutputStream file = new FileOutputStream(userPath.toString() + File.separatorChar + profile);
 			oos = new ObjectOutputStream(file);
 			data.time = null;
 			oos.writeObject(data);
@@ -174,14 +174,13 @@ public class DataService implements Serializable {
 	 */
 	public void forceSave() throws IOException {
 		ObjectOutputStream oos = null;
-		final FileOutputStream file = new FileOutputStream(profile);
+		final FileOutputStream file = new FileOutputStream(userPath.toString() + File.separatorChar + profile);
 		oos = new ObjectOutputStream(file);
 		data.time = null;
 		oos.writeObject(data);
 		oos.flush();
 		oos.close();
-		time.cancel();
-		time = null;
+		enabled = true;
 	}
 	
 	/**
@@ -191,7 +190,8 @@ public class DataService implements Serializable {
 	 * @throws ClassNotFoundException 
 	 */
 	public static void load() throws IOException, ClassNotFoundException {
-		File file =  new File(profile) ;
+		File file =  new File(DataService.getInstance().getPathUser().toString()
+				+ File.separatorChar + profile) ;
 		ObjectInputStream ois = null;
 		ois = new ObjectInputStream(new FileInputStream(file));
 		data = (DataService) ois.readObject();
@@ -252,7 +252,7 @@ public class DataService implements Serializable {
 	 * Save all information into one zip file.
 	 */
 	public void exports() throws IOException {
-		File profile = new File(System.getProperty("user.dir")+File.separatorChar+DataService.profile);
+		File profile = new File(userPath.toString() + File.separatorChar + DataService.profile);
 		
 		// If the profile does not exists, export is stopped.
 		if (profile.exists() == false) {
@@ -280,7 +280,7 @@ public class DataService implements Serializable {
 	    buffi.close();
 		
 		// Get all images.
-		File[] img = new File(System.getProperty("user.dir")+File.separatorChar+DataService.imageDir).listFiles();
+		File[] img = new File(userPath.toString() + File.separatorChar + DataService.imageDir).listFiles();
 		if (img != null && img.length > 0) {
 			
 			// Add all images.

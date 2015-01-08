@@ -61,7 +61,6 @@ public class UserService {
 		
 		// Création du dossier utilisateur
 		Path path = Paths.get(rootFile + u.getUid());
-		System.out.println(path.toString());
 		if(!Files.exists(path)){
 			boolean success = (new File(rootFile + u.getUid())).mkdirs();
 			if (!success) {
@@ -76,8 +75,10 @@ public class UserService {
 		DataService.getInstance().setUser(u);
 		DataService.getInstance().setPathUser(new File(rootFile + u.getUid() + File.separator));
 		try {
-			DataService.getInstance().exports();
+			DataService.getInstance().save();
 		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			System.out.println("Erreur lors de la création du fichier de data");
 			e.printStackTrace();
 		}
 		return u;
@@ -107,6 +108,8 @@ public class UserService {
 			while ((line = br.readLine()) != null) {
 				String[] parts = line.split(" ");
 				if(parts[0].equals(username) && parts[1].equals(password)){
+					System.out.println("Real : " + username + " - find : " + parts[0]);
+					DataService.getInstance().setPathUser(new File(rootFile + parts[2]));
 					DataService.load();
 					return DataService.getInstance().getUser();
 				}
@@ -160,8 +163,24 @@ public class UserService {
 			ClassNotFoundException, IOException {
 		// TODO Auto-generated method stub
 		File f = new File(parameter);
-		DataService.getInstance().imports(f);
+		DataService.imports(f);
 		return DataService.getInstance().getUser();
+	}
+	
+	/**
+	 * Save the profile in the data file, end the time scheduler for saving
+	 * @throws IOException 
+	 */
+	public void forceSave() throws IOException{
+		DataService.getInstance().forceSave();
+	}
+	
+	/**
+	 * Save the profile in the data file
+	 * @throws IOException
+	 */
+	public void save() throws IOException {
+		DataService.getInstance().save();
 	}
 
 	/**
