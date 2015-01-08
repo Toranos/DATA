@@ -80,7 +80,11 @@ public class NETtoDATAImpl implements NETtoDATA {
 	 */
 	@Override
 	public void deleteComment(Comment comment){
-		pictureService.deleteComment(comment);
+		try{
+			pictureService.deleteComment(comment);
+		} catch (BadInformationException e){
+			e.printStackTrace();
+		}
 	}
 
 	/* (non-Javadoc)
@@ -88,8 +92,7 @@ public class NETtoDATAImpl implements NETtoDATA {
 	 */
 	@Override
 	public List<String> getConnectedIps() {
-		// TODO Auto-generated method stub
-		return null;
+		return userService.getConnectedUsers();
 	}
 
 	/* (non-Javadoc)

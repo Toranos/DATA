@@ -221,7 +221,23 @@ public class PictureService {
 	 * 
 	 * @param comment
 	 */
-	public void deleteComment(Comment comment) {
+	public boolean deleteComment(Comment comment) throws BadInformationException {
+		if (comment == null || comment.equals("")) {
+			throw new BadInformationException("Comment empty");
+		}
+		if (comment.getUid() == null || comment.getUid().equals("")) {
+			throw new BadInformationException("Uid empty");
+		}
+		if (comment.getCommentUser().getUid() == null || comment.getCommentUser().getUid().equals("")) {
+			throw new BadInformationException("CommentUserId empty");
+		}
+		if (comment.getPictureId() == null || comment.getPictureId().equals("")) {
+			throw new BadInformationException("PictureId empty");
+		}
+		if (comment.getPictureUserId() == null || comment.getPictureUserId().equals("")) {
+			throw new BadInformationException("PictureUserId empty");
+		}
+		
 		User currentUser = DataService.getInstance().getUser();
 		if (currentUser.getUid().equals(comment.getPictureUserId()) || currentUser.getUid().equals(comment.getCommentUser().getUid())) {
 			Iterator<Picture> iterPicture = currentUser.getListPictures().iterator();
@@ -237,6 +253,9 @@ public class PictureService {
 		    		break;
 		    	}
 		    }
+		    return true;
+		}  else {
+			return false;
 		}
 	}
 

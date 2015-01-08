@@ -157,14 +157,31 @@ public class IHMtoDATAImpl implements IHMtoDATA {
 	 * @see DATA.interfaces.IHMtoDATA#deleteComment(DATA.model.Comment)
 	 */
 	@Override
-	public void deleteComment(Comment comment) {
-		pictureService.deleteComment(comment);
-		try {
-			userService.export_();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+	public void deleteComment(Comment comment) throws BadInformationException {
+		if (comment == null || comment.equals("")) {
+			throw new BadInformationException("Comment empty");
 		}
+		if (comment.getUid() == null || comment.getUid().equals("")) {
+			throw new BadInformationException("Uid empty");
+		}
+		if (comment.getCommentUser().getUid() == null || comment.getCommentUser().getUid().equals("")) {
+			throw new BadInformationException("CommentUserId empty");
+		}
+		if (comment.getPictureId() == null || comment.getPictureId().equals("")) {
+			throw new BadInformationException("PictureId empty");
+		}
+		if (comment.getPictureUserId() == null || comment.getPictureUserId().equals("")) {
+			throw new BadInformationException("PictureUserId empty");
+		}
+		
+		if (pictureService.deleteComment(comment) == false) {
+			try {
+				netLocalizer.deleteComment(comment, comment.getPictureUserId());
+			} catch (Exception e){
+				e.printStackTrace();
+			}
+		}
+
 	}
 
 	/*
@@ -473,17 +490,6 @@ public class IHMtoDATAImpl implements IHMtoDATA {
 		}
 		userService.export_();
 		return true;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see DATA.interfaces.IHMtoDATA#editProfile(DATA.model.User)
-	 */
-	@Override
-	public boolean editProfile(User u) {
-		// TODO Auto-generated method stub
-		return false;
 	}
 
 	@Override

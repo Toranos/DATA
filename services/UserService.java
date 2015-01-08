@@ -177,6 +177,10 @@ public class UserService {
 	public void setConnectedUsers(List<String> connectedUsers) {
 		DataService.getInstance().getUser().setListConnectedUser(connectedUsers);
 	}
+	
+	public List<String> getConnectedUsers() {
+		return DataService.getInstance().getUser().getListConnectedUser();
+	}
 
 	/**
 	 * Return the user list for a given group
