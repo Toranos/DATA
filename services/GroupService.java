@@ -29,8 +29,18 @@ public class GroupService {
 	 * @param user
 	 * @param group
 	 */
-	public void addUserInGroup(User user, Group group) {
-		DataService.getInstance().getUser().getListPendingRequests().add(new PendingRequest(user.getUid(), group.getUid()));
+	public boolean addUserInGroup(User user, Group group) {
+		List<Group> groupsUserNotIn=getGroupsUserNotIn(user);
+		boolean canAdd = false;
+		for (Group userGroup : groupsUserNotIn) {
+			if(userGroup.getUid().equals(group.getUid())) {
+				canAdd = true;
+			}
+		}
+		if(canAdd) {
+			DataService.getInstance().getUser().getListPendingRequests().add(new PendingRequest(user.getUid(), group.getUid()));
+		}
+		return canAdd;
 	}
 	
 	/**
@@ -93,7 +103,7 @@ public class GroupService {
 			if(user.getUid().equals(pendingReq.getToUID())){
 				if(friends){
 					for(Group group : currentUser.getListGroups()){
-						if(group.getUid().equals(pendingReq.getGroupUID())){
+						if(group.getUid().equals(pendingReq.getGroupUID()) || group.getNom().equals(Group.FRIENDS_GROUP_NAME)){
 							group.getUsers().add(user);
 						}
 					}

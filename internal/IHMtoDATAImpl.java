@@ -148,8 +148,9 @@ public class IHMtoDATAImpl implements IHMtoDATA {
 	 */
 	@Override
 	public void addUserInGroup(User user, Group group) {
-		groupService.addUserInGroup(user, group);
-		netLocalizer.addFriend(user.getUid());
+		if(groupService.addUserInGroup(user, group)) {
+			netLocalizer.addFriend(user.getUid());
+		}
 	}
 	
 	/*
@@ -176,7 +177,7 @@ public class IHMtoDATAImpl implements IHMtoDATA {
 		
 		if (pictureService.deleteComment(comment) == false) {
 			try {
-				netLocalizer.deleteComment(comment, comment.getPictureUserId());
+				//netLocalizer.deleteComment(comment, comment.getPictureUserId());
 			} catch (Exception e){
 				e.printStackTrace();
 			}
