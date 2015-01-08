@@ -172,6 +172,7 @@ public class NETtoDATAImpl implements NETtoDATA {
 	@Override
 	public void notFriendAnymore(User user) {
 		groupService.deleteUserFromGroup(user, groupService.getGroup(Group.FRIENDS_GROUP_NAME));
+		dataToIhm.receiveReloadUserGroups();
 	}
 
 	@Override
