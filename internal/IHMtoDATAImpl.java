@@ -155,7 +155,9 @@ public class IHMtoDATAImpl implements IHMtoDATA {
 	public void addUserInGroup(User user, Group group) {
 		if(groupService.addUserInGroup(user, group)) {
 			dataToIhm.receiveReloadUserGroups();
-			netLocalizer.addFriend(user.getUid());
+			if(group.getNom().equals(Group.FRIENDS_GROUP_NAME)) {
+				netLocalizer.addFriend(user.getUid());
+			}
 		}
 	}
 	
