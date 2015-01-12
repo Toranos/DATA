@@ -41,6 +41,8 @@ public class GroupService {
 		}
 		if(canAdd && groupToAdd.getNom().equals(Group.FRIENDS_GROUP_NAME)) {
 			DataService.getInstance().getUser().getListPendingRequests().add(new PendingRequest(user.getUid(), groupToAdd.getUid()));
+		} else if(canAdd) {
+			acceptUser(user, groupToAdd);
 		}
 		return canAdd;
 	}
