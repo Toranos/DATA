@@ -40,7 +40,7 @@ public class GroupService {
 			}
 		}
 		if(canAdd && groupToAdd != null) {
-			groupToAdd.getUsers().add(user);
+			DataService.getInstance().getUser().getListPendingRequests().add(new PendingRequest(user.getUid(), groupToAdd.getUid()));
 		}
 		return canAdd;
 	}
