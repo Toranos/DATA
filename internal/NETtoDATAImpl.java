@@ -190,4 +190,9 @@ public class NETtoDATAImpl implements NETtoDATA {
 		return pictureService.getPictureById(id);
 	}
 
+	@Override
+	public boolean checkFriendRequest(UUID userId) {
+		return groupService.checkFriendRequest(userId);
+	}
+
 }

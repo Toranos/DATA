@@ -216,4 +216,13 @@ public class GroupService {
 		return groupsUserNotIn;
 		
 	}
+	
+	public boolean checkFriendRequest(UUID userId) {
+		for (PendingRequest pendReq : DataService.getInstance().getUser().getListPendingRequests()) {
+			if(pendReq.getToUID().equals(userId)){
+				return true;
+			}
+		}
+		return false;
+	}
 }
