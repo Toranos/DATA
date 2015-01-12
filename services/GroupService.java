@@ -217,7 +217,7 @@ public class GroupService {
 		
 	}
 	
-	public boolean checkFriendRequest(UUID userId) {
+	public boolean checkPendingRequest(UUID userId) {
 		for (PendingRequest pendReq : DataService.getInstance().getUser().getListPendingRequests()) {
 			if(pendReq.getToUID().equals(userId)){
 				return true;

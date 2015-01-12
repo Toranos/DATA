@@ -191,8 +191,10 @@ public class NETtoDATAImpl implements NETtoDATA {
 	}
 
 	@Override
-	public boolean checkFriendRequest(UUID userId) {
-		return groupService.checkFriendRequest(userId);
+	public void checkPendingRequest(UUID userId) {
+		if(groupService.checkPendingRequest(userId)) {
+			netLocalizer.addFriend(userId);
+		}
 	}
 
 }

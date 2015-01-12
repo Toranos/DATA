@@ -121,5 +121,5 @@ public interface NETtoDATA {
 	 * Inform that your friend remove you to his friend.
 	 * @param user
 	 */
-	public boolean checkFriendRequest(final UUID userId) ;
+	public void checkPendingRequest(final UUID userId) ;
 }
