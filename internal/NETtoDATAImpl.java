@@ -54,11 +54,37 @@ public class NETtoDATAImpl implements NETtoDATA {
 	 */
 	@Override
 	public void addComment(Comment comment) {
-		pictureService.addComment(comment);
+		try{
+			pictureService.addComment(comment);
+		} catch (BadInformationException e){
+			e.printStackTrace();
+		}
 	}
 	
+	/*
+	 * (non-Javadoc)
+	 * @see DATA.interfaces.NETtoDATA#addNote(DATA.model.Note)
+	 */
+	@Override
 	public void addNote(Note note) {
-		pictureService.addNote(note);
+		try{
+			pictureService.addNote(note);
+		} catch (BadInformationException e){
+			e.printStackTrace();
+		}
+	}
+	
+	/*
+	 * (non-Javadoc)
+	 * @see DATA.interfaces.NETtoDATA#deleteComment(DATA.model.Comment)
+	 */
+	@Override
+	public void deleteComment(Comment comment){
+		try{
+			pictureService.deleteComment(comment);
+		} catch (BadInformationException e){
+			e.printStackTrace();
+		}
 	}
 
 	/* (non-Javadoc)
@@ -66,8 +92,7 @@ public class NETtoDATAImpl implements NETtoDATA {
 	 */
 	@Override
 	public List<String> getConnectedIps() {
-		// TODO Auto-generated method stub
-		return null;
+		return userService.getConnectedUsers();
 	}
 
 	/* (non-Javadoc)
@@ -146,8 +171,8 @@ public class NETtoDATAImpl implements NETtoDATA {
 	 */
 	@Override
 	public void notFriendAnymore(User user) {
-		// TODO Auto-generated method stub
-
+		groupService.deleteUserFromGroup(user, groupService.getGroup(Group.FRIENDS_GROUP_NAME));
+		dataToIhm.receiveReloadUserGroups();
 	}
 
 	@Override
@@ -163,6 +188,13 @@ public class NETtoDATAImpl implements NETtoDATA {
 	@Override
 	public Picture getPictureById(UUID id) {
 		return pictureService.getPictureById(id);
+	}
+
+	@Override
+	public void checkPendingRequest(UUID userId) {
+		if(groupService.checkPendingRequest(userId)) {
+			netLocalizer.addFriend(userId);
+		}
 	}
 
 }

@@ -106,7 +106,7 @@ public class Picture implements Serializable {
     	if (numberOfNote == 0) {
     		return 0;
     	} else {
-    		return sumNote/numberOfNote;
+    		return sumNote/(float)numberOfNote;
     	}
     }
 

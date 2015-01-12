@@ -1,5 +1,6 @@
 package DATA.services;
 
+import java.util.Iterator;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -28,8 +29,39 @@ public class GroupService {
 	 * @param user
 	 * @param group
 	 */
-	public void addUserInGroup(User user, Group group) {
-		DataService.getInstance().getUser().getListPendingRequests().add(new PendingRequest(user.getUid(), group.getUid()));
+	public boolean addUserInGroup(User user, Group group) {
+		List<Group> groupsUserNotIn=getGroupsUserNotIn(user);
+		Group groupToAdd = null;
+		boolean canAdd = false;
+		for (Group userGroup : groupsUserNotIn) {
+			if(userGroup.getUid().equals(group.getUid())) {
+				canAdd = true;
+				groupToAdd = userGroup;
+			}
+		}
+		if(canAdd && groupToAdd.getNom().equals(Group.FRIENDS_GROUP_NAME)) {
+			DataService.getInstance().getUser().getListPendingRequests().add(new PendingRequest(user.getUid(), groupToAdd.getUid()));
+		} else if(canAdd) {
+			acceptUser(user, groupToAdd);
+		}
+		return canAdd;
+	}
+	
+	/**
+	 * 
+	 * @param group
+	 */
+	public void deleteGroup(Group group) {
+		if (group.getNom().equals("Autres") == false || group.getNom().equals("Amis")  == false) {
+			User currentUser = DataService.getInstance().getUser();
+			Iterator<Group> iter = currentUser.getListGroups().iterator();
+			while (iter.hasNext()) {
+		    	if (iter.next().getUid().equals(group.getUid())) {
+		    		iter.remove();
+		    		break;
+		    	}
+		    }
+		}
 	}
 	
 	/**
@@ -54,12 +86,21 @@ public class GroupService {
 	public List<Group> getGroups() {
 		return DataService.getInstance().getUser().getListGroups();
 	}
-
+	
 	public void acceptUser(User user, Group group) {
+		Group groupUserToAdd = null;
 		for (Group groupToAdd : DataService.getInstance().getUser().getListGroups()) {
 			if(groupToAdd.getUid().equals(group.getUid())) {
-				groupToAdd.getUsers().add(user);
+				groupUserToAdd = groupToAdd;
+				for(User userGroup : groupToAdd.getUsers()) {
+					if(userGroup.getUid().equals(user.getUid())){
+						groupUserToAdd = null;
+					}
+				}
 			}
+		}
+		if(groupUserToAdd != null) {
+			groupUserToAdd.getUsers().add(user);
 		}
 	}
 
@@ -69,18 +110,22 @@ public class GroupService {
 	 * @param friends
 	 */
 	public void receiveFriendResponse(User user, boolean friends) {
+		PendingRequest pendReq = null;
 		User currentUser = DataService.getInstance().getUser();
 		for (PendingRequest pendingReq : currentUser.getListPendingRequests()) {
 			if(user.getUid().equals(pendingReq.getToUID())){
 				if(friends){
 					for(Group group : currentUser.getListGroups()){
-						if(group.getUid().equals(pendingReq.getGroupUID())){
+						if(group.getUid().equals(pendingReq.getGroupUID()) || group.getNom().equals(Group.FRIENDS_GROUP_NAME)){
 							group.getUsers().add(user);
 						}
 					}
 				}
-				currentUser.getListPendingRequests().remove(pendingReq);
+				pendReq = pendingReq;
 			}
+		}
+		if(pendReq != null) {
+			currentUser.getListPendingRequests().remove(pendReq);
 		}
 	}
 	
@@ -98,12 +143,16 @@ public class GroupService {
 			throw new BadInformationException("PictureId empty");
 		}
 		List<Group> userGroups = DataService.getInstance().getUser().getListGroups();
+		boolean groupExists = false;
 		for (Group userGroup : userGroups) {
-			if (userGroup.getNom() == group.getNom()){
-				throw new BadInformationException("Group Name already exists");
-			} else {
-				userGroups.add(group);
-			}
+			if (userGroup.getNom().equals(group.getNom())){
+				groupExists = true;
+			} 
+		}
+		if(!groupExists) {
+			userGroups.add(group);
+		} else {
+			throw new BadInformationException("Group Name already exists");
 		}
 	}
 	
@@ -131,33 +180,51 @@ public class GroupService {
 	
 	public void deleteUserFromGroup(User user, Group group){
 		List<Group> userListGroups=DataService.getInstance().getUser().getListGroups();
-		List<User> newListUsers= new ArrayList<User>();
-		if (group.getNom() == Group.FRIENDS_GROUP_NAME){
+		if (group.getNom().equals(Group.FRIENDS_GROUP_NAME)){
 			for (Group userGroup : userListGroups){
-				for (User userInGroup : userGroup.getUsers()){
-					if(user != userInGroup){
-						newListUsers.add(userInGroup);
-					}
-				}
-				userGroup.setUsers(newListUsers);
+				userGroup.getUsers().remove(user);
 			}
 		} else {
-			for (User userInGroup : group.getUsers()){
-				if(user != userInGroup){
-					newListUsers.add(userInGroup);
-				}
-			}
-			group.setUsers(newListUsers);
+			group.getUsers().remove(user);
 		}
 	}
 	
 	public Group getGroup(String group){
 		List<Group> userGroups = DataService.getInstance().getUser().getListGroups();
 		for (Group userGroup : userGroups){
-			if (userGroup.getNom() == group) {
+			if (userGroup.getNom().equals(group)) {
 				return userGroup;
 			}
 		}
 		return null;
+	}
+	
+	public List<Group> getGroupsUserNotIn(User user){
+		List<Group> groups = this.getGroups();
+		List<Group> groupsUserNotIn= new ArrayList<>();
+		boolean userNotIn;
+		for (Group group : groups){
+			userNotIn = true;
+			for (User u : group.getUsers()){
+				if (user.getUid().equals(u.getUid())){
+					userNotIn=false;
+				}
+			}
+			if (userNotIn){
+				groupsUserNotIn.add(group);
+			}
+		}
+		
+		return groupsUserNotIn;
+		
+	}
+	
+	public boolean checkPendingRequest(UUID userId) {
+		for (PendingRequest pendReq : DataService.getInstance().getUser().getListPendingRequests()) {
+			if(pendReq.getToUID().equals(userId)){
+				return true;
+			}
+		}
+		return false;
 	}
 }

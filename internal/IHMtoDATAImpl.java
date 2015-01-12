@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+
 import DATA.exceptions.BadInformationException;
 import DATA.interfaces.IHMtoDATA;
 import DATA.model.Comment;
@@ -74,8 +75,15 @@ public class IHMtoDATAImpl implements IHMtoDATA {
 		if (comment.getPictureUserId() == null || comment.getPictureUserId().equals("")) {
 			throw new BadInformationException("PictureUserId empty");
 		}
-	    
-		netLocalizer.addComment(comment, comment.getPictureUserId());
+		
+		if (pictureService.addComment(comment) == false) {
+			try {
+				netLocalizer.addComment(comment, comment.getPictureUserId());
+			} catch (Exception e){
+				e.printStackTrace();
+			}
+		}
+		
 	}
 
 	@Override
@@ -96,7 +104,13 @@ public class IHMtoDATAImpl implements IHMtoDATA {
 			throw new BadInformationException("PictureUserId empty");
 		}
 		
-		netLocalizer.addNote(note, note.getPictureUserId());
+		if (pictureService.addNote(note) == false) {
+			try {
+				netLocalizer.addNote(note, note.getPictureUserId());
+			} catch (Exception e){
+				e.printStackTrace();
+			}
+		}
 	}
 
 	/*
@@ -106,8 +120,13 @@ public class IHMtoDATAImpl implements IHMtoDATA {
 	 */
 	@Override
 	public void addGroup(Group group) {
-		// TODO Auto-generated method stub
-
+		try {
+			groupService.addGroup(group);
+			dataToIhm.receiveReloadUserGroups();
+		} catch (BadInformationException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	/*
@@ -134,8 +153,44 @@ public class IHMtoDATAImpl implements IHMtoDATA {
 	 */
 	@Override
 	public void addUserInGroup(User user, Group group) {
-		groupService.addUserInGroup(user, group);
-		netLocalizer.addFriend(user.getUid());
+		if(groupService.addUserInGroup(user, group)) {
+			dataToIhm.receiveReloadUserGroups();
+			if(group.getNom().equals(Group.FRIENDS_GROUP_NAME)) {
+				netLocalizer.addFriend(user.getUid());
+			}
+		}
+	}
+	
+	/*
+	 * (non-Javadoc)
+	 * @see DATA.interfaces.IHMtoDATA#deleteComment(DATA.model.Comment)
+	 */
+	@Override
+	public void deleteComment(Comment comment) throws BadInformationException {
+		if (comment == null || comment.equals("")) {
+			throw new BadInformationException("Comment empty");
+		}
+		if (comment.getUid() == null || comment.getUid().equals("")) {
+			throw new BadInformationException("Uid empty");
+		}
+		if (comment.getCommentUser().getUid() == null || comment.getCommentUser().getUid().equals("")) {
+			throw new BadInformationException("CommentUserId empty");
+		}
+		if (comment.getPictureId() == null || comment.getPictureId().equals("")) {
+			throw new BadInformationException("PictureId empty");
+		}
+		if (comment.getPictureUserId() == null || comment.getPictureUserId().equals("")) {
+			throw new BadInformationException("PictureUserId empty");
+		}
+		
+		if (pictureService.deleteComment(comment) == false) {
+			try {
+				//netLocalizer.deleteComment(comment, comment.getPictureUserId());
+			} catch (Exception e){
+				e.printStackTrace();
+			}
+		}
+
 	}
 
 	/*
@@ -145,8 +200,14 @@ public class IHMtoDATAImpl implements IHMtoDATA {
 	 */
 	@Override
 	public void deleteGroup(Group group) {
-		// TODO Auto-generated method stub
-
+		groupService.deleteGroup(group);
+		dataToIhm.receiveReloadUserGroups();
+		try {
+			userService.export_();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	/*
@@ -156,8 +217,13 @@ public class IHMtoDATAImpl implements IHMtoDATA {
 	 */
 	@Override
 	public void deletePicture(Picture picture) {
-		// TODO Auto-generated method stub
-
+		pictureService.deletePicture(picture);
+		try {
+			userService.export_();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	/*
@@ -168,8 +234,11 @@ public class IHMtoDATAImpl implements IHMtoDATA {
 	 */
 	@Override
 	public void deleteUserFromGroup(User user, Group group) {
-		// TODO Auto-generated method stub
-
+		groupService.deleteUserFromGroup(user, group);
+		dataToIhm.receiveReloadUserGroups();
+		if(group.getNom().equals(Group.FRIENDS_GROUP_NAME)) {
+			netLocalizer.deleteFriend(user.getUid());
+		}
 	}
 
 	/*
@@ -210,20 +279,9 @@ public class IHMtoDATAImpl implements IHMtoDATA {
 	 */
 	@Override
 	public List<User> getUserNotInGroup(Group group) {
-		// TODO Auto-generated method stub
-		return null;
+		return groupService.getUserNotInGroup(group);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see DATA.interfaces.IHMtoDATA#getGroup(java.lang.String)
-	 */
-	@Override
-	public Group getGroup(String group) {
-		// TODO Auto-generated method stub
-		return null;
-	}
 
 	/*
 	 * (non-Javadoc)
@@ -242,8 +300,7 @@ public class IHMtoDATAImpl implements IHMtoDATA {
 	 */
 	@Override
 	public List<Group> getGroupsUserNotIn(User user) {
-		// TODO Auto-generated method stub
-		return null;
+		return groupService.getGroupsUserNotIn(user);
 	}
 
 	/*
@@ -432,6 +489,11 @@ public class IHMtoDATAImpl implements IHMtoDATA {
 	@Override
 	public boolean logout() throws IOException {
 		try {
+			for (Group group : groupService.getGroups()) {
+				for (User userGroup : group.getUsers()) {
+					userGroup.setConnected(false);
+				}
+			}
 			userService.setConnectedUsers(netLocalizer.disconnect());
 		} catch (BusinessException e) {
 			// TODO Auto-generated catch block
@@ -439,17 +501,6 @@ public class IHMtoDATAImpl implements IHMtoDATA {
 		}
 		userService.export_();
 		return true;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see DATA.interfaces.IHMtoDATA#editProfile(DATA.model.User)
-	 */
-	@Override
-	public boolean editProfile(User u) {
-		// TODO Auto-generated method stub
-		return false;
 	}
 
 	@Override
@@ -467,5 +518,10 @@ public class IHMtoDATAImpl implements IHMtoDATA {
 	@Override
 	public void refuseUser(User user) {
 		netLocalizer.acceptOrNotFriendship(user.getUid(), false);
+	}
+
+	@Override
+	public Group getGroupByName(String name) {
+		return groupService.getGroup(name);
 	}
 }

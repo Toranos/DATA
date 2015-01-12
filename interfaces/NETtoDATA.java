@@ -26,6 +26,12 @@ public interface NETtoDATA {
 	public void addNote(Note note) throws IOException ;
 	
 	/**
+	 * Delete a comment to a remote picture. 
+	 * @param comment
+	 */
+	public void deleteComment(Comment comment) throws IOException ;
+	
+	/**
 	 * Return the list of saved IPs.
 	 * @return List<Inet4Address>
 	 */
@@ -110,4 +116,10 @@ public interface NETtoDATA {
 	 * @param user
 	 */
 	public void notFriendAnymore(User user) ;
+	
+	/**
+	 * Inform that your friend remove you to his friend.
+	 * @param user
+	 */
+	public void checkPendingRequest(final UUID userId) ;
 }
