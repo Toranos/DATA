@@ -86,10 +86,19 @@ public class GroupService {
 	}
 	
 	public void acceptUser(User user, Group group) {
+		Group groupUserToAdd = null;
 		for (Group groupToAdd : DataService.getInstance().getUser().getListGroups()) {
 			if(groupToAdd.getUid().equals(group.getUid())) {
-				groupToAdd.getUsers().add(user);
+				groupUserToAdd = groupToAdd;
+				for(User userGroup : groupToAdd.getUsers()) {
+					if(userGroup.getUid().equals(user.getUid())){
+						groupUserToAdd = null;
+					}
+				}
 			}
+		}
+		if(groupUserToAdd != null) {
+			groupUserToAdd.getUsers().add(user);
 		}
 	}
 
