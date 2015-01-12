@@ -8,7 +8,9 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+
 import DATA.exceptions.BadInformationException;
+import DATA.exceptions.PictureAlreadyExisted;
 import DATA.interfaces.IHMtoDATA;
 import DATA.model.Comment;
 import DATA.model.Group;
@@ -113,12 +115,11 @@ public class IHMtoDATAImpl implements IHMtoDATA {
 	 * @see DATA.interfaces.IHMtoDATA#addPicture(DATA.model.Picture)
 	 */
 	@Override
-	public void addPicture(Picture picture) {
+	public void addPicture(Picture picture) throws IOException, PictureAlreadyExisted {
 		pictureService.addPicture(picture);
 		try {
 			userService.save();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
@@ -153,8 +154,12 @@ public class IHMtoDATAImpl implements IHMtoDATA {
 	 */
 	@Override
 	public void deletePicture(Picture picture) {
-		// TODO Auto-generated method stub
-
+		pictureService.deletePicture(picture);
+		try {
+			userService.save();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 
 	/*

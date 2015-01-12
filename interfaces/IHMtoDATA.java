@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.UUID;
 
 import DATA.exceptions.BadInformationException;
+import DATA.exceptions.PictureAlreadyExisted;
 import DATA.model.Comment;
 import DATA.model.Group;
 import DATA.model.Note;
@@ -41,8 +42,9 @@ public  interface IHMtoDATA
 	/**
 	 * Add a picture for the current user
 	 * @param picture	The picture
+	 * @throws PictureAlreadyExisted 
 	 */
-	public void addPicture(Picture picture) throws IOException ;
+	public void addPicture(Picture picture) throws IOException, PictureAlreadyExisted ;
 	
 	/**
 	 * Add a user in a group

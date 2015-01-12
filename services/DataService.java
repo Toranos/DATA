@@ -20,6 +20,7 @@ import java.util.zip.ZipOutputStream;
 
 import javafx.application.Application;
 import DATA.exceptions.BadInformationException;
+import DATA.exceptions.PictureAlreadyExisted;
 import DATA.model.User;
 import IHM.Main;
 
@@ -84,12 +85,6 @@ public class DataService implements Serializable {
 	 */
 	private boolean enabled = true;
 	
-	public static void main(String[] args) {
-		DataService d = DataService.getInstance();
-		d.setPathUser(new File(/*System.getProperty("user.dir")*/"./"));
-		//System.out.println(d.getPathUser().getCanonicalPath());
-	}
-	
 	/**
 	 * Return Singleton instance of DataService.
 	 * @return DataService.
@@ -132,6 +127,15 @@ public class DataService implements Serializable {
 	 */
 	public File getPathUser() {
 		return userPath;
+	}
+	
+	/**
+	 * Return image path user. 
+	 * @return File
+	 */
+	public File getImagePathUser() {
+		File f = new File(userPath.getPath()+File.separator+imageDir);
+		return f;
 	}
 	
 	/**
