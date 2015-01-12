@@ -31,14 +31,16 @@ public class GroupService {
 	 */
 	public boolean addUserInGroup(User user, Group group) {
 		List<Group> groupsUserNotIn=getGroupsUserNotIn(user);
+		Group groupToAdd = null;
 		boolean canAdd = false;
 		for (Group userGroup : groupsUserNotIn) {
 			if(userGroup.getUid().equals(group.getUid())) {
 				canAdd = true;
+				groupToAdd = userGroup;
 			}
 		}
-		if(canAdd) {
-			DataService.getInstance().getUser().getListPendingRequests().add(new PendingRequest(user.getUid(), group.getUid()));
+		if(canAdd && groupToAdd != null) {
+			groupToAdd.getUsers().add(user);
 		}
 		return canAdd;
 	}
@@ -189,10 +191,11 @@ public class GroupService {
 	public List<Group> getGroupsUserNotIn(User user){
 		List<Group> groups = this.getGroups();
 		List<Group> groupsUserNotIn= new ArrayList<>();
-		boolean userNotIn=true;
+		boolean userNotIn;
 		for (Group group : groups){
+			userNotIn = true;
 			for (User u : group.getUsers()){
-				if (user==u){
+				if (user.getUid().equals(u.getUid())){
 					userNotIn=false;
 				}
 			}

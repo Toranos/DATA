@@ -199,6 +199,7 @@ public class IHMtoDATAImpl implements IHMtoDATA {
 	@Override
 	public void deleteGroup(Group group) {
 		groupService.deleteGroup(group);
+		dataToIhm.receiveReloadUserGroups();
 		try {
 			userService.export_();
 		} catch (IOException e) {
@@ -232,8 +233,8 @@ public class IHMtoDATAImpl implements IHMtoDATA {
 	@Override
 	public void deleteUserFromGroup(User user, Group group) {
 		groupService.deleteUserFromGroup(user, group);
+		dataToIhm.receiveReloadUserGroups();
 		if(group.getNom().equals(Group.FRIENDS_GROUP_NAME)) {
-			dataToIhm.receiveReloadUserGroups();
 			netLocalizer.deleteFriend(user.getUid());
 		}
 	}
