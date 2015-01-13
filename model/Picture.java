@@ -35,6 +35,7 @@ public class Picture implements Serializable {
 
     private String filename;
     private String description;
+    private String title;
     private List<Note> listNotes;
     private List<Tag> listTags;
     private List<Comment> Comments;
@@ -57,6 +58,17 @@ public class Picture implements Serializable {
     
     private byte[] icon;
 
+    public Picture(String filename, String description, String title, User user) {
+		this.filename = filename;
+		this.description = description;
+		this.title = title;
+		this.listNotes = new ArrayList<Note>();
+		this.listRules = new ArrayList<Rule>();
+		this.listTags = new ArrayList<Tag>();
+		this.user = user;
+		this.uid = UUID.randomUUID();
+	}
+    
     public Picture(String filename, String description, User user) {
 		this.filename = filename;
 		this.description = description;
@@ -76,7 +88,15 @@ public class Picture implements Serializable {
 		this.uid = UUID.randomUUID();
 	}
     
-    public float getNoteAverage() {
+    public String getTitle() {
+		return title;
+	}
+
+	public void setTitle(String title) {
+		this.title = title;
+	}
+
+	public float getNoteAverage() {
     	int numberOfNote = 0, sumNote = 0;
     	Iterator<Note> iter = this.getListNotes().iterator();
 	    while (iter.hasNext()) {
@@ -175,6 +195,16 @@ public class Picture implements Serializable {
         } catch (IOException e)
         {
             e.printStackTrace();
+        }
+        return null;
+    }
+    
+    // returns null if user has not yet voted
+    public Note getNoteFromUser(Picture p, User u) {
+        for (Note n : p.getListNotes()) {
+            if (n.getNoteUser().getUid().equals(u.getUid())) {
+                return n;
+            }
         }
         return null;
     }

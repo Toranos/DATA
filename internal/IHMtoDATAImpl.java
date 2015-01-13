@@ -120,8 +120,13 @@ public class IHMtoDATAImpl implements IHMtoDATA {
 	 */
 	@Override
 	public void addGroup(Group group) {
-		// TODO Auto-generated method stub
-
+		try {
+			groupService.addGroup(group);
+			dataToIhm.receiveReloadUserGroups();
+		} catch (BadInformationException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	/*
@@ -148,8 +153,12 @@ public class IHMtoDATAImpl implements IHMtoDATA {
 	 */
 	@Override
 	public void addUserInGroup(User user, Group group) {
-		groupService.addUserInGroup(user, group);
-		netLocalizer.addFriend(user.getUid());
+		if(groupService.addUserInGroup(user, group)) {
+			dataToIhm.receiveReloadUserGroups();
+			if(group.getNom().equals(Group.FRIENDS_GROUP_NAME)) {
+				netLocalizer.addFriend(user.getUid());
+			}
+		}
 	}
 	
 	/*
@@ -176,7 +185,7 @@ public class IHMtoDATAImpl implements IHMtoDATA {
 		
 		if (pictureService.deleteComment(comment) == false) {
 			try {
-				netLocalizer.deleteComment(comment, comment.getPictureUserId());
+				//netLocalizer.deleteComment(comment, comment.getPictureUserId());
 			} catch (Exception e){
 				e.printStackTrace();
 			}
@@ -192,6 +201,7 @@ public class IHMtoDATAImpl implements IHMtoDATA {
 	@Override
 	public void deleteGroup(Group group) {
 		groupService.deleteGroup(group);
+		dataToIhm.receiveReloadUserGroups();
 		try {
 			userService.export_();
 		} catch (IOException e) {
@@ -225,6 +235,7 @@ public class IHMtoDATAImpl implements IHMtoDATA {
 	@Override
 	public void deleteUserFromGroup(User user, Group group) {
 		groupService.deleteUserFromGroup(user, group);
+		dataToIhm.receiveReloadUserGroups();
 		if(group.getNom().equals(Group.FRIENDS_GROUP_NAME)) {
 			netLocalizer.deleteFriend(user.getUid());
 		}
@@ -478,6 +489,11 @@ public class IHMtoDATAImpl implements IHMtoDATA {
 	@Override
 	public boolean logout() throws IOException {
 		try {
+			for (Group group : groupService.getGroups()) {
+				for (User userGroup : group.getUsers()) {
+					userGroup.setConnected(false);
+				}
+			}
 			userService.setConnectedUsers(netLocalizer.disconnect());
 		} catch (BusinessException e) {
 			// TODO Auto-generated catch block

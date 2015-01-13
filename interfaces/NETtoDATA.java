@@ -116,4 +116,10 @@ public interface NETtoDATA {
 	 * @param user
 	 */
 	public void notFriendAnymore(User user) ;
+	
+	/**
+	 * Inform that your friend remove you to his friend.
+	 * @param user
+	 */
+	public void checkPendingRequest(final UUID userId) ;
 }

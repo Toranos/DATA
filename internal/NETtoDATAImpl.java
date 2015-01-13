@@ -172,6 +172,7 @@ public class NETtoDATAImpl implements NETtoDATA {
 	@Override
 	public void notFriendAnymore(User user) {
 		groupService.deleteUserFromGroup(user, groupService.getGroup(Group.FRIENDS_GROUP_NAME));
+		dataToIhm.receiveReloadUserGroups();
 	}
 
 	@Override
@@ -187,6 +188,13 @@ public class NETtoDATAImpl implements NETtoDATA {
 	@Override
 	public Picture getPictureById(UUID id) {
 		return pictureService.getPictureById(id);
+	}
+
+	@Override
+	public void checkPendingRequest(UUID userId) {
+		if(groupService.checkPendingRequest(userId)) {
+			netLocalizer.addFriend(userId);
+		}
 	}
 
 }

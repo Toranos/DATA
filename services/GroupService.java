@@ -29,8 +29,22 @@ public class GroupService {
 	 * @param user
 	 * @param group
 	 */
-	public void addUserInGroup(User user, Group group) {
-		DataService.getInstance().getUser().getListPendingRequests().add(new PendingRequest(user.getUid(), group.getUid()));
+	public boolean addUserInGroup(User user, Group group) {
+		List<Group> groupsUserNotIn=getGroupsUserNotIn(user);
+		Group groupToAdd = null;
+		boolean canAdd = false;
+		for (Group userGroup : groupsUserNotIn) {
+			if(userGroup.getUid().equals(group.getUid())) {
+				canAdd = true;
+				groupToAdd = userGroup;
+			}
+		}
+		if(canAdd && groupToAdd.getNom().equals(Group.FRIENDS_GROUP_NAME)) {
+			DataService.getInstance().getUser().getListPendingRequests().add(new PendingRequest(user.getUid(), groupToAdd.getUid()));
+		} else if(canAdd) {
+			acceptUser(user, groupToAdd);
+		}
+		return canAdd;
 	}
 	
 	/**
@@ -74,10 +88,19 @@ public class GroupService {
 	}
 	
 	public void acceptUser(User user, Group group) {
+		Group groupUserToAdd = null;
 		for (Group groupToAdd : DataService.getInstance().getUser().getListGroups()) {
 			if(groupToAdd.getUid().equals(group.getUid())) {
-				groupToAdd.getUsers().add(user);
+				groupUserToAdd = groupToAdd;
+				for(User userGroup : groupToAdd.getUsers()) {
+					if(userGroup.getUid().equals(user.getUid())){
+						groupUserToAdd = null;
+					}
+				}
 			}
+		}
+		if(groupUserToAdd != null) {
+			groupUserToAdd.getUsers().add(user);
 		}
 	}
 
@@ -93,7 +116,7 @@ public class GroupService {
 			if(user.getUid().equals(pendingReq.getToUID())){
 				if(friends){
 					for(Group group : currentUser.getListGroups()){
-						if(group.getUid().equals(pendingReq.getGroupUID())){
+						if(group.getUid().equals(pendingReq.getGroupUID()) || group.getNom().equals(Group.FRIENDS_GROUP_NAME)){
 							group.getUsers().add(user);
 						}
 					}
@@ -120,12 +143,16 @@ public class GroupService {
 			throw new BadInformationException("PictureId empty");
 		}
 		List<Group> userGroups = DataService.getInstance().getUser().getListGroups();
+		boolean groupExists = false;
 		for (Group userGroup : userGroups) {
-			if (userGroup.getNom().equals(group.getNom())) {
-				throw new BadInformationException("Group Name already exists");
-			} else {
-				userGroups.add(group);
-			}
+			if (userGroup.getNom().equals(group.getNom())){
+				groupExists = true;
+			} 
+		}
+		if(!groupExists) {
+			userGroups.add(group);
+		} else {
+			throw new BadInformationException("Group Name already exists");
 		}
 	}
 	
@@ -175,10 +202,11 @@ public class GroupService {
 	public List<Group> getGroupsUserNotIn(User user){
 		List<Group> groups = this.getGroups();
 		List<Group> groupsUserNotIn= new ArrayList<>();
-		boolean userNotIn=true;
+		boolean userNotIn;
 		for (Group group : groups){
+			userNotIn = true;
 			for (User u : group.getUsers()){
-				if (user==u){
+				if (user.getUid().equals(u.getUid())){
 					userNotIn=false;
 				}
 			}
@@ -189,5 +217,14 @@ public class GroupService {
 		
 		return groupsUserNotIn;
 		
+	}
+	
+	public boolean checkPendingRequest(UUID userId) {
+		for (PendingRequest pendReq : DataService.getInstance().getUser().getListPendingRequests()) {
+			if(pendReq.getToUID().equals(userId)){
+				return true;
+			}
+		}
+		return false;
 	}
 }
