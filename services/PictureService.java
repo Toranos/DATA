@@ -138,15 +138,19 @@ public class PictureService {
 		if (currentUser.getUid().equals(comment.getPictureUserId())) {
 			Iterator<Picture> iterPicture = currentUser.getListPictures().iterator();
 			boolean isUpdate;
+			Picture tmpPicture = null;
+			Comment tmpComment = null;
 		    while (iterPicture.hasNext()) {
-		    	if (iterPicture.next().getUid().equals(comment.getPictureId())) {
+		    	tmpPicture = iterPicture.next();
+		    	if (tmpPicture.getUid().equals(comment.getPictureId())) {
 		    		//Search if the Comment already exist to update it
 		    		isUpdate = false;
-		    		Iterator<Comment> iterComment = iterPicture.next().getComments().iterator();
+		    		Iterator<Comment> iterComment = tmpPicture.getComments().iterator();
 		    		while (iterComment.hasNext()) {
-		    			if (iterComment.next().getUid().equals(comment.getUid())) {
-		    				if (iterComment.next().getCommentUser().getUid().equals(comment.getCommentUser().getUid())) {
-		    					iterComment.next().setValue(comment.getValue());
+		    			tmpComment = iterComment.next();
+		    			if (tmpComment.getUid().equals(comment.getUid())) {
+		    				if (tmpComment.getCommentUser().getUid().equals(comment.getCommentUser().getUid())) {
+		    					tmpComment.setValue(comment.getValue());
 			    				isUpdate = true;
 		    				}
 		    				break;
@@ -154,7 +158,7 @@ public class PictureService {
 		    		}
 		    		//If it doesn't exist we add it
 		    		if (isUpdate == false) {
-		    			iterPicture.next().getComments().add(comment);
+		    			tmpPicture.getComments().add(comment);
 			    		break;	
 		    		}
 		    	}
@@ -190,15 +194,19 @@ public class PictureService {
 		if (currentUser.getUid().equals(note.getPictureUserId())) {
 			Iterator<Picture> iterPicture = currentUser.getListPictures().iterator();
 			boolean isUpdate;
+			Picture tmpPicture = null;
+			Note tmpNote = null;
 		    while (iterPicture.hasNext()) {
-		    	if (iterPicture.next().getUid().equals(note.getPictureId())) {
+		    	tmpPicture = iterPicture.next();
+		    	if (tmpPicture.getUid().equals(note.getPictureId())) {
 		    		//Search if the Note already exist to update it
 		    		isUpdate = false;
-		    		Iterator<Note> iterNote = iterPicture.next().getListNotes().iterator();
+		    		Iterator<Note> iterNote = tmpPicture.getListNotes().iterator();
 		    		while (iterNote.hasNext()) {
-		    			if (iterNote.next().getUid().equals(note.getUid())) {
-		    				if (iterNote.next().getNoteUser().getUid().equals(note.getNoteUser().getUid())) {
-		    					iterNote.next().setValue(note.getValue());
+		    			tmpNote = iterNote.next();
+		    			if (tmpNote.getUid().equals(note.getUid())) {
+		    				if (tmpNote.getNoteUser().getUid().equals(note.getNoteUser().getUid())) {
+		    					tmpNote.setValue(note.getValue());
 		    					isUpdate = true;
 		    				}
 		    				break;
@@ -206,7 +214,7 @@ public class PictureService {
 		    		}
 		    		//If it doesn't exist we add it
 		    		if (isUpdate == false) {
-		    			iterPicture.next().getListNotes().add(note);
+		    			tmpPicture.getListNotes().add(note);
 		    			break;	
 		    		}
 		    	}
