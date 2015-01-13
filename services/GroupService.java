@@ -38,7 +38,7 @@ public class GroupService {
 	 * @param group
 	 */
 	public void deleteGroup(Group group) {
-		if (group.getNom().equals("Autres") == false || group.getNom().equals("Amis")  == false) {
+		if (group.getNom().equals(Group.FRIENDS_GROUP_NAME) == false || group.getNom().equals(Group.DEFAULT_GROUP_NAME)  == false) {
 			User currentUser = DataService.getInstance().getUser();
 			Iterator<Group> iter = currentUser.getListGroups().iterator();
 			while (iter.hasNext()) {
@@ -121,7 +121,7 @@ public class GroupService {
 		}
 		List<Group> userGroups = DataService.getInstance().getUser().getListGroups();
 		for (Group userGroup : userGroups) {
-			if (userGroup.getNom() == group.getNom()){
+			if (userGroup.getNom().equals(group.getNom())) {
 				throw new BadInformationException("Group Name already exists");
 			} else {
 				userGroups.add(group);
@@ -134,7 +134,7 @@ public class GroupService {
 		boolean inGroup=false;
 		List<Group> userListGroups=DataService.getInstance().getUser().getListGroups();
 		for (Group userGroup : userListGroups){
-			if (userGroup.getNom() == Group.FRIENDS_GROUP_NAME){
+			if (userGroup.getNom().equals(Group.FRIENDS_GROUP_NAME)){
 				for (User friend : userGroup.getUsers()){
 					for (User userInGroup : group.getUsers()){
 						if (friend == userInGroup) {
@@ -153,7 +153,7 @@ public class GroupService {
 	
 	public void deleteUserFromGroup(User user, Group group){
 		List<Group> userListGroups=DataService.getInstance().getUser().getListGroups();
-		if (group.getNom() == Group.FRIENDS_GROUP_NAME){
+		if (group.getNom().equals(Group.FRIENDS_GROUP_NAME)){
 			for (Group userGroup : userListGroups){
 				userGroup.getUsers().remove(user);
 			}
