@@ -38,7 +38,7 @@ public class Picture implements Serializable {
     private String title;
     private List<Note> listNotes;
     private List<Tag> listTags;
-    private List<Comment> Comments;
+    private List<Comment> listComments;
     private List<Rule> listRules;
     /**
      * LightUser with UUID, login, firstname, ...
@@ -65,6 +65,7 @@ public class Picture implements Serializable {
 		this.listNotes = new ArrayList<Note>();
 		this.listRules = new ArrayList<Rule>();
 		this.listTags = new ArrayList<Tag>();
+		this.listComments = new ArrayList<Comment>();
 		this.user = user;
 		this.uid = UUID.randomUUID();
 	}
@@ -75,6 +76,7 @@ public class Picture implements Serializable {
 		this.listNotes = new ArrayList<Note>();
 		this.listRules = new ArrayList<Rule>();
 		this.listTags = new ArrayList<Tag>();
+		this.listComments = new ArrayList<Comment>();
 		this.user = user;
 		this.uid = UUID.randomUUID();
 	}
@@ -163,11 +165,11 @@ public class Picture implements Serializable {
     }
 
     public List<Comment> getComments() {
-        return Comments;
+        return listComments;
     }
 
-    public void setComments(List<Comment> Comments) {
-        this.Comments = Comments;
+    public void getComments(List<Comment> listComments) {
+        this.listComments = listComments;
     }
 
 	public byte[] getPixels() {
