@@ -3,7 +3,12 @@ package DATA.services;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -12,8 +17,10 @@ import java.util.UUID;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 
+import sun.security.pkcs11.Secmod.DbMode;
 import javafx.scene.image.Image;
 import DATA.exceptions.BadInformationException;
+import DATA.exceptions.PictureAlreadyExisted;
 import DATA.model.Comment;
 import DATA.model.Group;
 import DATA.model.Note;
@@ -90,27 +97,63 @@ public class PictureService {
 	/**
 	 * 
 	 * @param picture
+	 * @throws IOException 
+	 * @throws PictureAlreadyExisted 
 	 */
-	public void addPicture(Picture picture) {
-
+	public void addPicture(Picture picture) throws IOException, PictureAlreadyExisted {
 		picture.setPixels(imageToByte(picture.getFilename()));
-//		picture.setIcon(new ImageIcon(picture.getFilename()));
-		DataService.getInstance().getUser().getListPictures().add(picture);
+		if (this.copyImageToWorkspace(picture)) {
+			DataService.getInstance().getUser().getListPictures().add(picture);
+		}
 	}
 	
 	/**
-	 * 
-	 * @param picture
+	 * Copie image to workspace location.
+	 * @param img
+	 * @return
+	 * @throws IOException
+	 * @throws PictureAlreadyExisted 
 	 */
-	public void deletePicture(Picture picture) {
-		User currentUser = DataService.getInstance().getUser();
-		Iterator<Picture> iter = currentUser.getListPictures().iterator();
-		while (iter.hasNext()) {
-	    	if (iter.next().getUid().equals(picture.getUid())) {
-	    		iter.remove();
-	    		break;
-	    	}
-	    }
+	public boolean copyImageToWorkspace(Picture img) throws IOException, PictureAlreadyExisted {
+		File f = new File(img.getFilename());		
+		FileInputStream sourceFile = new FileInputStream(f);
+		File imgDir = DataService.getInstance().getImagePathUser();
+		if (imgDir.exists() == false) {
+			imgDir.mkdir();
+		}
+		String newFilename = imgDir.getPath();
+		newFilename += File.separator+formatMd5Name(f.getAbsolutePath())+".png";
+		File newFile = new File(newFilename);
+		if (newFile.exists()) {
+			sourceFile.close();
+			throw new PictureAlreadyExisted("Picture exits");
+		}
+		img.setFilename(newFilename);
+		FileOutputStream destinationFile = new FileOutputStream(newFile);
+		byte buffer[] = new byte[512 * 1024];
+		int nbLecture;
+		while ((nbLecture = sourceFile.read(buffer)) != -1){
+			destinationFile.write(buffer, 0, nbLecture);
+		}
+		destinationFile.close();
+		sourceFile.close();
+		return true;
+	}
+	
+	private String formatMd5Name(String name) {
+		MessageDigest md = null;
+		try {
+			md = MessageDigest.getInstance("MD5");
+		} catch (NoSuchAlgorithmException e) {
+			
+		}
+		md.update(name.getBytes());
+		byte[] digest = md.digest();
+		StringBuffer sb = new StringBuffer();
+		for (byte b : digest) {
+			sb.append(String.format("%02x", b & 0xff));
+		}
+		return sb.toString();
 	}
 	
 	/**
@@ -138,15 +181,19 @@ public class PictureService {
 		if (currentUser.getUid().equals(comment.getPictureUserId())) {
 			Iterator<Picture> iterPicture = currentUser.getListPictures().iterator();
 			boolean isUpdate;
+			Picture tmpPicture = null;
+			Comment tmpComment = null;
 		    while (iterPicture.hasNext()) {
-		    	if (iterPicture.next().getUid().equals(comment.getPictureId())) {
+		    	tmpPicture = iterPicture.next();
+		    	if (tmpPicture.getUid().equals(comment.getPictureId())) {
 		    		//Search if the Comment already exist to update it
 		    		isUpdate = false;
-		    		Iterator<Comment> iterComment = iterPicture.next().getComments().iterator();
+		    		Iterator<Comment> iterComment = tmpPicture.getComments().iterator();
 		    		while (iterComment.hasNext()) {
-		    			if (iterComment.next().getUid().equals(comment.getUid())) {
-		    				if (iterComment.next().getCommentUser().getUid().equals(comment.getCommentUser().getUid())) {
-		    					iterComment.next().setValue(comment.getValue());
+		    			tmpComment = iterComment.next();
+		    			if (tmpComment.getUid().equals(comment.getUid())) {
+		    				if (tmpComment.getCommentUser().getUid().equals(comment.getCommentUser().getUid())) {
+		    					tmpComment.setValue(comment.getValue());
 			    				isUpdate = true;
 		    				}
 		    				break;
@@ -154,7 +201,7 @@ public class PictureService {
 		    		}
 		    		//If it doesn't exist we add it
 		    		if (isUpdate == false) {
-		    			iterPicture.next().getComments().add(comment);
+		    			tmpPicture.getComments().add(comment);
 			    		break;	
 		    		}
 		    	}
@@ -190,15 +237,19 @@ public class PictureService {
 		if (currentUser.getUid().equals(note.getPictureUserId())) {
 			Iterator<Picture> iterPicture = currentUser.getListPictures().iterator();
 			boolean isUpdate;
+			Picture tmpPicture = null;
+			Note tmpNote = null;
 		    while (iterPicture.hasNext()) {
-		    	if (iterPicture.next().getUid().equals(note.getPictureId())) {
+		    	tmpPicture = iterPicture.next();
+		    	if (tmpPicture.getUid().equals(note.getPictureId())) {
 		    		//Search if the Note already exist to update it
 		    		isUpdate = false;
-		    		Iterator<Note> iterNote = iterPicture.next().getListNotes().iterator();
+		    		Iterator<Note> iterNote = tmpPicture.getListNotes().iterator();
 		    		while (iterNote.hasNext()) {
-		    			if (iterNote.next().getUid().equals(note.getUid())) {
-		    				if (iterNote.next().getNoteUser().getUid().equals(note.getNoteUser().getUid())) {
-		    					iterNote.next().setValue(note.getValue());
+		    			tmpNote = iterNote.next();
+		    			if (tmpNote.getUid().equals(note.getUid())) {
+		    				if (tmpNote.getNoteUser().getUid().equals(note.getNoteUser().getUid())) {
+		    					tmpNote.setValue(note.getValue());
 		    					isUpdate = true;
 		    				}
 		    				break;
@@ -206,7 +257,7 @@ public class PictureService {
 		    		}
 		    		//If it doesn't exist we add it
 		    		if (isUpdate == false) {
-		    			iterPicture.next().getListNotes().add(note);
+		    			tmpPicture.getListNotes().add(note);
 		    			break;	
 		    		}
 		    	}
@@ -280,5 +331,18 @@ public class PictureService {
 			System.exit(0);  
 		}
 		return packet;
+	}
+
+	/**
+	 * Delete image.
+	 * @param picture
+	 */
+	public void deletePicture(Picture picture) {
+		File f = new File(picture.getFilename());	
+		if (f.exists()) {
+			f.delete();
+		}
+		DataService.getInstance().getUser().getListPictures().remove(picture);
+		picture = null;
 	}	
 }

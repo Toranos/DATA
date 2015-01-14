@@ -1,11 +1,11 @@
 package DATA.exceptions;
 
 /**
- * Exception for information missing during signing up
- * @author le-goc
+ * Exception for adding picture that already existed.
+ * @author yoanns
  *
  */
-public class BadInformationException extends Exception {
+public class PictureAlreadyExisted extends Exception {
 
 	/**
 	 * Unique ID for serialization
@@ -16,7 +16,7 @@ public class BadInformationException extends Exception {
 	 * Constructor with message
 	 * @param message	Message to be returned
 	 */
-	public BadInformationException(String message){
+	public PictureAlreadyExisted(String message){
 		super(message);
 	}
 }
