@@ -343,22 +343,22 @@ public class PictureService {
 		picture = null;
 	}
 
-	public void receiveCommentResponse(User user, Comment comment) {
+	public void receiveCommentResponse(UUID commentUid) {
 		List<PendingRequest> pendingRequests = DataService.getInstance().getUser().getListPendingRequests();
 		PendingRequest pendingRequestToRemove = null;
 		for (PendingRequest pendingRequest : pendingRequests) {
-			if(pendingRequest.getType() == PendingRequest.SEND_COMMENT && pendingRequest.getComment().getUid().equals(comment.getUid())) {
+			if(pendingRequest.getType() == PendingRequest.SEND_COMMENT && pendingRequest.getComment().getUid().equals(commentUid)) {
 				pendingRequestToRemove = pendingRequest;
 			}
 		}
 		pendingRequests.remove(pendingRequestToRemove);
 	}
 
-	public void receiveNoteResponse(User user, Note note) {
+	public void receiveNoteResponse(UUID noteUid) {
 		List<PendingRequest> pendingRequests = DataService.getInstance().getUser().getListPendingRequests();
 		PendingRequest pendingRequestToRemove = null;
 		for (PendingRequest pendingRequest : pendingRequests) {
-			if(pendingRequest.getType() == PendingRequest.SEND_NOTE && pendingRequest.getNote().getUid().equals(note.getUid())) {
+			if(pendingRequest.getType() == PendingRequest.SEND_NOTE && pendingRequest.getNote().getUid().equals(noteUid)) {
 				pendingRequestToRemove = pendingRequest;
 			}
 		}

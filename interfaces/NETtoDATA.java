@@ -66,13 +66,13 @@ public interface NETtoDATA {
 	 * Inform that the current User of friend response.
 	 * @param idSender
 	 */
-	public void receiveCommentResponse(User user, Comment comment);
+	public void receiveCommentResponse(UUID commentUid);
 	
 	/**
 	 * Inform that the current User of friend response.
 	 * @param idSender
 	 */
-	public void receiveNoteResponse(User user, Note note);
+	public void receiveNoteResponse(UUID noteUid);
 	/**
 	 * Send list pictures asked by the User. 
 	 * @param pictures

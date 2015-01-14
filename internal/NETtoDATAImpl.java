@@ -133,16 +133,16 @@ public class NETtoDATAImpl implements NETtoDATA {
 	 * @see DATA.interfaces.NETtoDATA#receiveFriendResponse(DATA.model.User)
 	 */
 	@Override
-	public void receiveCommentResponse(User user, Comment comment) {
-		pictureService.receiveCommentResponse(user,comment);
+	public void receiveCommentResponse(UUID commentUid) {
+		pictureService.receiveCommentResponse(commentUid);
 	}
 	
 	/* (non-Javadoc)
 	 * @see DATA.interfaces.NETtoDATA#receiveFriendResponse(DATA.model.User)
 	 */
 	@Override
-	public void receiveNoteResponse(User user, Note note) {
-		pictureService.receiveNoteResponse(user,note);
+	public void receiveNoteResponse(UUID noteUid) {
+		pictureService.receiveNoteResponse(noteUid);
 	}
 	
 	/* (non-Javadoc)
