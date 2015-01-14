@@ -52,7 +52,7 @@ public class GroupService {
 	 * @param group
 	 */
 	public void deleteGroup(Group group) {
-		if (group.getNom().equals("Autres") == false || group.getNom().equals("Amis")  == false) {
+		if (group.getNom().equals(Group.FRIENDS_GROUP_NAME) == false || group.getNom().equals(Group.DEFAULT_GROUP_NAME)  == false) {
 			User currentUser = DataService.getInstance().getUser();
 			Iterator<Group> iter = currentUser.getListGroups().iterator();
 			while (iter.hasNext()) {
@@ -161,7 +161,7 @@ public class GroupService {
 		boolean inGroup=false;
 		List<Group> userListGroups=DataService.getInstance().getUser().getListGroups();
 		for (Group userGroup : userListGroups){
-			if (userGroup.getNom() == Group.FRIENDS_GROUP_NAME){
+			if (userGroup.getNom().equals(Group.FRIENDS_GROUP_NAME)){
 				for (User friend : userGroup.getUsers()){
 					for (User userInGroup : group.getUsers()){
 						if (friend == userInGroup) {

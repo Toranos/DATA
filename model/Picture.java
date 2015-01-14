@@ -200,6 +200,16 @@ public class Picture implements Serializable {
         }
         return null;
     }
+    
+    // returns null if user has not yet voted
+    public Note getNoteFromUser(Picture p, User u) {
+        for (Note n : p.getListNotes()) {
+            if (n.getNoteUser().getUid().equals(u.getUid())) {
+                return n;
+            }
+        }
+        return null;
+    }
 
 
 //    private static byte[] ImageToBase64(ImageIcon i) {
