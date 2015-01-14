@@ -4,7 +4,6 @@ import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.security.MessageDigest;
@@ -15,19 +14,14 @@ import java.util.List;
 import java.util.UUID;
 
 import javax.imageio.ImageIO;
-import javax.swing.ImageIcon;
 
-import sun.security.pkcs11.Secmod.DbMode;
-import javafx.scene.image.Image;
 import DATA.exceptions.BadInformationException;
 import DATA.exceptions.PictureAlreadyExisted;
 import DATA.model.Comment;
-import DATA.model.Group;
 import DATA.model.Note;
 import DATA.model.Picture;
 import DATA.model.Tag;
 import DATA.model.User;
-import NET.NetLocalizer;
 
 /**
  * Service for pictures functionalities
