@@ -3,7 +3,6 @@ package DATA.interfaces;
 import java.io.IOException;
 import java.util.List;
 import java.util.UUID;
-
 import DATA.exceptions.BadInformationException;
 import DATA.exceptions.PictureAlreadyExisted;
 import DATA.model.Comment;
