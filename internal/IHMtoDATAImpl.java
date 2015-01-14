@@ -3,7 +3,6 @@
  */
 package DATA.internal;
 
-import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -11,11 +10,11 @@ import java.util.List;
 import java.util.UUID;
 
 import DATA.exceptions.BadInformationException;
+import DATA.exceptions.PictureAlreadyExisted;
 import DATA.interfaces.IHMtoDATA;
 import DATA.model.Comment;
 import DATA.model.Group;
 import DATA.model.Note;
-import DATA.model.PendingRequest;
 import DATA.model.Picture;
 import DATA.model.Tag;
 import DATA.model.User;
@@ -135,12 +134,11 @@ public class IHMtoDATAImpl implements IHMtoDATA {
 	 * @see DATA.interfaces.IHMtoDATA#addPicture(DATA.model.Picture)
 	 */
 	@Override
-	public void addPicture(Picture picture) {
+	public void addPicture(Picture picture) throws IOException, PictureAlreadyExisted {
 		pictureService.addPicture(picture);
 		try {
-			userService.export_();
+			userService.save();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
@@ -219,9 +217,8 @@ public class IHMtoDATAImpl implements IHMtoDATA {
 	public void deletePicture(Picture picture) {
 		pictureService.deletePicture(picture);
 		try {
-			userService.export_();
+			userService.save();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
@@ -499,7 +496,7 @@ public class IHMtoDATAImpl implements IHMtoDATA {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		userService.export_();
+		userService.forceSave();
 		return true;
 	}
 
@@ -523,5 +520,15 @@ public class IHMtoDATAImpl implements IHMtoDATA {
 	@Override
 	public Group getGroupByName(String name) {
 		return groupService.getGroup(name);
+	}
+
+	@Override
+	public synchronized void save() throws IOException {
+		userService.save();
+	}
+
+	@Override
+	public synchronized void forceSave() throws IOException {
+		userService.forceSave();	
 	}
 }

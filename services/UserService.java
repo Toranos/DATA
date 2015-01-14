@@ -1,8 +1,16 @@
 package DATA.services;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
+import java.io.PrintWriter;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
 
 import DATA.exceptions.BadInformationException;
@@ -16,6 +24,10 @@ import DATA.model.User;
  *
  */
 public class UserService {
+	private static String separator = File.separator;
+	private static String rootFile = "data" + separator;
+	private static String rootName = "data";
+	private static String accountFile = "accounts.data";
 
 	/**
 	 * Public constructor for UserService
@@ -40,15 +52,33 @@ public class UserService {
 		if (!checkCredentialNotEmpty(u.getLogin(), u.getPassword())) {
 			throw new BadInformationException("Login/password empty");
 		}
+		
+		try {
+			createAccountsFile(u);
+		} catch(IOException e){
+			e.printStackTrace();
+		}
+		
+		// Création du dossier utilisateur
+		Path path = Paths.get(rootFile + u.getUid());
+		if(!Files.exists(path)){
+			boolean success = (new File(rootFile + u.getUid())).mkdirs();
+			if (!success) {
+			    System.out.println("Erreur lors de la creation du dossier /data/uid");
+			}
+		}
+		
 		/*
 		 * if (u.getListIP() == null || u.getListIP().isEmpty()) { throw new
 		 * BadInformationException("Password is empty"); }
 		 */
 		DataService.getInstance().setUser(u);
+		DataService.getInstance().setPathUser(new File(rootFile + u.getUid() + File.separator));
 		try {
-			DataService.getInstance().exports();
+			DataService.getInstance().save();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
+			System.out.println("Erreur lors de la création du fichier de data");
 			e.printStackTrace();
 		}
 		return u;
@@ -70,22 +100,24 @@ public class UserService {
 		if (!checkCredentialNotEmpty(username, password)) {
 			throw new BadInformationException("Login/password empty");
 		}
+		
+		// Verification de l'existence dans accounts
 		try {
-			DataService.imports();
-		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			BufferedReader br = new BufferedReader(new FileReader(rootFile + accountFile));
+			String line;
+			while ((line = br.readLine()) != null) {
+				String[] parts = line.split(" ");
+				if(parts[0].equals(username) && parts[1].equals(password)){
+					System.out.println("Real : " + username + " - find : " + parts[0]);
+					DataService.getInstance().setPathUser(new File(rootFile + parts[2]));
+					DataService.load();
+					return DataService.getInstance().getUser();
+				}
+			}
+		} catch (IOException e1) {
+			e1.printStackTrace();
 		} catch (ClassNotFoundException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		if (username.equals(DataService.getInstance().getUser().getLogin())
-				&& password.equals(DataService.getInstance().getUser()
-						.getPassword())) {
-			return DataService.getInstance().getUser();
 		}
 		return null;
 	}
@@ -131,8 +163,24 @@ public class UserService {
 			ClassNotFoundException, IOException {
 		// TODO Auto-generated method stub
 		File f = new File(parameter);
-		DataService.getInstance().imports(f);
+		DataService.imports(f);
 		return DataService.getInstance().getUser();
+	}
+	
+	/**
+	 * Save the profile in the data file, end the time scheduler for saving
+	 * @throws IOException 
+	 */
+	public void forceSave() throws IOException{
+		DataService.getInstance().forceSave();
+	}
+	
+	/**
+	 * Save the profile in the data file
+	 * @throws IOException
+	 */
+	public void save() throws IOException {
+		DataService.getInstance().save();
 	}
 
 	/**
@@ -163,7 +211,12 @@ public class UserService {
 		if (u.getBirthDate() == null || u.getBirthDate().equals("")) {
 			throw new BadInformationException("BirthDate empty");
 		}
-
+		
+		// Modify the line in accounts.data
+		String toUpdate = currentUser.getLogin() + " " + currentUser.getPassword() + " " + currentUser.getUid();
+		String updated = u.getLogin() + " " + u.getPassword() + " " + currentUser.getUid();
+		updateLine(toUpdate, updated);
+		
 		currentUser.setLogin(u.getLogin());
 		currentUser.setPassword(u.getPassword());
 		currentUser.setFirstname(u.getFirstname());
@@ -195,5 +248,45 @@ public class UserService {
 			}
 		}
 		return null;
+	}
+	
+	public void createAccountsFile(User u) throws IOException{
+		// Création du dossier data
+		Path path = Paths.get(rootName);
+		if(!Files.exists(path)){
+			boolean success = (new File(rootName)).mkdirs();
+			if (!success) {
+			    System.out.println("Erreur lors de la creation du dossier /data");
+			}
+		}
+		
+		//Creation du fichier accounts.data
+		File accounts = new File(rootFile + accountFile);
+		if(!accounts.exists()){
+			PrintWriter writer = new PrintWriter(accounts);
+			writer.println(u.getLogin() + " " + u.getPassword() + " " + u.getUid());
+			writer.close();
+		} else {
+			PrintWriter out = new PrintWriter(new FileWriter(accounts, true));
+			out.append(u.getLogin() + " " + u.getPassword() + " " + u.getUid());
+			out.close();
+		}
+	}
+	
+	private void updateLine(String toUpdate, String updated) throws IOException {
+	    BufferedReader file = new BufferedReader(new FileReader(rootFile + accountFile));
+	    String line;
+	    String input = "";
+
+	    while ((line = file.readLine()) != null)
+	        input += line + System.lineSeparator();
+
+	    input = input.replace(toUpdate, updated);
+
+	    FileOutputStream os = new FileOutputStream(rootFile + accountFile);
+	    os.write(input.getBytes());
+
+	    file.close();
+	    os.close();
 	}
 }

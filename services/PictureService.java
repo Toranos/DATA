@@ -3,7 +3,12 @@ package DATA.services;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -12,8 +17,10 @@ import java.util.UUID;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 
+import sun.security.pkcs11.Secmod.DbMode;
 import javafx.scene.image.Image;
 import DATA.exceptions.BadInformationException;
+import DATA.exceptions.PictureAlreadyExisted;
 import DATA.model.Comment;
 import DATA.model.Group;
 import DATA.model.Note;
@@ -90,27 +97,63 @@ public class PictureService {
 	/**
 	 * 
 	 * @param picture
+	 * @throws IOException 
+	 * @throws PictureAlreadyExisted 
 	 */
-	public void addPicture(Picture picture) {
-
+	public void addPicture(Picture picture) throws IOException, PictureAlreadyExisted {
 		picture.setPixels(imageToByte(picture.getFilename()));
-//		picture.setIcon(new ImageIcon(picture.getFilename()));
-		DataService.getInstance().getUser().getListPictures().add(picture);
+		if (this.copyImageToWorkspace(picture)) {
+			DataService.getInstance().getUser().getListPictures().add(picture);
+		}
 	}
 	
 	/**
-	 * 
-	 * @param picture
+	 * Copie image to workspace location.
+	 * @param img
+	 * @return
+	 * @throws IOException
+	 * @throws PictureAlreadyExisted 
 	 */
-	public void deletePicture(Picture picture) {
-		User currentUser = DataService.getInstance().getUser();
-		Iterator<Picture> iter = currentUser.getListPictures().iterator();
-		while (iter.hasNext()) {
-	    	if (iter.next().getUid().equals(picture.getUid())) {
-	    		iter.remove();
-	    		break;
-	    	}
-	    }
+	public boolean copyImageToWorkspace(Picture img) throws IOException, PictureAlreadyExisted {
+		File f = new File(img.getFilename());		
+		FileInputStream sourceFile = new FileInputStream(f);
+		File imgDir = DataService.getInstance().getImagePathUser();
+		if (imgDir.exists() == false) {
+			imgDir.mkdir();
+		}
+		String newFilename = imgDir.getPath();
+		newFilename += File.separator+formatMd5Name(f.getAbsolutePath())+".png";
+		File newFile = new File(newFilename);
+		if (newFile.exists()) {
+			sourceFile.close();
+			throw new PictureAlreadyExisted("Picture exits");
+		}
+		img.setFilename(newFilename);
+		FileOutputStream destinationFile = new FileOutputStream(newFile);
+		byte buffer[] = new byte[512 * 1024];
+		int nbLecture;
+		while ((nbLecture = sourceFile.read(buffer)) != -1){
+			destinationFile.write(buffer, 0, nbLecture);
+		}
+		destinationFile.close();
+		sourceFile.close();
+		return true;
+	}
+	
+	private String formatMd5Name(String name) {
+		MessageDigest md = null;
+		try {
+			md = MessageDigest.getInstance("MD5");
+		} catch (NoSuchAlgorithmException e) {
+			
+		}
+		md.update(name.getBytes());
+		byte[] digest = md.digest();
+		StringBuffer sb = new StringBuffer();
+		for (byte b : digest) {
+			sb.append(String.format("%02x", b & 0xff));
+		}
+		return sb.toString();
 	}
 	
 	/**
@@ -288,5 +331,18 @@ public class PictureService {
 			System.exit(0);  
 		}
 		return packet;
+	}
+
+	/**
+	 * Delete image.
+	 * @param picture
+	 */
+	public void deletePicture(Picture picture) {
+		File f = new File(picture.getFilename());	
+		if (f.exists()) {
+			f.delete();
+		}
+		DataService.getInstance().getUser().getListPictures().remove(picture);
+		picture = null;
 	}	
 }
