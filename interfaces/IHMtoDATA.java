@@ -1,10 +1,8 @@
 package DATA.interfaces;
 
 import java.io.IOException;
-import java.util.Date;
 import java.util.List;
 import java.util.UUID;
-
 import DATA.exceptions.BadInformationException;
 import DATA.exceptions.PictureAlreadyExisted;
 import DATA.model.Comment;
@@ -229,12 +227,12 @@ public  interface IHMtoDATA
 	 * Save information of application.
 	 * @throws IOException
 	 */
-	public synchronized void save() throws IOException;
+	public void save() throws IOException;
 
 	/**
 	 * Force Save information of application.
 	 * @throws IOException
 	 */
-	public synchronized void forceSave() throws IOException;
+	public void forceSave() throws IOException;
 }
 
