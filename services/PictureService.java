@@ -17,7 +17,6 @@ import java.util.UUID;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 
-import sun.security.pkcs11.Secmod.DbMode;
 import javafx.scene.image.Image;
 import DATA.exceptions.BadInformationException;
 import DATA.exceptions.PictureAlreadyExisted;
