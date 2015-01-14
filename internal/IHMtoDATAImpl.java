@@ -18,6 +18,7 @@ import DATA.model.Note;
 import DATA.model.Picture;
 import DATA.model.Tag;
 import DATA.model.User;
+import DATA.services.DataService;
 import DATA.services.GroupService;
 import DATA.services.PictureService;
 import DATA.services.UserService;
@@ -519,5 +520,15 @@ public class IHMtoDATAImpl implements IHMtoDATA {
 	@Override
 	public Group getGroupByName(String name) {
 		return groupService.getGroup(name);
+	}
+
+	@Override
+	public synchronized void save() throws IOException {
+		userService.save();
+	}
+
+	@Override
+	public synchronized void forceSave() throws IOException {
+		userService.forceSave();	
 	}
 }

@@ -150,7 +150,7 @@ public class DataService implements Serializable {
 	 * Save data into file.
 	 * @throws IOException 
 	 */
-	public void save() throws IOException {
+	public synchronized void save() throws IOException {
 		if (enabled) {
 			enabled = false;
 			ObjectOutputStream oos = null;
@@ -176,7 +176,7 @@ public class DataService implements Serializable {
 	 * Force save data into file.
 	 * @throws IOException 
 	 */
-	public void forceSave() throws IOException {
+	public synchronized void forceSave() throws IOException {
 		ObjectOutputStream oos = null;
 		final FileOutputStream file = new FileOutputStream(userPath.toString() + File.separatorChar + profile);
 		oos = new ObjectOutputStream(file);
@@ -255,7 +255,7 @@ public class DataService implements Serializable {
 	/**
 	 * Save all information into one zip file.
 	 */
-	public void exports() throws IOException {
+	public synchronized void exports() throws IOException {
 		File profile = new File(userPath.toString() + File.separatorChar + DataService.profile);
 		
 		// If the profile does not exists, export is stopped.

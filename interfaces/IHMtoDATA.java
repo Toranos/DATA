@@ -225,6 +225,16 @@ public  interface IHMtoDATA
 	 */
 	public boolean logout() throws IOException;
 	
+	/**
+	 * Save information of application.
+	 * @throws IOException
+	 */
+	public synchronized void save() throws IOException;
 
+	/**
+	 * Force Save information of application.
+	 * @throws IOException
+	 */
+	public synchronized void forceSave() throws IOException;
 }
 
