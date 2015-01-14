@@ -16,9 +16,9 @@ import DATA.model.Comment;
 import DATA.model.Group;
 import DATA.model.Note;
 import DATA.model.Picture;
+import DATA.model.Rule;
 import DATA.model.Tag;
 import DATA.model.User;
-import DATA.services.DataService;
 import DATA.services.GroupService;
 import DATA.services.PictureService;
 import DATA.services.UserService;
@@ -307,7 +307,7 @@ public class IHMtoDATAImpl implements IHMtoDATA {
 	 */
 	@Override
 	public void getPictureById(UUID pictureUid, int idRequest) {
-		Picture myPic = pictureService.getPictureById(pictureUid);
+		Picture myPic = pictureService.getPictureById(pictureUid, userService.getCurrentUser());
 		if (myPic != null) {
 			dataToIhm.receivePicture(myPic, idRequest);
 		} else {
@@ -323,7 +323,7 @@ public class IHMtoDATAImpl implements IHMtoDATA {
 	@Override
 	public void getPictures(User user, int idRequest) {
 		if (userService.getCurrentUser().getUid().equals(user.getUid())) {
-			dataToIhm.receivePictures(pictureService.getPictures(null), idRequest);
+			dataToIhm.receivePictures(pictureService.getPictures(null, userService.getCurrentUser()), idRequest);
 		} else {
 			netLocalizer.getPictures(user.getUid(), idRequest);
 		}
@@ -336,7 +336,7 @@ public class IHMtoDATAImpl implements IHMtoDATA {
 	 */
 	@Override
 	public void getPictures(List<Tag> listtag, int idRequest) {
-		dataToIhm.receivePictures(pictureService.getPictures(listtag), idRequest);
+		dataToIhm.receivePictures(pictureService.getPictures(listtag, userService.getCurrentUser()), idRequest);
 		netLocalizer.getPictures(listtag,idRequest);
 	}
 	
@@ -534,19 +534,31 @@ public class IHMtoDATAImpl implements IHMtoDATA {
 
 	@Override
 	public boolean canView(Picture p) {
-		// TODO Auto-generated method stub
+		for(Rule r : p.getListRules()){
+			if(r.getGroup().getNom().equals(userService.getCurrentUser().getUid())){
+				return r.isCanView();
+			}
+		}
 		return false;
 	}
 
 	@Override
 	public boolean canComment(Picture p) {
-		// TODO Auto-generated method stub
+		for(Rule r : p.getListRules()){
+			if(r.getGroup().getNom().equals(userService.getCurrentUser().getUid())){
+				return r.isCanComment();
+			}
+		}
 		return false;
 	}
 
 	@Override
 	public boolean canRate(Picture p) {
-		// TODO Auto-generated method stub
+		for(Rule r : p.getListRules()){
+			if(r.getGroup().getNom().equals(userService.getCurrentUser().getUid())){
+				return r.isCanRate();
+			}
+		}
 		return false;
 	}
 }

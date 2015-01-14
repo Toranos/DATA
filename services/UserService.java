@@ -68,10 +68,6 @@ public class UserService {
 			}
 		}
 		
-		/*
-		 * if (u.getListIP() == null || u.getListIP().isEmpty()) { throw new
-		 * BadInformationException("Password is empty"); }
-		 */
 		DataService.getInstance().setUser(u);
 		DataService.getInstance().setPathUser(new File(rootFile + u.getUid() + File.separator));
 		try {

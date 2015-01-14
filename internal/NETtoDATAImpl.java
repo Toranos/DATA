@@ -3,9 +3,6 @@
  */
 package DATA.internal;
 
-
-import java.io.IOException;
-import java.util.Iterator;
 import java.util.List;
 import java.util.UUID;
 
@@ -14,17 +11,14 @@ import DATA.interfaces.NETtoDATA;
 import DATA.model.Comment;
 import DATA.model.Group;
 import DATA.model.Note;
-import DATA.model.PendingRequest;
 import DATA.model.Picture;
 import DATA.model.Tag;
 import DATA.model.User;
-import DATA.services.DataService;
 import DATA.services.GroupService;
 import DATA.services.PictureService;
 import DATA.services.UserService;
 import IHM.Main;
 import IHM.interfaces.DATAtoIHM;
-import IHM.interfaces.DATAtoIHMimpl;
 import NET.NetLocalizer;
 /**
  * @author le-goc
@@ -176,21 +170,20 @@ public class NETtoDATAImpl implements NETtoDATA {
 	}
 
 	@Override
-	public List<Picture> getPictures() {
-		//TODO check if can view
-		return pictureService.getPictures(null);
+	public List<Picture> getPictures(User sendMan) {
+		return pictureService.getPictures(null, sendMan);
 	}
 
 	@Override
-	public List<Picture> getPictures(List<Tag> tags) {
-		//TODO check if can view
-		return pictureService.getPictures(tags);
+	public List<Picture> getPictures(List<Tag> tags, User sendMan) {
+		return pictureService.getPictures(tags, sendMan);
 	}
 
 	@Override
-	public Picture getPictureById(UUID id) {
-		//TODO create a Self rule 
-		return pictureService.getPictureById(id);
+	public Picture getPictureById(UUID id, User sendMan) {
+		Picture tempPicture = new Picture(pictureService.getPictureById(id, sendMan));
+		tempPicture.getListRules().add(pictureService.getMaxRule(id, sendMan));
+		return tempPicture;
 	}
 
 	@Override

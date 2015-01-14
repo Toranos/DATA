@@ -41,6 +41,7 @@ public class User implements Serializable {
 		this.listConnectedUser = new ArrayList<String>();
 		this.listGroups = new ArrayList<Group>();
 		this.listGroups.add(new Group(Group.FRIENDS_GROUP_NAME));
+		this.otherGroup = new Group(Group.DEFAULT_GROUP_NAME);
 		this.listIP = new ArrayList<String>();
 		this.listPictures = new ArrayList<Picture>();
 		this.listPendingRequests = new ArrayList<PendingRequest>();
@@ -53,6 +54,7 @@ public class User implements Serializable {
 		this.listConnectedUser = new ArrayList<String>();
 		this.listGroups = new ArrayList<Group>();
 		this.listGroups.add(new Group(Group.FRIENDS_GROUP_NAME));
+		this.otherGroup = new Group(Group.DEFAULT_GROUP_NAME);
 		this.listIP = new ArrayList<String>();
 		this.listPictures = new ArrayList<Picture>();
 		this.listPendingRequests = new ArrayList<PendingRequest>();
@@ -70,6 +72,7 @@ public class User implements Serializable {
 		this.listConnectedUser = new ArrayList<String>();
 		this.listGroups = new ArrayList<Group>();
 		this.listGroups.add(new Group(Group.FRIENDS_GROUP_NAME));
+		this.otherGroup = new Group(Group.DEFAULT_GROUP_NAME);
 		this.listIP = new ArrayList<String>();
 		this.listPictures = new ArrayList<Picture>();
 		this.listPendingRequests = new ArrayList<PendingRequest>();

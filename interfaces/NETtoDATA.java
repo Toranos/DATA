@@ -82,14 +82,14 @@ public interface NETtoDATA {
 	 * @return The picture 
 	 * @throws BadInformationException 
 	 */
-	public Picture getPictureById(UUID id);
+	public Picture getPictureById(UUID id, User u);
 	
 	/**
 	 * Get local pictures for NET
 	 * @return The picture List
 	 * @throws BadInformationException 
 	 */
-	public List<Picture> getPictures();
+	public List<Picture> getPictures(User u);
 	
 	/**
 	 * Get local pictures for NET
@@ -97,7 +97,7 @@ public interface NETtoDATA {
 	 * @return The picture List
 	 * @throws BadInformationException 
 	 */
-	public List<Picture> getPictures(List<Tag> tags);
+	public List<Picture> getPictures(List<Tag> tags, User u);
 
 	/**
 	 * Send connected user.
