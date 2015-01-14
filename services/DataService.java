@@ -10,19 +10,13 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 import java.util.zip.ZipOutputStream;
-
-import javafx.application.Application;
-import DATA.exceptions.BadInformationException;
-import DATA.exceptions.PictureAlreadyExisted;
 import DATA.model.User;
-import IHM.Main;
 
 /**
  * Main service of data handler.
