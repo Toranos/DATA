@@ -229,12 +229,12 @@ public  interface IHMtoDATA
 	 * Save information of application.
 	 * @throws IOException
 	 */
-	public synchronized void save() throws IOException;
+	public void save() throws IOException;
 
 	/**
 	 * Force Save information of application.
 	 * @throws IOException
 	 */
-	public synchronized void forceSave() throws IOException;
+	public void forceSave() throws IOException;
 }
 
