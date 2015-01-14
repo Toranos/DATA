@@ -26,6 +26,7 @@ import IHM.Main;
 import IHM.interfaces.DATAtoIHM;
 import IHM.interfaces.DATAtoIHMimpl;
 import NET.NetLocalizer;
+import NET.exceptions.UnknownUserException;
 /**
  * @author le-goc
  *
@@ -189,21 +190,26 @@ public class NETtoDATAImpl implements NETtoDATA {
 		user.setConnected(true);
 		dataToIhm.receiveConnectedUser(user);
 		for (PendingRequest pendingReq : groupService.getUserPending(user)) {
-			switch (pendingReq.getType()) {
-			case PendingRequest.ASK_FRIEND:
-				netLocalizer.addFriend(user.getUid());
-				break;
-			case PendingRequest.ASK_UNFRIEND:
-				netLocalizer.deleteFriend(user.getUid());		
-				break;
-			case PendingRequest.SEND_COMMENT:
-				netLocalizer.addComment(pendingReq.getComment(), user.getUid());
-				break;
-			case PendingRequest.SEND_NOTE:
-				netLocalizer.addNote(pendingReq.getNote(), user.getUid());
-				break;
-			default:
-				break;
+			try {
+				switch (pendingReq.getType()) {
+					case PendingRequest.ASK_FRIEND:
+						netLocalizer.addFriend(user.getUid());
+						break;
+					case PendingRequest.ASK_UNFRIEND:
+						netLocalizer.deleteFriend(user.getUid());		
+						break;
+					case PendingRequest.SEND_COMMENT:
+						netLocalizer.addComment(pendingReq.getComment(), user.getUid());
+						break;
+					case PendingRequest.SEND_NOTE:
+						netLocalizer.addNote(pendingReq.getNote(), user.getUid());
+						break;
+					default:
+						break;
+				}
+			} catch (UnknownUserException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
 			}
 		}
 	}
