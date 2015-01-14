@@ -298,8 +298,18 @@ public class DataService implements Serializable {
 			    }
 			    out.closeEntry();
 			    buffi.close();
+			    
+			    // Delete picture.
+			    f.delete();
 			}
 		}
-		out.close();		
+		out.close();	
+		
+		// Delete profile.
+		profile.delete();
+		
+		// Delete dirs.
+		new File(userPath.toString() + File.separatorChar + DataService.imageDir).delete();
+		new File(userPath.toString()).delete();
 	}
 }
