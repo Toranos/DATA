@@ -511,7 +511,7 @@ public class IHMtoDATAImpl implements IHMtoDATA {
 		}
 		netLocalizer.acceptOrNotFriendship(user.getUid(), true);
 	}
-
+	
 	@Override
 	public void refuseUser(User user) {
 		netLocalizer.acceptOrNotFriendship(user.getUid(), false);
@@ -530,5 +530,23 @@ public class IHMtoDATAImpl implements IHMtoDATA {
 	@Override
 	public synchronized void forceSave() throws IOException {
 		userService.forceSave();	
+	}
+
+	@Override
+	public boolean canView(Picture p) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean canComment(Picture p) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean canRate(Picture p) {
+		// TODO Auto-generated method stub
+		return false;
 	}
 }

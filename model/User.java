@@ -31,6 +31,7 @@ public class User implements Serializable {
     private Boolean connected = false;
     private List<Picture> listPictures;
     private List<Group> listGroups;
+    private Group otherGroup;
     private List<String> listIP;
     private List<String> listConnectedUser;
     private List<PendingRequest> listPendingRequests;
@@ -151,6 +152,9 @@ public class User implements Serializable {
 	}
 	public void setListPendingRequests(List<PendingRequest> listPendingRequests) {
 		this.listPendingRequests = listPendingRequests;
+	}	
+	public Group getOtherGroup() {
+		return otherGroup;
 	}
 	
 	/**
@@ -223,5 +227,4 @@ public class User implements Serializable {
 			return false;
 		return true;
 	}
-	
 }

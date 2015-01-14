@@ -177,16 +177,19 @@ public class NETtoDATAImpl implements NETtoDATA {
 
 	@Override
 	public List<Picture> getPictures() {
+		//TODO check if can view
 		return pictureService.getPictures(null);
 	}
 
 	@Override
 	public List<Picture> getPictures(List<Tag> tags) {
+		//TODO check if can view
 		return pictureService.getPictures(tags);
 	}
 
 	@Override
 	public Picture getPictureById(UUID id) {
+		//TODO create a Self rule 
 		return pictureService.getPictureById(id);
 	}
 
