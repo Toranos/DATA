@@ -268,7 +268,7 @@ public class UserService {
 			writer.close();
 		} else {
 			PrintWriter out = new PrintWriter(new FileWriter(accounts, true));
-			out.append(u.getLogin() + " " + u.getPassword() + " " + u.getUid());
+			out.append(System.lineSeparator() + u.getLogin() + " " + u.getPassword() + " " + u.getUid());
 			out.close();
 		}
 	}
