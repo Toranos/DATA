@@ -4,8 +4,7 @@
 package DATA.internal;
 
 
-import java.io.IOException;
-import java.util.Iterator;
+
 import java.util.List;
 import java.util.UUID;
 
@@ -14,17 +13,14 @@ import DATA.interfaces.NETtoDATA;
 import DATA.model.Comment;
 import DATA.model.Group;
 import DATA.model.Note;
-import DATA.model.PendingRequest;
 import DATA.model.Picture;
 import DATA.model.Tag;
 import DATA.model.User;
-import DATA.services.DataService;
 import DATA.services.GroupService;
 import DATA.services.PictureService;
 import DATA.services.UserService;
 import IHM.Main;
 import IHM.interfaces.DATAtoIHM;
-import IHM.interfaces.DATAtoIHMimpl;
 import NET.NetLocalizer;
 /**
  * @author le-goc

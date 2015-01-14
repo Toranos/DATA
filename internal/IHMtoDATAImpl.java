@@ -18,7 +18,6 @@ import DATA.model.Note;
 import DATA.model.Picture;
 import DATA.model.Tag;
 import DATA.model.User;
-import DATA.services.DataService;
 import DATA.services.GroupService;
 import DATA.services.PictureService;
 import DATA.services.UserService;
@@ -201,7 +200,7 @@ public class IHMtoDATAImpl implements IHMtoDATA {
 		groupService.deleteGroup(group);
 		dataToIhm.receiveReloadUserGroups();
 		try {
-			userService.export_();
+			userService.save();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
