@@ -67,8 +67,14 @@ public  interface IHMtoDATA
 	public void refuseUser(User user) ;
 	
 	/**
+	 * Delete a comment of a picture
+	 * @param comment
+	 */
+	public void deleteComment(Comment comment) throws BadInformationException ;
+	
+	/**
 	 * Delete a group and all its users
-	 * @param group	The gorup to delete
+	 * @param group	The group to delete
 	 */
 	public void deleteGroup(Group group) ;
 	
@@ -115,7 +121,7 @@ public  interface IHMtoDATA
 	* @param name of the group searched
 	* @return the Group searched
 	*/
-	public Group getGroup(String group) ;
+	public Group getGroupByName(String group) ;
 	
 	/**
 	* @Brief : Request all the group of the current user
@@ -181,7 +187,7 @@ public  interface IHMtoDATA
 	public void updatePicture(Picture picture) ;
 	
 	/**
-	 * @Brief Update user in the JSON file
+	 * @Brief Update the new light user with the new information
 	 * @param parameter
 	 */
 	public void updateProfile(User u) throws IOException, BadInformationException;
@@ -219,12 +225,6 @@ public  interface IHMtoDATA
 	 */
 	public boolean logout() throws IOException;
 	
-	/**
-	 * Edit the current profile
-	 * @param u : The new light user with the new information
-	 * @return	true : edit OK
-	 * 			false : edit KO
-	 */
-	public boolean editProfile(User u);
+
 }
 

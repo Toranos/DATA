@@ -22,6 +22,7 @@ import javafx.scene.image.Image;
 import DATA.exceptions.BadInformationException;
 import DATA.exceptions.PictureAlreadyExisted;
 import DATA.model.Comment;
+import DATA.model.Group;
 import DATA.model.Note;
 import DATA.model.Picture;
 import DATA.model.Tag;
@@ -159,30 +160,156 @@ public class PictureService {
 	 * 
 	 * @param comment
 	 */
-	public void addComment(Comment comment) {
+	public boolean addComment(Comment comment) throws BadInformationException {
+		if (comment == null || comment.equals("")) {
+			throw new BadInformationException("Comment empty");
+		}
+		if (comment.getUid() == null || comment.getUid().equals("")) {
+			throw new BadInformationException("Uid empty");
+		}
+		if (comment.getCommentUser().getUid() == null || comment.getCommentUser().getUid().equals("")) {
+			throw new BadInformationException("CommentUserId empty");
+		}
+		if (comment.getPictureId() == null || comment.getPictureId().equals("")) {
+			throw new BadInformationException("PictureId empty");
+		}
+		if (comment.getPictureUserId() == null || comment.getPictureUserId().equals("")) {
+			throw new BadInformationException("PictureUserId empty");
+		}
+		
 		User currentUser = DataService.getInstance().getUser();
-		Iterator<Picture> iter = currentUser.getListPictures().iterator();
-	    while (iter.hasNext()) {
-	    	if (iter.next().getUid() == comment.getPictureId()) {
-	    		iter.next().getComments().add(comment);
-	    	}
-	    }
+		if (currentUser.getUid().equals(comment.getPictureUserId())) {
+			Iterator<Picture> iterPicture = currentUser.getListPictures().iterator();
+			boolean isUpdate;
+			Picture tmpPicture = null;
+			Comment tmpComment = null;
+		    while (iterPicture.hasNext()) {
+		    	tmpPicture = iterPicture.next();
+		    	if (tmpPicture.getUid().equals(comment.getPictureId())) {
+		    		//Search if the Comment already exist to update it
+		    		isUpdate = false;
+		    		Iterator<Comment> iterComment = tmpPicture.getComments().iterator();
+		    		while (iterComment.hasNext()) {
+		    			tmpComment = iterComment.next();
+		    			if (tmpComment.getUid().equals(comment.getUid())) {
+		    				if (tmpComment.getCommentUser().getUid().equals(comment.getCommentUser().getUid())) {
+		    					tmpComment.setValue(comment.getValue());
+			    				isUpdate = true;
+		    				}
+		    				break;
+		    			}
+		    		}
+		    		//If it doesn't exist we add it
+		    		if (isUpdate == false) {
+		    			tmpPicture.getComments().add(comment);
+			    		break;	
+		    		}
+		    	}
+		    }
+		    return true;
+		}  else {
+			return false;
+		}
 	}
 	
 	/**
 	 * 
 	 * @param note
 	 */
-	public void addNote(Note note) {
+	public boolean addNote(Note note) throws BadInformationException {
+		if (note == null || note.equals("")) {
+			throw new BadInformationException("Note empty");
+		}
+		if (note.getUid() == null || note.getUid().equals("")) {
+			throw new BadInformationException("Uid empty");
+		}
+		if (note.getNoteUser() == null || note.getNoteUser().equals("")) {
+			throw new BadInformationException("NoteUserId empty");
+		}
+		if (note.getPictureId() == null || note.getPictureId().equals("")) {
+			throw new BadInformationException("PictureId empty");
+		}
+		if (note.getPictureUserId() == null || note.getPictureUserId().equals("")) {
+			throw new BadInformationException("PictureUserId empty");
+		}
+		
 		User currentUser = DataService.getInstance().getUser();
-		Iterator<Picture> iter = currentUser.getListPictures().iterator();
-	    while (iter.hasNext()) {
-	    	if (iter.next().getUid() == note.getPictureId()) {
-	    		iter.next().getListNotes().add(note);
-	    	}
-	    }
+		if (currentUser.getUid().equals(note.getPictureUserId())) {
+			Iterator<Picture> iterPicture = currentUser.getListPictures().iterator();
+			boolean isUpdate;
+			Picture tmpPicture = null;
+			Note tmpNote = null;
+		    while (iterPicture.hasNext()) {
+		    	tmpPicture = iterPicture.next();
+		    	if (tmpPicture.getUid().equals(note.getPictureId())) {
+		    		//Search if the Note already exist to update it
+		    		isUpdate = false;
+		    		Iterator<Note> iterNote = tmpPicture.getListNotes().iterator();
+		    		while (iterNote.hasNext()) {
+		    			tmpNote = iterNote.next();
+		    			if (tmpNote.getUid().equals(note.getUid())) {
+		    				if (tmpNote.getNoteUser().getUid().equals(note.getNoteUser().getUid())) {
+		    					tmpNote.setValue(note.getValue());
+		    					isUpdate = true;
+		    				}
+		    				break;
+		    			}
+		    		}
+		    		//If it doesn't exist we add it
+		    		if (isUpdate == false) {
+		    			tmpPicture.getListNotes().add(note);
+		    			break;	
+		    		}
+		    	}
+		    }
+		    return true;
+		}  else {
+			return false;
+		}
 	}
 	
+	/**
+	 * 
+	 * @param comment
+	 */
+	public boolean deleteComment(Comment comment) throws BadInformationException {
+		if (comment == null || comment.equals("")) {
+			throw new BadInformationException("Comment empty");
+		}
+		if (comment.getUid() == null || comment.getUid().equals("")) {
+			throw new BadInformationException("Uid empty");
+		}
+		if (comment.getCommentUser().getUid() == null || comment.getCommentUser().getUid().equals("")) {
+			throw new BadInformationException("CommentUserId empty");
+		}
+		if (comment.getPictureId() == null || comment.getPictureId().equals("")) {
+			throw new BadInformationException("PictureId empty");
+		}
+		if (comment.getPictureUserId() == null || comment.getPictureUserId().equals("")) {
+			throw new BadInformationException("PictureUserId empty");
+		}
+		
+		User currentUser = DataService.getInstance().getUser();
+		if (currentUser.getUid().equals(comment.getPictureUserId()) || currentUser.getUid().equals(comment.getCommentUser().getUid())) {
+			Iterator<Picture> iterPicture = currentUser.getListPictures().iterator();
+		    while (iterPicture.hasNext()) {
+		    	if (iterPicture.next().getUid().equals(comment.getPictureId())) {
+		    		Iterator<Comment> iterComment = iterPicture.next().getComments().iterator();
+		    		while (iterComment.hasNext()) {
+		    			if (iterComment.next().getUid().equals(comment.getUid())) {
+		    				iterComment.remove();
+		    				break;
+		    			}
+		    		}
+		    		break;
+		    	}
+		    }
+		    return true;
+		}  else {
+			return false;
+		}
+	}
+
 	public byte[] imageToByte(String filename){
 		byte[] packet = new byte[0];
 		try {
