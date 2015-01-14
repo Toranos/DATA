@@ -405,7 +405,7 @@ public class IHMtoDATAImpl implements IHMtoDATA {
 	public void updateProfile(User u) throws IOException,
 			BadInformationException {
 		if (userService.updateProfile(u)) {
-			userService.export_();
+			userService.save();
 		};
 	}
 
@@ -504,7 +504,7 @@ public class IHMtoDATAImpl implements IHMtoDATA {
 	public void acceptUserInGroup(User user, Group group) {
 		groupService.acceptUser(user, group);
 		try {
-			userService.export_();
+			userService.save();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
