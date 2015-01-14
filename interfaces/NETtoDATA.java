@@ -127,4 +127,8 @@ public interface NETtoDATA {
 	 * @param user
 	 */
 	public void notFriendAnymore(User user) ;
+
+	void deleteNote(Note note);
+
+	void receiveUnfriendResponse(UUID userUid);
 }

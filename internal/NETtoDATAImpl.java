@@ -88,6 +88,18 @@ public class NETtoDATAImpl implements NETtoDATA {
 	}
 
 	/* (non-Javadoc)
+	 * @see DATA.interfaces.NETtoDATA#deleteComment(DATA.model.Comment)
+	 */
+	@Override
+	public void deleteNote(Note note){
+		try{
+			pictureService.deleteNote(note);
+		} catch (BadInformationException e){
+			e.printStackTrace();
+		}
+	}
+	
+	/* (non-Javadoc)
 	 * @see DATA.interfaces.NETtoDATA#getConnectedIps()
 	 */
 	@Override
@@ -129,6 +141,14 @@ public class NETtoDATAImpl implements NETtoDATA {
 		dataToIhm.receiveFriendResponse(user,friends);
 	}
 
+	/* (non-Javadoc)
+	 * @see DATA.interfaces.NETtoDATA#receiveFriendResponse(DATA.model.User)
+	 */
+	@Override
+	public void receiveUnfriendResponse(UUID userUid) {
+		groupService.receiveUnfriendResponse(userUid);
+	}
+	
 	/* (non-Javadoc)
 	 * @see DATA.interfaces.NETtoDATA#receiveFriendResponse(DATA.model.User)
 	 */

@@ -117,7 +117,23 @@ public class GroupService {
 					}
 				}
 				pendReq = pendingReq;
-			} else if(pendingReq.getType() == PendingRequest.ASK_UNFRIEND && !friends && user.getUid().equals(pendingReq.getToUID())) {
+			}
+		}
+		if(pendReq != null) {
+			currentUser.getListPendingRequests().remove(pendReq);
+		}
+	}
+	
+	/**
+	 * 
+	 * @param user
+	 * @param friends
+	 */
+	public void receiveUnfriendResponse(UUID userUid) {
+		PendingRequest pendReq = null;
+		User currentUser = DataService.getInstance().getUser();
+		for (PendingRequest pendingReq : currentUser.getListPendingRequests()) {
+			if(pendingReq.getType() == PendingRequest.ASK_UNFRIEND && userUid.equals(pendingReq.getToUID())) {
 				pendReq = pendingReq;
 			}
 		}

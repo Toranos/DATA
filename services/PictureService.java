@@ -307,6 +307,44 @@ public class PictureService {
 		}
 	}
 
+	public boolean deleteNote(Note note) throws BadInformationException {
+		if (note == null || note.equals("")) {
+			throw new BadInformationException("note empty");
+		}
+		if (note.getUid() == null || note.getUid().equals("")) {
+			throw new BadInformationException("Uid empty");
+		}
+		if (note.getNoteUser().getUid() == null || note.getNoteUser().getUid().equals("")) {
+			throw new BadInformationException("CommentUserId empty");
+		}
+		if (note.getPictureId() == null || note.getPictureId().equals("")) {
+			throw new BadInformationException("PictureId empty");
+		}
+		if (note.getPictureUserId() == null || note.getPictureUserId().equals("")) {
+			throw new BadInformationException("PictureUserId empty");
+		}
+		
+		User currentUser = DataService.getInstance().getUser();
+		if (currentUser.getUid().equals(note.getPictureUserId()) || currentUser.getUid().equals(note.getNoteUser().getUid())) {
+			Iterator<Picture> iterPicture = currentUser.getListPictures().iterator();
+		    while (iterPicture.hasNext()) {
+		    	if (iterPicture.next().getUid().equals(note.getPictureId())) {
+		    		Iterator<Note> iterNote = iterPicture.next().getListNotes().iterator();
+		    		while (iterNote.hasNext()) {
+		    			if (iterNote.next().getUid().equals(note.getUid())) {
+		    				iterNote.remove();
+		    				break;
+		    			}
+		    		}
+		    		break;
+		    	}
+		    }
+		    return true;
+		}  else {
+			return false;
+		}
+	}
+	
 	public byte[] imageToByte(String filename){
 		byte[] packet = new byte[0];
 		try {
