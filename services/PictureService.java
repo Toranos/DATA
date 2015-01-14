@@ -12,11 +12,14 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.UUID;
+
 import javax.imageio.ImageIO;
+
 import DATA.exceptions.BadInformationException;
 import DATA.exceptions.PictureAlreadyExisted;
 import DATA.model.Comment;
 import DATA.model.Note;
+import DATA.model.PendingRequest;
 import DATA.model.Picture;
 import DATA.model.Tag;
 import DATA.model.User;
@@ -200,6 +203,7 @@ public class PictureService {
 		    }
 		    return true;
 		}  else {
+			DataService.getInstance().getUser().getListPendingRequests().add(new PendingRequest(comment));
 			return false;
 		}
 	}
@@ -256,6 +260,7 @@ public class PictureService {
 		    }
 		    return true;
 		}  else {
+			DataService.getInstance().getUser().getListPendingRequests().add(new PendingRequest(note));
 			return false;
 		}
 	}
@@ -336,5 +341,27 @@ public class PictureService {
 		}
 		DataService.getInstance().getUser().getListPictures().remove(picture);
 		picture = null;
+	}
+
+	public void receiveCommentResponse(User user, Comment comment) {
+		List<PendingRequest> pendingRequests = DataService.getInstance().getUser().getListPendingRequests();
+		PendingRequest pendingRequestToRemove = null;
+		for (PendingRequest pendingRequest : pendingRequests) {
+			if(pendingRequest.getType() == PendingRequest.SEND_COMMENT && pendingRequest.getComment().getUid().equals(comment.getUid())) {
+				pendingRequestToRemove = pendingRequest;
+			}
+		}
+		pendingRequests.remove(pendingRequestToRemove);
+	}
+
+	public void receiveNoteResponse(User user, Note note) {
+		List<PendingRequest> pendingRequests = DataService.getInstance().getUser().getListPendingRequests();
+		PendingRequest pendingRequestToRemove = null;
+		for (PendingRequest pendingRequest : pendingRequests) {
+			if(pendingRequest.getType() == PendingRequest.SEND_NOTE && pendingRequest.getNote().getUid().equals(note.getUid())) {
+				pendingRequestToRemove = pendingRequest;
+			}
+		}
+		pendingRequests.remove(pendingRequestToRemove);
 	}	
 }

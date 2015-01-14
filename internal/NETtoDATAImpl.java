@@ -130,6 +130,22 @@ public class NETtoDATAImpl implements NETtoDATA {
 	}
 
 	/* (non-Javadoc)
+	 * @see DATA.interfaces.NETtoDATA#receiveFriendResponse(DATA.model.User)
+	 */
+	@Override
+	public void receiveCommentResponse(User user, Comment comment) {
+		pictureService.receiveCommentResponse(user,comment);
+	}
+	
+	/* (non-Javadoc)
+	 * @see DATA.interfaces.NETtoDATA#receiveFriendResponse(DATA.model.User)
+	 */
+	@Override
+	public void receiveNoteResponse(User user, Note note) {
+		pictureService.receiveNoteResponse(user,note);
+	}
+	
+	/* (non-Javadoc)
 	 * @see DATA.interfaces.NETtoDATA#resultPictures(java.util.List, int)
 	 */
 	@Override
@@ -152,8 +168,23 @@ public class NETtoDATAImpl implements NETtoDATA {
 	public void helloUser(User user) {
 		user.setConnected(true);
 		dataToIhm.receiveConnectedUser(user);
-		if (groupService.checkUserPending(user) != null) {
-			netLocalizer.addFriend(user.getUid());
+		for (PendingRequest pendingReq : groupService.getUserPending(user)) {
+			switch (pendingReq.getType()) {
+			case PendingRequest.ASK_FRIEND:
+				netLocalizer.addFriend(user.getUid());
+				break;
+			case PendingRequest.ASK_UNFRIEND:
+				netLocalizer.deleteFriend(user.getUid());		
+				break;
+			case PendingRequest.SEND_COMMENT:
+				netLocalizer.addComment(pendingReq.getComment(), user.getUid());
+				break;
+			case PendingRequest.SEND_NOTE:
+				netLocalizer.addNote(pendingReq.getNote(), user.getUid());
+				break;
+			default:
+				break;
+			}
 		}
 	}
 
@@ -189,12 +220,4 @@ public class NETtoDATAImpl implements NETtoDATA {
 	public Picture getPictureById(UUID id) {
 		return pictureService.getPictureById(id);
 	}
-
-	@Override
-	public void checkPendingRequest(UUID userId) {
-		if(groupService.checkPendingRequest(userId)) {
-			netLocalizer.addFriend(userId);
-		}
-	}
-
 }
