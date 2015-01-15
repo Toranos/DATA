@@ -114,7 +114,7 @@ public class PictureService {
 			imgDir.mkdir();
 		}
 		String newFilename = imgDir.getPath();
-		newFilename += File.separator+formatMd5Name(f.getAbsolutePath())+".png";
+		newFilename += File.separator+img.getUid().toString()+".png";
 		File newFile = new File(newFilename);
 		if (newFile.exists()) {
 			sourceFile.close();
@@ -130,22 +130,6 @@ public class PictureService {
 		destinationFile.close();
 		sourceFile.close();
 		return true;
-	}
-	
-	private String formatMd5Name(String name) {
-		MessageDigest md = null;
-		try {
-			md = MessageDigest.getInstance("MD5");
-		} catch (NoSuchAlgorithmException e) {
-			
-		}
-		md.update(name.getBytes());
-		byte[] digest = md.digest();
-		StringBuffer sb = new StringBuffer();
-		for (byte b : digest) {
-			sb.append(String.format("%02x", b & 0xff));
-		}
-		return sb.toString();
 	}
 	
 	/**
