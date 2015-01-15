@@ -72,6 +72,11 @@ public class PictureService {
 		return resultPictures;
 	}
 	
+	/**
+	 * Get remote user's pictures
+	 * @param listUser
+	 * @return
+	 */
 	public List<Picture> getPicturesByUser(List<String> listUser) {
 		List<Picture> resultPictures = new ArrayList<Picture>();
 		if(listUser != null && !listUser.isEmpty()) { 
@@ -105,14 +110,28 @@ public class PictureService {
 	 * @throws PictureAlreadyExisted 
 	 */
 	public boolean copyImageToWorkspace(Picture img) throws IOException, PictureAlreadyExisted {
-		File f = new File(img.getFilename());		
+		File f = new File(img.getFilename());	
+		img.setTitle(f.getName());
 		FileInputStream sourceFile = new FileInputStream(f);
 		File imgDir = DataService.getInstance().getImagePathUser();
 		if (imgDir.exists() == false) {
 			imgDir.mkdir();
 		}
 		String newFilename = imgDir.getPath();
-		newFilename += File.separator+img.getUid().toString()+".png";
+		newFilename += File.separator+img.getUid().toString();
+		
+		// Extension of file.
+		String ext = ".png";
+		String name = f.getName();
+		if (name.lastIndexOf(".") > 0) {
+		    ext = name.substring(name.lastIndexOf("."));
+		    if (!ext.equals(".png") && !ext.equals(".jpg") && !ext.equals(".jpeg") && !ext.equals(".gif") && !ext.equals(".bmp")) {
+		    	ext = ".png";
+		    }
+		} 
+		newFilename += ext;
+		
+		// Copie du fichier.
 		File newFile = new File(newFilename);
 		if (newFile.exists()) {
 			sourceFile.close();
@@ -284,6 +303,11 @@ public class PictureService {
 		}
 	}
 
+	/**
+	 * Create byte array from image.
+	 * @param filename
+	 * @return
+	 */
 	public byte[] imageToByte(String filename){
 		byte[] packet = new byte[0];
 		try {
