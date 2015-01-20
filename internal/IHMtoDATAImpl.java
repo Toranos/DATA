@@ -26,6 +26,7 @@ import IHM.interfaces.DATAtoIHM;
 import NET.NetLocalizer;
 import NET.exceptions.BusinessException;
 import NET.exceptions.TechnicalException;
+import NET.exceptions.UnknownUserException;
 
 /**
  * @author le-goc
@@ -153,7 +154,12 @@ public class IHMtoDATAImpl implements IHMtoDATA {
 		if(groupService.addUserInGroup(user, group)) {
 			dataToIhm.receiveReloadUserGroups();
 			if(group.getNom().equals(Group.FRIENDS_GROUP_NAME)) {
-				netLocalizer.addFriend(user.getUid());
+				try {
+					netLocalizer.addFriend(user.getUid());
+				} catch (UnknownUserException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 			}
 		}
 	}
@@ -233,7 +239,12 @@ public class IHMtoDATAImpl implements IHMtoDATA {
 		groupService.deleteUserFromGroup(user, group);
 		dataToIhm.receiveReloadUserGroups();
 		if(group.getNom().equals(Group.FRIENDS_GROUP_NAME)) {
-			netLocalizer.deleteFriend(user.getUid());
+			try {
+				netLocalizer.deleteFriend(user.getUid());
+			} catch (UnknownUserException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 	}
 
@@ -255,7 +266,12 @@ public class IHMtoDATAImpl implements IHMtoDATA {
 	 */
 	@Override
 	public void getUserById(UUID idUser, int idRequest) {
-		netLocalizer.getUserDetails(idUser, idRequest);
+		try {
+			netLocalizer.getUserDetails(idUser, idRequest);
+		} catch (UnknownUserException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	/*
@@ -324,7 +340,12 @@ public class IHMtoDATAImpl implements IHMtoDATA {
 		if (userService.getCurrentUser().getUid().equals(user.getUid())) {
 			dataToIhm.receivePictures(pictureService.getPictures(null), idRequest);
 		} else {
-			netLocalizer.getPictures(user.getUid(), idRequest);
+			try {
+				netLocalizer.getPictures(user.getUid(), idRequest);
+			} catch (UnknownUserException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 	}
 
@@ -346,7 +367,12 @@ public class IHMtoDATAImpl implements IHMtoDATA {
 		for(String user : listUser){
 			for(User connected : connectedUsers){
 				if(connected.getLogin().equals(user)){
-					netLocalizer.getPictures(connected.getUid(), idRequest);
+					try {
+						netLocalizer.getPictures(connected.getUid(), idRequest);
+					} catch (UnknownUserException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
 				}
 			}
 		}
@@ -508,12 +534,22 @@ public class IHMtoDATAImpl implements IHMtoDATA {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		netLocalizer.acceptOrNotFriendship(user.getUid(), true);
+		try {
+			netLocalizer.acceptOrNotFriendship(user.getUid(), true);
+		} catch (UnknownUserException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	@Override
 	public void refuseUser(User user) {
-		netLocalizer.acceptOrNotFriendship(user.getUid(), false);
+		try {
+			netLocalizer.acceptOrNotFriendship(user.getUid(), false);
+		} catch (UnknownUserException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	@Override
