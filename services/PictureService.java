@@ -283,13 +283,18 @@ public class PictureService {
 		}
 		
 		User currentUser = DataService.getInstance().getUser();
+		Picture tmpPicture = null;
+		Comment tmpComment = null;
+	    	
 		if (currentUser.getUid().equals(comment.getPictureUserId()) || currentUser.getUid().equals(comment.getCommentUser().getUid())) {
 			Iterator<Picture> iterPicture = currentUser.getListPictures().iterator();
 		    while (iterPicture.hasNext()) {
-		    	if (iterPicture.next().getUid().equals(comment.getPictureId())) {
-		    		Iterator<Comment> iterComment = iterPicture.next().getComments().iterator();
+		    	tmpPicture = iterPicture.next();
+		    	if (tmpPicture.getUid().equals(comment.getPictureId())) {
+		    		Iterator<Comment> iterComment = tmpPicture.getComments().iterator();
 		    		while (iterComment.hasNext()) {
-		    			if (iterComment.next().getUid().equals(comment.getUid())) {
+		    			tmpComment = iterComment.next();
+		    			if (tmpComment.getUid().equals(comment.getUid())) {
 		    				iterComment.remove();
 		    				break;
 		    			}
