@@ -5,10 +5,18 @@
  */
 package DATA.model;
 
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+
+import javafx.embed.swing.SwingFXUtils;
+import javafx.scene.image.Image;
+
+import javax.imageio.ImageIO;
 
 /**
  * 
@@ -224,4 +232,16 @@ public class User implements Serializable {
 		return true;
 	}
 	
+	 public Image getAvatarImageObject() {
+	        ByteArrayInputStream in = new ByteArrayInputStream(avatar);
+	        try
+	        {
+	            BufferedImage read = ImageIO.read(in);
+	            return SwingFXUtils.toFXImage(read, null);
+	        } catch (IOException e)
+	        {
+	            e.printStackTrace();
+	        }
+	        return null;
+	    }
 }
