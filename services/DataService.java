@@ -83,42 +83,7 @@ public class DataService implements Serializable {
 	/**
 	 * Variable checked if save is enabled or not. 
 	 */
-	private boolean enabled = true;
-	
-	public static void main(String[] arg) {
-		System.out.println("start");
-		/*
-		DataService d = DataService.getInstance();
-		d.setPathUser(new File("accounts/1/"));
-		try {
-			DataService.load();
-		} catch (ClassNotFoundException | IOException e) {
-			e.printStackTrace();
-		}
-		d = DataService.getInstance();
-		/*
-		System.out.println(d.getUser().getListPictures().size());
-		d.getUser().setAvatar(d.getPathUser().toString()+File.separator+"avatar.png");
-		System.out.println(d.getUser().getAvatar());
-		try {
-			d.save();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		try {
-			d.exports();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		*/
-		try {
-			DataService.imports(new File("export.zip"));
-		} catch (ClassNotFoundException | IOException e) {
-			e.printStackTrace();
-		}
-		System.out.println("end");
-	}
-	
+	private boolean enabled = true;	
 	
 	/**
 	 * Return Singleton instance of DataService.
@@ -321,6 +286,7 @@ public class DataService implements Serializable {
 	    buffi.close();
 	    
 	    // Add avatar if exists
+	    /*
 	    File avatarPath = new File(DataService.getInstance().getUser().getAvatar());
 	    File avatar = new File(userPath.toString() + File.separatorChar + avatarPath.getName());
 	    if (avatar.exists()) {
@@ -334,6 +300,7 @@ public class DataService implements Serializable {
 	 	    out.closeEntry();
 	 	    buffi.close();
 	    }	  
+	    */
 		
 		// Get all images.
 		File[] img = new File(userPath.toString() + File.separatorChar + DataService.imageDir).listFiles();
@@ -361,9 +328,11 @@ public class DataService implements Serializable {
 		profile.delete();
 		
 		// Delete avatar.
+		/*
 		if (avatar.exists()) {
 			avatar.delete();
 		}
+		*/
 		
 		// Delete dirs.
 		new File(userPath.toString() + File.separatorChar + DataService.imageDir).delete();
