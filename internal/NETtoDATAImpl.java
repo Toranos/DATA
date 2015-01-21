@@ -20,6 +20,7 @@ import DATA.services.UserService;
 import IHM.Main;
 import IHM.interfaces.DATAtoIHM;
 import NET.NetLocalizer;
+import NET.exceptions.UnknownUserException;
 /**
  * @author le-goc
  *
@@ -147,7 +148,12 @@ public class NETtoDATAImpl implements NETtoDATA {
 		user.setConnected(true);
 		dataToIhm.receiveConnectedUser(user);
 		if (groupService.checkUserPending(user) != null) {
-			netLocalizer.addFriend(user.getUid());
+			try {
+				netLocalizer.addFriend(user.getUid());
+			} catch (UnknownUserException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 	}
 
@@ -189,7 +195,12 @@ public class NETtoDATAImpl implements NETtoDATA {
 	@Override
 	public void checkPendingRequest(UUID userId) {
 		if(groupService.checkPendingRequest(userId)) {
-			netLocalizer.addFriend(userId);
+			try {
+				netLocalizer.addFriend(userId);
+			} catch (UnknownUserException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 	}
 

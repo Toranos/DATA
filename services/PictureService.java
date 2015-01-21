@@ -6,8 +6,6 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -87,6 +85,11 @@ public class PictureService {
 		return resultPictures;
 	}
 	
+	/**
+	 * Get remote user's pictures
+	 * @param listUser
+	 * @return
+	 */
 	public List<Picture> getPicturesByUser(List<String> listUser) {
 		List<Picture> resultPictures = new ArrayList<Picture>();
 		if(listUser != null && !listUser.isEmpty()) { 
@@ -97,6 +100,14 @@ public class PictureService {
 			}
 		}
 		return resultPictures;
+	}
+	
+	/**
+	 * Add an avatar to the profile
+	 * @param filename
+	 */
+	public void addAvatar(String filename) {
+		DataService.getInstance().getUser().setAvatar(imageToByte(filename));;
 	}
 	
 	/**
@@ -127,14 +138,28 @@ public class PictureService {
 	 * @throws PictureAlreadyExisted 
 	 */
 	public boolean copyImageToWorkspace(Picture img) throws IOException, PictureAlreadyExisted {
-		File f = new File(img.getFilename());		
+		File f = new File(img.getFilename());	
+		img.setTitle(f.getName());
 		FileInputStream sourceFile = new FileInputStream(f);
 		File imgDir = DataService.getInstance().getImagePathUser();
 		if (imgDir.exists() == false) {
 			imgDir.mkdir();
 		}
 		String newFilename = imgDir.getPath();
-		newFilename += File.separator+formatMd5Name(f.getAbsolutePath())+".png";
+		newFilename += File.separator+img.getUid().toString();
+		
+		// Extension of file.
+		String ext = ".png";
+		String name = f.getName();
+		if (name.lastIndexOf(".") > 0) {
+		    ext = name.substring(name.lastIndexOf("."));
+		    if (!ext.equals(".png") && !ext.equals(".jpg") && !ext.equals(".jpeg") && !ext.equals(".gif") && !ext.equals(".bmp")) {
+		    	ext = ".png";
+		    }
+		} 
+		newFilename += ext;
+		
+		// Copie du fichier.
 		File newFile = new File(newFilename);
 		if (newFile.exists()) {
 			sourceFile.close();
@@ -150,22 +175,6 @@ public class PictureService {
 		destinationFile.close();
 		sourceFile.close();
 		return true;
-	}
-	
-	private String formatMd5Name(String name) {
-		MessageDigest md = null;
-		try {
-			md = MessageDigest.getInstance("MD5");
-		} catch (NoSuchAlgorithmException e) {
-			
-		}
-		md.update(name.getBytes());
-		byte[] digest = md.digest();
-		StringBuffer sb = new StringBuffer();
-		for (byte b : digest) {
-			sb.append(String.format("%02x", b & 0xff));
-		}
-		return sb.toString();
 	}
 	
 	/**
@@ -302,13 +311,18 @@ public class PictureService {
 		}
 		
 		User currentUser = DataService.getInstance().getUser();
+		Picture tmpPicture = null;
+		Comment tmpComment = null;
+	    	
 		if (currentUser.getUid().equals(comment.getPictureUserId()) || currentUser.getUid().equals(comment.getCommentUser().getUid())) {
 			Iterator<Picture> iterPicture = currentUser.getListPictures().iterator();
 		    while (iterPicture.hasNext()) {
-		    	if (iterPicture.next().getUid().equals(comment.getPictureId())) {
-		    		Iterator<Comment> iterComment = iterPicture.next().getComments().iterator();
+		    	tmpPicture = iterPicture.next();
+		    	if (tmpPicture.getUid().equals(comment.getPictureId())) {
+		    		Iterator<Comment> iterComment = tmpPicture.getComments().iterator();
 		    		while (iterComment.hasNext()) {
-		    			if (iterComment.next().getUid().equals(comment.getUid())) {
+		    			tmpComment = iterComment.next();
+		    			if (tmpComment.getUid().equals(comment.getUid())) {
 		    				iterComment.remove();
 		    				break;
 		    			}
@@ -322,6 +336,11 @@ public class PictureService {
 		}
 	}
 
+	/**
+	 * Create byte array from image.
+	 * @param filename
+	 * @return
+	 */
 	public byte[] imageToByte(String filename){
 		byte[] packet = new byte[0];
 		try {

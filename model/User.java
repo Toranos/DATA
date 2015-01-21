@@ -5,10 +5,18 @@
  */
 package DATA.model;
 
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+
+import javafx.embed.swing.SwingFXUtils;
+import javafx.scene.image.Image;
+
+import javax.imageio.ImageIO;
 
 /**
  * 
@@ -26,7 +34,7 @@ public class User implements Serializable {
     private String password;
     private String firstname;
     private String lastname;
-    private String avatar;
+    private byte[] avatar;
     private String birthDate;
     private Boolean connected = false;
     private List<Picture> listPictures;
@@ -61,7 +69,7 @@ public class User implements Serializable {
     }
     
 	public User(String login, String password, String firstname,
-			String lastname, String avatar, String birthDate) {
+			String lastname, byte[] avatar, String birthDate) {
 		this.login = login;
 		this.password = password;
 		this.firstname = firstname;
@@ -114,10 +122,10 @@ public class User implements Serializable {
 	public void setLastname(String lastname) {
 		this.lastname = lastname;
 	}
-	public String getAvatar() {
+	public byte[] getAvatar() {
 		return avatar;
 	}
-	public void setAvatar(String avatar) {
+	public void setAvatar(byte[] avatar) {
 		this.avatar = avatar;
 	}
 	public String getBirthDate() {
@@ -230,4 +238,17 @@ public class User implements Serializable {
 			return false;
 		return true;
 	}
+	
+	 public Image getAvatarImageObject() {
+	        ByteArrayInputStream in = new ByteArrayInputStream(avatar);
+	        try
+	        {
+	            BufferedImage read = ImageIO.read(in);
+	            return SwingFXUtils.toFXImage(read, null);
+	        } catch (IOException e)
+	        {
+	            e.printStackTrace();
+	        }
+	        return null;
+	 }
 }
