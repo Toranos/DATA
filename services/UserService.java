@@ -191,7 +191,7 @@ public class UserService {
 
 	public boolean updateProfile(User u) throws IOException, BadInformationException {
 		User currentUser = DataService.getInstance().getUser();
-		if (u == null || u.equals("")) {
+		if (u == null) {
 			throw new BadInformationException("User empty");
 		}
 		if (!checkCredentialNotEmpty(u.getLogin(), u.getPassword())) {

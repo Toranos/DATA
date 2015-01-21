@@ -87,7 +87,7 @@ public class IHMtoDATAImpl implements IHMtoDATA {
 
 	@Override
 	public void addNote(Note note) throws BadInformationException {
-		if (note == null || note.equals("")) {
+		if (note == null) {
 			throw new BadInformationException("Note empty");
 		}
 		if (note.getUid() == null || note.getUid().equals("")) {
@@ -186,7 +186,7 @@ public class IHMtoDATAImpl implements IHMtoDATA {
 	 */
 	@Override
 	public void deleteComment(Comment comment) throws BadInformationException {
-		if (comment == null || comment.equals("")) {
+		if (comment == null) {
 			throw new BadInformationException("Comment empty");
 		}
 		if (comment.getUid() == null || comment.getUid().equals("")) {

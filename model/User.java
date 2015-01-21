@@ -221,41 +221,29 @@ public class User implements Serializable {
 	 */
 	@Override
 	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
+		boolean isEqual = true;
+		if (obj == null) {
+			isEqual = false;
+		}
 		User other = (User) obj;
-		if (birthDate == null) {
-			if (other.birthDate != null)
-				return false;
-		} else if (!birthDate.equals(other.birthDate))
-			return false;
-		if (firstname == null) {
-			if (other.firstname != null)
-				return false;
-		} else if (!firstname.equals(other.firstname))
-			return false;
-		if (lastname == null) {
-			if (other.lastname != null)
-				return false;
-		} else if (!lastname.equals(other.lastname))
-			return false;
-		if (login == null) {
-			if (other.login != null)
-				return false;
-		} else if (!login.equals(other.login))
-			return false;
-		if (uid == null) {
-			if (other.uid != null)
-				return false;
-		} else if (!uid.equals(other.uid))
-			return false;
-		return true;
+		if (!uid.equals(other.uid)){
+			isEqual = false;
+		}
+		return isEqual;
 	}
 	
+	/*
+	 * (non-Javadoc)
+	 * @see java.lang.Object#hashCode()
+	 */
+	public int hashCode(){
+		return 0;
+	}
+	
+	/**
+	 * Getter the Avatar in Image object 
+	 * @return Image
+	 */
 	 public Image getAvatarImageObject() {
 	        ByteArrayInputStream in = new ByteArrayInputStream(avatar);
 	        try
