@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package DATA.internal;
 
@@ -16,7 +16,6 @@ import DATA.model.Comment;
 import DATA.model.Group;
 import DATA.model.Note;
 import DATA.model.Picture;
-import DATA.model.Rule;
 import DATA.model.Tag;
 import DATA.model.User;
 import DATA.services.GroupService;
@@ -41,8 +40,8 @@ public class IHMtoDATAImpl implements IHMtoDATA {
 	private PictureService pictureService;
 	private DATAtoIHM dataToIhm;
 	private NetLocalizer netLocalizer;
-	
-	/** 
+
+	/**
 	 * Constructor.
 	 */
 	public IHMtoDATAImpl() {
@@ -55,7 +54,7 @@ public class IHMtoDATAImpl implements IHMtoDATA {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see DATA.interfaces.IHMtoDATA#addComment(DATA.model.Comment, int)
 	 */
 	@Override
@@ -75,7 +74,7 @@ public class IHMtoDATAImpl implements IHMtoDATA {
 		if (comment.getPictureUserId() == null || comment.getPictureUserId().equals("")) {
 			throw new BadInformationException("PictureUserId empty");
 		}
-		
+
 		if (pictureService.addComment(comment) == false) {
 			try {
 				netLocalizer.addComment(comment, comment.getPictureUserId());
@@ -83,7 +82,7 @@ public class IHMtoDATAImpl implements IHMtoDATA {
 				e.printStackTrace();
 			}
 		}
-		
+
 	}
 
 	@Override
@@ -103,7 +102,7 @@ public class IHMtoDATAImpl implements IHMtoDATA {
 		if (note.getPictureUserId() == null || note.getPictureUserId().equals("")) {
 			throw new BadInformationException("PictureUserId empty");
 		}
-		
+
 		if (pictureService.addNote(note) == false) {
 			try {
 				netLocalizer.addNote(note, note.getPictureUserId());
@@ -115,7 +114,7 @@ public class IHMtoDATAImpl implements IHMtoDATA {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see DATA.interfaces.IHMtoDATA#addGroup(DATA.model.Group)
 	 */
 	@Override
@@ -131,7 +130,7 @@ public class IHMtoDATAImpl implements IHMtoDATA {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see DATA.interfaces.IHMtoDATA#addAvatar(String)
 	 */
 	@Override
@@ -144,10 +143,10 @@ public class IHMtoDATAImpl implements IHMtoDATA {
 			e.printStackTrace();
 		}
 	}
-	
+
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see DATA.interfaces.IHMtoDATA#addPicture(DATA.model.Picture)
 	 */
 	@Override
@@ -162,7 +161,7 @@ public class IHMtoDATAImpl implements IHMtoDATA {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see DATA.interfaces.IHMtoDATA#addUserInGroup(DATA.model.User,
 	 * DATA.model.Group)
 	 */
@@ -180,7 +179,7 @@ public class IHMtoDATAImpl implements IHMtoDATA {
 			}
 		}
 	}
-	
+
 	/*
 	 * (non-Javadoc)
 	 * @see DATA.interfaces.IHMtoDATA#deleteComment(DATA.model.Comment)
@@ -202,7 +201,7 @@ public class IHMtoDATAImpl implements IHMtoDATA {
 		if (comment.getPictureUserId() == null || comment.getPictureUserId().equals("")) {
 			throw new BadInformationException("PictureUserId empty");
 		}
-		
+
 		if (pictureService.deleteComment(comment) == false) {
 			try {
 				//netLocalizer.deleteComment(comment, comment.getPictureUserId());
@@ -215,7 +214,7 @@ public class IHMtoDATAImpl implements IHMtoDATA {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see DATA.interfaces.IHMtoDATA#deleteGroup(DATA.model.Group)
 	 */
 	@Override
@@ -232,7 +231,7 @@ public class IHMtoDATAImpl implements IHMtoDATA {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see DATA.interfaces.IHMtoDATA#deletePicture(DATA.model.Picture)
 	 */
 	@Override
@@ -247,7 +246,7 @@ public class IHMtoDATAImpl implements IHMtoDATA {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see DATA.interfaces.IHMtoDATA#deleteUserFromGroup(DATA.model.User,
 	 * DATA.model.Group)
 	 */
@@ -267,7 +266,7 @@ public class IHMtoDATAImpl implements IHMtoDATA {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see DATA.interfaces.IHMtoDATA#export()
 	 */
 	@Override
@@ -277,7 +276,7 @@ public class IHMtoDATAImpl implements IHMtoDATA {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see DATA.interfaces.IHMtoDATA#getUserById(java.util.UUID,
 	 * java.lang.String)
 	 */
@@ -293,7 +292,7 @@ public class IHMtoDATAImpl implements IHMtoDATA {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see DATA.interfaces.IHMtoDATA#getUsersInGroup(DATA.model.Group)
 	 */
 	@Override
@@ -303,7 +302,7 @@ public class IHMtoDATAImpl implements IHMtoDATA {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see DATA.interfaces.IHMtoDATA#getUserNotInGroup(DATA.model.Group)
 	 */
 	@Override
@@ -314,7 +313,7 @@ public class IHMtoDATAImpl implements IHMtoDATA {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see DATA.interfaces.IHMtoDATA#getGroups()
 	 */
 	@Override
@@ -324,7 +323,7 @@ public class IHMtoDATAImpl implements IHMtoDATA {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see DATA.interfaces.IHMtoDATA#getGroupsUserNotIn(DATA.model.User)
 	 */
 	@Override
@@ -334,7 +333,7 @@ public class IHMtoDATAImpl implements IHMtoDATA {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see DATA.interfaces.IHMtoDATA#getPictureById(java.util.UUID, int)
 	 */
 	@Override
@@ -349,7 +348,7 @@ public class IHMtoDATAImpl implements IHMtoDATA {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see DATA.interfaces.IHMtoDATA#getPictures(DATA.model.User, int)
 	 */
 	@Override
@@ -368,7 +367,7 @@ public class IHMtoDATAImpl implements IHMtoDATA {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see DATA.interfaces.IHMtoDATA#getPictures(java.util.List, int)
 	 */
 	@Override
@@ -376,7 +375,7 @@ public class IHMtoDATAImpl implements IHMtoDATA {
 		dataToIhm.receivePictures(pictureService.getPictures(listtag, userService.getCurrentUser()), idRequest);
 		netLocalizer.getPictures(listtag,idRequest);
 	}
-	
+
 	@Override
 	public void getPicturesByUsers(List<String> listUser, int idRequest) {
 		List<User> connectedUsers = netLocalizer.getConnectedUsers();
@@ -397,7 +396,7 @@ public class IHMtoDATAImpl implements IHMtoDATA {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see DATA.interfaces.IHMtoDATA#getPictures(int)
 	 */
 	@Override
@@ -408,7 +407,7 @@ public class IHMtoDATAImpl implements IHMtoDATA {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see DATA.interfaces.IHMtoDATA#getCurrentUser()
 	 */
 	@Override
@@ -418,18 +417,18 @@ public class IHMtoDATAImpl implements IHMtoDATA {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see DATA.interfaces.IHMtoDATA#import_(java.lang.String)
 	 */
 	@Override
 	public User import_(String parameter) throws FileNotFoundException,
-			ClassNotFoundException, IOException {
+	ClassNotFoundException, IOException {
 		return userService.import_(parameter);
 	}
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see DATA.interfaces.IHMtoDATA#updatePicture(DATA.model.Picture)
 	 */
 	@Override
@@ -440,12 +439,12 @@ public class IHMtoDATAImpl implements IHMtoDATA {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see DATA.interfaces.IHMtoDATA#updateProfile(DATA.model.User)
 	 */
 	@Override
 	public void updateProfile(User u) throws IOException,
-			BadInformationException {
+	BadInformationException {
 		if (userService.updateProfile(u)) {
 			userService.save();
 		};
@@ -453,7 +452,7 @@ public class IHMtoDATAImpl implements IHMtoDATA {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see DATA.interfaces.IHMtoDATA#signup(DATA.model.User)
 	 */
 	@Override
@@ -468,7 +467,7 @@ public class IHMtoDATAImpl implements IHMtoDATA {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see DATA.interfaces.IHMtoDATA#login(java.lang.String, java.lang.String)
 	 */
 	@Override
@@ -492,7 +491,7 @@ public class IHMtoDATAImpl implements IHMtoDATA {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see DATA.interfaces.IHMtoDATA#getAllUsers(java.lang.String,
 	 * java.lang.String)
 	 */
@@ -522,7 +521,7 @@ public class IHMtoDATAImpl implements IHMtoDATA {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see DATA.interfaces.IHMtoDATA#logout()
 	 */
 	@Override
@@ -558,7 +557,7 @@ public class IHMtoDATAImpl implements IHMtoDATA {
 			e.printStackTrace();
 		}
 	}
-	
+
 	@Override
 	public void refuseUser(User user) {
 		try {
@@ -581,36 +580,40 @@ public class IHMtoDATAImpl implements IHMtoDATA {
 
 	@Override
 	public synchronized void forceSave() throws IOException {
-		userService.forceSave();	
+		userService.forceSave();
 	}
 
 	@Override
 	public boolean canView(Picture p) {
-		for(Rule r : p.getListRules()){
+		/*for(Rule r : p.getListRules()){
 			if(r.getGroup().getNom().equals(userService.getCurrentUser().getUid())){
 				return r.isCanView();
 			}
 		}
-		return false;
+		return false;*/
+		return true;
 	}
 
 	@Override
 	public boolean canComment(Picture p) {
-		for(Rule r : p.getListRules()){
+		/*for(Rule r : p.getListRules()){
 			if(r.getGroup().getNom().equals(userService.getCurrentUser().getUid())){
 				return r.isCanComment();
 			}
 		}
-		return false;
+		return false;*/
+		return true;
 	}
 
 	@Override
 	public boolean canRate(Picture p) {
-		for(Rule r : p.getListRules()){
+		/*for(Rule r : p.getListRules()){
 			if(r.getGroup().getNom().equals(userService.getCurrentUser().getUid())){
 				return r.isCanRate();
 			}
 		}
 		return false;
+		 */
+		return true;
 	}
 }
