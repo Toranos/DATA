@@ -15,6 +15,7 @@ import java.util.List;
 
 import DATA.exceptions.BadInformationException;
 import DATA.model.Group;
+import DATA.model.Picture;
 import DATA.model.User;
 
 /**
@@ -36,6 +37,7 @@ public class UserService {
 
 	}
 
+	
 	/**
 	 * Check if the user information is correct for sign up
 	 * 
@@ -268,7 +270,7 @@ public class UserService {
 			writer.close();
 		} else {
 			PrintWriter out = new PrintWriter(new FileWriter(accounts, true));
-			out.append(u.getLogin() + " " + u.getPassword() + " " + u.getUid());
+			out.append(System.lineSeparator() + u.getLogin() + " " + u.getPassword() + " " + u.getUid());
 			out.close();
 		}
 	}

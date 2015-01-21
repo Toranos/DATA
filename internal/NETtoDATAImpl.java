@@ -4,8 +4,7 @@
 package DATA.internal;
 
 
-import java.io.IOException;
-import java.util.Iterator;
+
 import java.util.List;
 import java.util.UUID;
 
@@ -14,18 +13,16 @@ import DATA.interfaces.NETtoDATA;
 import DATA.model.Comment;
 import DATA.model.Group;
 import DATA.model.Note;
-import DATA.model.PendingRequest;
 import DATA.model.Picture;
 import DATA.model.Tag;
 import DATA.model.User;
-import DATA.services.DataService;
 import DATA.services.GroupService;
 import DATA.services.PictureService;
 import DATA.services.UserService;
 import IHM.Main;
 import IHM.interfaces.DATAtoIHM;
-import IHM.interfaces.DATAtoIHMimpl;
 import NET.NetLocalizer;
+import NET.exceptions.UnknownUserException;
 /**
  * @author le-goc
  *
@@ -153,7 +150,12 @@ public class NETtoDATAImpl implements NETtoDATA {
 		user.setConnected(true);
 		dataToIhm.receiveConnectedUser(user);
 		if (groupService.checkUserPending(user) != null) {
-			netLocalizer.addFriend(user.getUid());
+			try {
+				netLocalizer.addFriend(user.getUid());
+			} catch (UnknownUserException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 	}
 
@@ -193,7 +195,12 @@ public class NETtoDATAImpl implements NETtoDATA {
 	@Override
 	public void checkPendingRequest(UUID userId) {
 		if(groupService.checkPendingRequest(userId)) {
-			netLocalizer.addFriend(userId);
+			try {
+				netLocalizer.addFriend(userId);
+			} catch (UnknownUserException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 	}
 
