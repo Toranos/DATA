@@ -60,7 +60,7 @@ public class PictureService {
 			resultPictures = new ArrayList<Picture>();
 			//faire une autre fonction avec un return pour casser les 3 for
 			for (Picture picture : DataService.getInstance().getUser().getListPictures()) {
-				if(sendMan.getUid().equals(picture.getUser().getUid()) && picture.asAccess(sendMan)){
+				if(sendMan.getUid().equals(picture.getUser().getUid()) && picture.hasAccess(sendMan)){
 					SEARCHLOOP: for (Tag tag : picture.getListTags()) {
 						for(Tag customTag : listtag) {
 							if(tag.getValue() != null && customTag.getValue() != null
@@ -77,7 +77,7 @@ public class PictureService {
 		} else {
 			resultPictures = new ArrayList<Picture>();
 			for (Picture picture : DataService.getInstance().getUser().getListPictures()) {
-				if(picture.asAccess(sendMan)){
+				if(picture.hasAccess(sendMan)){
 					resultPictures.add(picture);
 				}
 			}
@@ -119,10 +119,10 @@ public class PictureService {
 	public void addPicture(Picture picture) throws IOException, PictureAlreadyExisted {
 		picture.setPixels(imageToByte(picture.getFilename()));
 		if (this.copyImageToWorkspace(picture)) {
-			picture.getListRules().add(new Rule(false, false, false, picture, DataService.getInstance().getUser().getOtherGroup()));
+			picture.getListRules().add(new Rule(true, true, true, picture, DataService.getInstance().getUser().getOtherGroup()));
 			for(Group g : DataService.getInstance().getUser().getListGroups()){
 				if(g.getNom().equals(Group.FRIENDS_GROUP_NAME)){
-					picture.getListRules().add(new Rule(false, false, false, picture, g));
+					picture.getListRules().add(new Rule(true, true, true, picture, g));
 					break;
 				}
 			}

@@ -586,18 +586,29 @@ public class IHMtoDATAImpl implements IHMtoDATA {
 
 	@Override
 	public boolean canView(Picture p) {
-		for(Rule r : p.getListRules()){
-			if(r.getGroup().getNom().equals(userService.getCurrentUser().getUid())){
+		//if(p.getUser().getUid().equals(userService.getCurrentUser().getUid())){
+		//	return true;
+		//}
+		/*for(Rule r : p.getListRules()){
+			// La liste des droits permise par l'utilisateur sur cette image ont été ajouté dans 
+			// un groupe qui a pour nom l'UID de cet utilisateur
+			if(r.getGroup().getNom().equals(userService.getCurrentUser().getUid().toString())){
 				return r.isCanView();
 			}
 		}
-		return false;
+		return false;*/
+		return true;
 	}
 
 	@Override
 	public boolean canComment(Picture p) {
+		if(p.getUser().getUid().equals(userService.getCurrentUser().getUid())){
+			return true;
+		}
 		for(Rule r : p.getListRules()){
-			if(r.getGroup().getNom().equals(userService.getCurrentUser().getUid())){
+			// La liste des droits permise par l'utilisateur sur cette image ont été ajouté dans 
+			// un groupe qui a pour nom l'UID de cet utilisateur
+			if(r.getGroup().getNom().equals(userService.getCurrentUser().getUid().toString())){
 				return r.isCanComment();
 			}
 		}
@@ -606,8 +617,13 @@ public class IHMtoDATAImpl implements IHMtoDATA {
 
 	@Override
 	public boolean canRate(Picture p) {
+		if(p.getUser().getUid().equals(userService.getCurrentUser().getUid())){
+			return true;
+		}
 		for(Rule r : p.getListRules()){
-			if(r.getGroup().getNom().equals(userService.getCurrentUser().getUid())){
+			// La liste des droits permise par l'utilisateur sur cette image ont été ajouté dans 
+			// un groupe qui a pour nom l'UID de cet utilisateur
+			if(r.getGroup().getNom().equals(userService.getCurrentUser().getUid().toString())){
 				return r.isCanRate();
 			}
 		}

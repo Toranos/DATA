@@ -228,7 +228,7 @@ public class Picture implements Serializable {
         return null;
     }
 
-	public boolean asAccess(User sendMan) {
+	public boolean hasAccess(User sendMan) {
 		for(Rule rule : listRules){
 			if(rule.isCanView() && rule.getGroup().contain(sendMan)){
 				return true;
