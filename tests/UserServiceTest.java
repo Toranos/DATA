@@ -4,17 +4,13 @@
 package DATA.tests;
 
 import static org.junit.Assert.*;
-
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-
 import org.junit.Before;
 import org.junit.Test;
-
 import DATA.exceptions.BadInformationException;
 import DATA.model.User;
-import DATA.services.DataService;
 import DATA.services.UserService;
 
 /**
@@ -48,7 +44,7 @@ public class UserServiceTest {
 		}
 		
 		// Null login test
-		user = new User("", "test", "test", "test", "test", "test");
+		user = new User("", "test", "test", "test", null, "test");
 		try {
 			assertNull(service.createUser(user));
 			fail("Null login not recognized");
@@ -57,7 +53,7 @@ public class UserServiceTest {
 		}
 		
 		// Null password test
-		user = new User("test", "", "test", "test", "test", "test");
+		user = new User("test", "", "test", "test", null, "test");
 		try {
 			assertNull(service.createUser(user));
 			fail("Null password not recognized");
@@ -66,7 +62,7 @@ public class UserServiceTest {
 		}
 		
 		// Null firstname test
-		user = new User("test", "test", "", "test", "test", "test");
+		user = new User("test", "test", "", "test", null, "test");
 		try {
 			assertNull(service.createUser(user));
 			fail("Null firstName not recognized");
@@ -74,8 +70,8 @@ public class UserServiceTest {
 			// TEST OK
 		}
 		
-		//Null lastname test
-		user = new User("test", "test", "test", "", "test", "test");
+		// Null lastname test
+		user = new User("test", "test", "test", "", null, "test");
 		try {
 			assertNull(service.createUser(user));
 			fail("Null lastName not recognized");
@@ -83,8 +79,8 @@ public class UserServiceTest {
 			// TEST OK
 		}
 		
-		//Everything ok
-		user = new User("test", "test", "test", "test", "test", "test");
+		// Everything ok
+		user = new User("test", "test", "test", "test", null, "test");
 		List<String> adress = new ArrayList<String>();
 		adress.add("127.0.0.1");
 		user.setListIP(adress);
@@ -102,13 +98,13 @@ public class UserServiceTest {
 	@Test
 	public void checkProfileTest() {
 		try {
-			service.updateProfile(new User("test", "test", "test", "test", "test", "test"));
+			service.updateProfile(new User("test", "test", "test", "test", null, "test"));
 		} catch (IOException | BadInformationException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
 		// Null login test
-		User user = new User(null, "test", "test", "test", "test", "test");
+		User user = new User(null, "test", "test", "test", null, "test");
 		try {
 			assertNull(service.checkProfile(user.getLogin(), user.getPassword()));
 			fail("Expected BadInformationException");
@@ -117,7 +113,7 @@ public class UserServiceTest {
 		}
 		
 		// Null password test
-		user = new User("test", null, "test", "test", "test", "test");
+		user = new User("test", null, "test", "test", null, "test");
 		try {
 			assertNull(service.checkProfile(user.getLogin(), user.getPassword()));
 			fail("Null password not recognized");
@@ -126,7 +122,7 @@ public class UserServiceTest {
 		}
 		
 		// empty login test
-		user = new User("", "test", "test", "test", "test", "test");
+		user = new User("", "test", "test", "test", null, "test");
 		try {
 			assertNull(service.checkProfile(user.getLogin(), user.getPassword()));
 			fail("Null login not recognized");
@@ -135,7 +131,7 @@ public class UserServiceTest {
 		}
 		
 		// empty password test
-		user = new User("test", "", "test", "test", "test", "test");
+		user = new User("test", "", "test", "test", null, "test");
 		try {
 			assertNull(service.checkProfile(user.getLogin(), user.getPassword()));
 			fail("Null password not recognized");
@@ -144,7 +140,7 @@ public class UserServiceTest {
 		}
 		
 		//Everything ok
-		user = new User("test", "test", "test", "test", "test", "test");
+		user = new User("test", "test", "test", "test", null, "test");
 		try {
 			user = service.checkProfile(user.getLogin(), user.getPassword());
 		} catch (BadInformationException e) {
