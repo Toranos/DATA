@@ -7,6 +7,7 @@ import java.util.List;
 
 import DATA.exceptions.BadInformationException;
 import DATA.model.Group;
+import DATA.model.Picture;
 import DATA.model.User;
 
 /**
@@ -24,6 +25,7 @@ public class UserService {
 
 	}
 
+	
 	/**
 	 * Check if the user information is correct for sign up
 	 * 

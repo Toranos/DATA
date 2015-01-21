@@ -88,6 +88,14 @@ public class PictureService {
 	}
 	
 	/**
+	 * Add an avatar to the profile
+	 * @param filename
+	 */
+	public void addAvatar(String filename) {
+		DataService.getInstance().getUser().setAvatar(imageToByte(filename));;
+	}
+	
+	/**
 	 * 
 	 * @param picture
 	 */

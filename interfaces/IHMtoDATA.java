@@ -39,6 +39,12 @@ public  interface IHMtoDATA
 	public void addGroup(Group group) ;
 	
 	/**
+	 * Add an avatar for the current user
+	 * @param filename	The avatar filename
+	 */
+	void addAvatar(String filename);
+	
+	/**
 	 * Add a picture for the current user
 	 * @param picture	The picture
 	 */

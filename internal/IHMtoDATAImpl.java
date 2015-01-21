@@ -132,6 +132,22 @@ public class IHMtoDATAImpl implements IHMtoDATA {
 	/*
 	 * (non-Javadoc)
 	 * 
+	 * @see DATA.interfaces.IHMtoDATA#addAvatar(String)
+	 */
+	@Override
+	public void addAvatar(String filename) {
+		pictureService.addAvatar(filename);
+		try {
+			userService.export_();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see DATA.interfaces.IHMtoDATA#addPicture(DATA.model.Picture)
 	 */
 	@Override
