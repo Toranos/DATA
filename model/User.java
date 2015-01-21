@@ -86,6 +86,23 @@ public class User implements Serializable {
 		this.listPendingRequests = new ArrayList<PendingRequest>();
 	}
 	
+	public User(String login, String password, String firstname,
+			String lastname, String useless, String birthDate) {
+		this.login = login;
+		this.password = password;
+		this.firstname = firstname;
+		this.lastname = lastname;
+		this.birthDate = birthDate;
+		this.uid = UUID.randomUUID();
+		this.listConnectedUser = new ArrayList<String>();
+		this.listGroups = new ArrayList<Group>();
+		this.listGroups.add(new Group(Group.FRIENDS_GROUP_NAME));
+		this.otherGroup = new Group(Group.DEFAULT_GROUP_NAME);
+		this.listIP = new ArrayList<String>();
+		this.listPictures = new ArrayList<Picture>();
+		this.listPendingRequests = new ArrayList<PendingRequest>();
+	}
+	
 	public User(User u){
 		this.login = u.login;
 		this.password = u.password;
