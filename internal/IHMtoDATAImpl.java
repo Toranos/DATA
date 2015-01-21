@@ -582,4 +582,19 @@ public class IHMtoDATAImpl implements IHMtoDATA {
 	public synchronized void forceSave() throws IOException {
 		userService.forceSave();	
 	}
+
+	@Override
+	public boolean canRate(Picture picture) {
+		return true;
+	}
+
+	@Override
+	public boolean canComment(Picture picture) {
+		return true;
+	}
+
+	@Override
+	public boolean canView(Picture p) {
+		return true;
+	}
 }

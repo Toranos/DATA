@@ -240,5 +240,26 @@ public  interface IHMtoDATA
 	 * @throws IOException
 	 */
 	public void forceSave() throws IOException;
+
+	/**
+	 * Return true if the user can view the picture
+	 * @param picture	The picture
+	 * @return		True
+	 */
+	public boolean canRate(Picture picture);
+
+	/**
+	 * Return true if the user can comment the picture
+	 * @param picture
+	 * @return
+	 */
+	public boolean canComment(Picture picture);
+
+	/**
+	 * Return true if user can view the picture
+	 * @param picture
+	 * @return
+	 */
+	public boolean canView(Picture p);
 }
 
