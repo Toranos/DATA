@@ -3,8 +3,6 @@
  */
 package DATA.internal;
 
-
-
 import java.util.List;
 import java.util.UUID;
 
@@ -178,18 +176,20 @@ public class NETtoDATAImpl implements NETtoDATA {
 	}
 
 	@Override
-	public List<Picture> getPictures() {
-		return pictureService.getPictures(null);
+	public List<Picture> getPictures(User sendMan) {
+		return pictureService.getPictures(null, sendMan);
 	}
 
 	@Override
-	public List<Picture> getPictures(List<Tag> tags) {
-		return pictureService.getPictures(tags);
+	public List<Picture> getPictures(List<Tag> tags, User sendMan) {
+		return pictureService.getPictures(tags, sendMan);
 	}
 
 	@Override
-	public Picture getPictureById(UUID id) {
-		return pictureService.getPictureById(id);
+	public Picture getPictureById(UUID id, User sendMan) {
+		Picture tempPicture = new Picture(pictureService.getPictureById(id, sendMan));
+		tempPicture.getListRules().add(pictureService.getMaxRule(id, sendMan));
+		return tempPicture;
 	}
 
 	@Override

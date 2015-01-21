@@ -10,12 +10,16 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.UUID;
+
 import javax.imageio.ImageIO;
+
 import DATA.exceptions.BadInformationException;
 import DATA.exceptions.PictureAlreadyExisted;
 import DATA.model.Comment;
+import DATA.model.Group;
 import DATA.model.Note;
 import DATA.model.Picture;
+import DATA.model.Rule;
 import DATA.model.Tag;
 import DATA.model.User;
 
@@ -35,7 +39,7 @@ public class PictureService {
 	 * @param UUID of the Picture
 	 * @return	The picture identified
 	 */
-	public Picture getPictureById(UUID pictureUid) {
+	public Picture getPictureById(UUID pictureUid, User sendMan) {
 		List<Picture> pictures = DataService.getInstance().getUser().getListPictures();
 		for (Picture pic : pictures) {
 			if (pic.getUid().equals(pictureUid)) {
@@ -50,24 +54,33 @@ public class PictureService {
 	 * @param List Tag for the picture
 	 * @return	List Picture identified
 	 */
-	public List<Picture> getPictures(List<Tag> listtag) {
+	public List<Picture> getPictures(List<Tag> listtag, User sendMan) {
 		List<Picture> resultPictures;
 		if(listtag != null && !listtag.isEmpty()) {
 			resultPictures = new ArrayList<Picture>();
 			//faire une autre fonction avec un return pour casser les 3 for
 			for (Picture picture : DataService.getInstance().getUser().getListPictures()) {
-				SEARCHLOOP: for (Tag tag : picture.getListTags()) {
-					for(Tag customTag : listtag) {
-						if(tag.getValue() != null && customTag.getValue() != null
-							&& tag.getValue().equals(customTag.getValue())) {
-							resultPictures.add(picture);
-							break SEARCHLOOP;
+				if(sendMan.getUid().equals(picture.getUser().getUid()) && picture.asAccess(sendMan)){
+					SEARCHLOOP: for (Tag tag : picture.getListTags()) {
+						for(Tag customTag : listtag) {
+							if(tag.getValue() != null && customTag.getValue() != null
+								&& tag.getValue().equals(customTag.getValue())) {
+								resultPictures.add(picture);
+								break SEARCHLOOP;
+							}
 						}
 					}
 				}
 			}
-		} else {
+		} else if(sendMan.getUid().equals(DataService.getInstance().getUser().getUid())) {
 			resultPictures = new ArrayList<Picture>(DataService.getInstance().getUser().getListPictures());
+		} else {
+			resultPictures = new ArrayList<Picture>();
+			for (Picture picture : DataService.getInstance().getUser().getListPictures()) {
+				if(picture.asAccess(sendMan)){
+					resultPictures.add(picture);
+				}
+			}
 		}
 		return resultPictures;
 	}
@@ -106,6 +119,13 @@ public class PictureService {
 	public void addPicture(Picture picture) throws IOException, PictureAlreadyExisted {
 		picture.setPixels(imageToByte(picture.getFilename()));
 		if (this.copyImageToWorkspace(picture)) {
+			picture.getListRules().add(new Rule(false, false, false, picture, DataService.getInstance().getUser().getOtherGroup()));
+			for(Group g : DataService.getInstance().getUser().getListGroups()){
+				if(g.getNom().equals(Group.FRIENDS_GROUP_NAME)){
+					picture.getListRules().add(new Rule(false, false, false, picture, g));
+					break;
+				}
+			}
 			DataService.getInstance().getUser().getListPictures().add(picture);
 		}
 	}
@@ -355,5 +375,28 @@ public class PictureService {
 		}
 		DataService.getInstance().getUser().getListPictures().remove(picture);
 		picture = null;
+	}
+	
+	/**
+	 * Create a rule concatenating the three rules 
+	 * @param id		Id of the picture
+	 * @param sendMan	User requesting the picture
+	 * @return		a rule
+	 */
+	public Rule getMaxRule(UUID id, User sendMan) {
+		Picture picture = getPictureById(id, sendMan);
+		Rule rule = new Rule(false, false, false, picture, new Group(sendMan.getUid().toString()));
+		for(Rule r : picture.getListRules()){
+			if(r.isCanComment()){
+				rule.setCanComment(true);
+			}
+			if(r.isCanRate()){
+				rule.setCanRate(true);
+			}
+			if(r.isCanView()){
+				rule.setCanView(true);
+			}
+		}
+		return rule;
 	}	
 }

@@ -90,6 +90,23 @@ public class Picture implements Serializable {
 		this.uid = UUID.randomUUID();
 	}
     
+    /**
+     * Create a copy of the picture (ony the rule list is different)
+     * @param p The picture to copy
+     */
+    public Picture(Picture p){
+    	this.filename = p.getFilename();
+    	this.description = p.getDescription();
+    	this.title = p.getTitle();
+    	this.listNotes = p.getListNotes();
+    	this.listTags = p.getListTags();
+    	this.listComments = p.getComments();
+    	this.listRules = new ArrayList<Rule>();
+    	for(Rule rule : p.getListRules()){
+    		this.listRules.add(rule);
+    	}
+    }
+    
     public String getTitle() {
 		return title;
 	}
@@ -210,6 +227,15 @@ public class Picture implements Serializable {
         }
         return null;
     }
+
+	public boolean asAccess(User sendMan) {
+		for(Rule rule : listRules){
+			if(rule.isCanView() && rule.getGroup().contain(sendMan)){
+				return true;
+			}
+		}
+		return false;
+	}
 
 
 //    private static byte[] ImageToBase64(ImageIcon i) {
