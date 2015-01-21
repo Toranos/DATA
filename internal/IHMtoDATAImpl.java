@@ -137,7 +137,7 @@ public class IHMtoDATAImpl implements IHMtoDATA {
 	public void addAvatar(String filename) {
 		pictureService.addAvatar(filename);
 		try {
-			userService.export_();
+			userService.save();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
