@@ -60,7 +60,7 @@ public class PictureService {
 			resultPictures = new ArrayList<Picture>();
 			//faire une autre fonction avec un return pour casser les 3 for
 			for (Picture picture : DataService.getInstance().getUser().getListPictures()) {
-				if(sendMan.getUid().equals(picture.getUser().getUid()) && picture.hasAccess(sendMan)){
+				if(sendMan.getUid().equals(picture.getUser().getUid()) && picture.hasAccess(sendMan, DataService.getInstance().getUser())){
 					SEARCHLOOP: for (Tag tag : picture.getListTags()) {
 						for(Tag customTag : listtag) {
 							if(tag.getValue() != null && customTag.getValue() != null
@@ -77,7 +77,7 @@ public class PictureService {
 		} else {
 			resultPictures = new ArrayList<Picture>();
 			for (Picture picture : DataService.getInstance().getUser().getListPictures()) {
-				if(picture.hasAccess(sendMan)){
+				if(picture.hasAccess(sendMan, DataService.getInstance().getUser())){
 					resultPictures.add(picture);
 				}
 			}
