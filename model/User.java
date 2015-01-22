@@ -12,6 +12,8 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javafx.embed.swing.SwingFXUtils;
 import javafx.scene.image.Image;
@@ -252,7 +254,7 @@ public class User implements Serializable {
 	            return SwingFXUtils.toFXImage(read, null);
 	        } catch (IOException e)
 	        {
-	            e.printStackTrace();
+	        	Logger.getLogger(User.class.getName()).log(Level.SEVERE, "Error in returning SwingFXUtils.toFXImage(read, null);");
 	        }
 	        return null;
 	 }

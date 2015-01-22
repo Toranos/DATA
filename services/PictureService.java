@@ -10,6 +10,8 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.UUID;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.imageio.ImageIO;
 
@@ -355,7 +357,7 @@ public class PictureService {
 						baos);
 				packet =  baos.toByteArray();
 			} catch (IOException ex) {
-				ex.printStackTrace();  
+				Logger.getLogger(PictureService.class.getName()).log(Level.SEVERE, "Error in changing image to byte.");  
 			}
 		} catch (Exception e) {  
 			System.out.println("Exception during serialization: " + e);  

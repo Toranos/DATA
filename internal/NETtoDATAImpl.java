@@ -5,6 +5,8 @@ package DATA.internal;
 
 import java.util.List;
 import java.util.UUID;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import DATA.exceptions.BadInformationException;
 import DATA.interfaces.NETtoDATA;
@@ -52,7 +54,7 @@ public class NETtoDATAImpl implements NETtoDATA {
 		try{
 			pictureService.addComment(comment);
 		} catch (BadInformationException e){
-			e.printStackTrace();
+			Logger.getLogger(NETtoDATAImpl.class.getName()).log(Level.SEVERE, "Error in adding the comment.");
 		}
 	}
 	
@@ -65,7 +67,7 @@ public class NETtoDATAImpl implements NETtoDATA {
 		try{
 			pictureService.addNote(note);
 		} catch (BadInformationException e){
-			e.printStackTrace();
+			Logger.getLogger(NETtoDATAImpl.class.getName()).log(Level.SEVERE, "Error in adding the comment.");
 		}
 	}
 	
@@ -78,7 +80,7 @@ public class NETtoDATAImpl implements NETtoDATA {
 		try{
 			pictureService.deleteComment(comment);
 		} catch (BadInformationException e){
-			e.printStackTrace();
+			Logger.getLogger(NETtoDATAImpl.class.getName()).log(Level.SEVERE, "Error in deleting the comment.");
 		}
 	}
 
@@ -152,7 +154,7 @@ public class NETtoDATAImpl implements NETtoDATA {
 				netLocalizer.addFriend(user.getUid());
 			} catch (UnknownUserException e) {
 				// TODO Auto-generated catch block
-				e.printStackTrace();
+				Logger.getLogger(NETtoDATAImpl.class.getName()).log(Level.SEVERE, "Error in adding user in group.");
 			}
 		}
 	}
@@ -199,7 +201,7 @@ public class NETtoDATAImpl implements NETtoDATA {
 				netLocalizer.addFriend(userId);
 			} catch (UnknownUserException e) {
 				// TODO Auto-generated catch block
-				e.printStackTrace();
+				Logger.getLogger(NETtoDATAImpl.class.getName()).log(Level.SEVERE, "Error in adding in group.");
 			}
 		}
 	}
