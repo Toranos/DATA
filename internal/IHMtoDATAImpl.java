@@ -8,6 +8,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import DATA.exceptions.BadInformationException;
 import DATA.exceptions.PictureAlreadyExisted;
@@ -79,7 +81,7 @@ public class IHMtoDATAImpl implements IHMtoDATA {
 			try {
 				netLocalizer.addComment(comment, comment.getPictureUserId());
 			} catch (Exception e){
-				e.printStackTrace();
+				Logger.getLogger(IHMtoDATAImpl.class.getName()).log(Level.SEVERE, "Error in adding the comment.");
 			}
 		}
 
@@ -87,7 +89,7 @@ public class IHMtoDATAImpl implements IHMtoDATA {
 
 	@Override
 	public void addNote(Note note) throws BadInformationException {
-		if (note == null || note.equals("")) {
+		if (note == null) {
 			throw new BadInformationException("Note empty");
 		}
 		if (note.getUid() == null || note.getUid().equals("")) {
@@ -107,7 +109,7 @@ public class IHMtoDATAImpl implements IHMtoDATA {
 			try {
 				netLocalizer.addNote(note, note.getPictureUserId());
 			} catch (Exception e){
-				e.printStackTrace();
+				Logger.getLogger(IHMtoDATAImpl.class.getName()).log(Level.SEVERE, "Error in adding the note.");
 			}
 		}
 	}
@@ -124,7 +126,7 @@ public class IHMtoDATAImpl implements IHMtoDATA {
 			dataToIhm.receiveReloadUserGroups();
 		} catch (BadInformationException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			Logger.getLogger(IHMtoDATAImpl.class.getName()).log(Level.SEVERE, "Error in receiveReloadUserGroups.");
 		}
 	}
 
@@ -140,7 +142,7 @@ public class IHMtoDATAImpl implements IHMtoDATA {
 			userService.save();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			Logger.getLogger(IHMtoDATAImpl.class.getName()).log(Level.SEVERE, "Error in saving.");
 		}
 	}
 
@@ -155,7 +157,7 @@ public class IHMtoDATAImpl implements IHMtoDATA {
 		try {
 			userService.save();
 		} catch (IOException e) {
-			e.printStackTrace();
+			Logger.getLogger(IHMtoDATAImpl.class.getName()).log(Level.SEVERE, "Error in saving.");
 		}
 	}
 
@@ -174,7 +176,7 @@ public class IHMtoDATAImpl implements IHMtoDATA {
 					netLocalizer.addFriend(user.getUid());
 				} catch (UnknownUserException e) {
 					// TODO Auto-generated catch block
-					e.printStackTrace();
+					Logger.getLogger(IHMtoDATAImpl.class.getName()).log(Level.SEVERE, "Error in adding the user in the group.");
 				}
 			}
 		}
@@ -186,7 +188,7 @@ public class IHMtoDATAImpl implements IHMtoDATA {
 	 */
 	@Override
 	public void deleteComment(Comment comment) throws BadInformationException {
-		if (comment == null || comment.equals("")) {
+		if (comment == null) {
 			throw new BadInformationException("Comment empty");
 		}
 		if (comment.getUid() == null || comment.getUid().equals("")) {
@@ -206,7 +208,7 @@ public class IHMtoDATAImpl implements IHMtoDATA {
 			try {
 				//netLocalizer.deleteComment(comment, comment.getPictureUserId());
 			} catch (Exception e){
-				e.printStackTrace();
+				Logger.getLogger(IHMtoDATAImpl.class.getName()).log(Level.SEVERE, "Error in deleting the comment.");
 			}
 		}
 
@@ -225,7 +227,7 @@ public class IHMtoDATAImpl implements IHMtoDATA {
 			userService.save();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			Logger.getLogger(IHMtoDATAImpl.class.getName()).log(Level.SEVERE, "Error in saving.");
 		}
 	}
 
@@ -240,7 +242,7 @@ public class IHMtoDATAImpl implements IHMtoDATA {
 		try {
 			userService.save();
 		} catch (IOException e) {
-			e.printStackTrace();
+			Logger.getLogger(IHMtoDATAImpl.class.getName()).log(Level.SEVERE, "Error in saving.");
 		}
 	}
 
@@ -259,7 +261,7 @@ public class IHMtoDATAImpl implements IHMtoDATA {
 				netLocalizer.deleteFriend(user.getUid());
 			} catch (UnknownUserException e) {
 				// TODO Auto-generated catch block
-				e.printStackTrace();
+				Logger.getLogger(IHMtoDATAImpl.class.getName()).log(Level.SEVERE, "Error in deleting the user from the group.");
 			}
 		}
 	}
@@ -286,7 +288,7 @@ public class IHMtoDATAImpl implements IHMtoDATA {
 			netLocalizer.getUserDetails(idUser, idRequest);
 		} catch (UnknownUserException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			Logger.getLogger(IHMtoDATAImpl.class.getName()).log(Level.SEVERE, "Error in getUserDetails.");
 		}
 	}
 
@@ -360,7 +362,7 @@ public class IHMtoDATAImpl implements IHMtoDATA {
 				netLocalizer.getPictures(user.getUid(), idRequest);
 			} catch (UnknownUserException e) {
 				// TODO Auto-generated catch block
-				e.printStackTrace();
+				Logger.getLogger(IHMtoDATAImpl.class.getName()).log(Level.SEVERE, "Error in getting the picture.");
 			}
 		}
 	}
@@ -387,7 +389,7 @@ public class IHMtoDATAImpl implements IHMtoDATA {
 						netLocalizer.getPictures(connected.getUid(), idRequest);
 					} catch (UnknownUserException e) {
 						// TODO Auto-generated catch block
-						e.printStackTrace();
+						Logger.getLogger(IHMtoDATAImpl.class.getName()).log(Level.SEVERE, "Error in getting the picture.");
 					}
 				}
 			}
@@ -479,7 +481,7 @@ public class IHMtoDATAImpl implements IHMtoDATA {
 					netLocalizer.startAndConnectTo(u);
 				} catch (BusinessException | TechnicalException e) {
 					// TODO Auto-generated catch block
-					e.printStackTrace();
+					Logger.getLogger(IHMtoDATAImpl.class.getName()).log(Level.SEVERE, "Error in login.");
 				}
 				return true;
 			}
@@ -535,7 +537,7 @@ public class IHMtoDATAImpl implements IHMtoDATA {
 			userService.setConnectedUsers(netLocalizer.disconnect());
 		} catch (BusinessException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			Logger.getLogger(IHMtoDATAImpl.class.getName()).log(Level.SEVERE, "Error in logout.");
 		}
 		userService.forceSave();
 		return true;
@@ -548,13 +550,13 @@ public class IHMtoDATAImpl implements IHMtoDATA {
 			userService.save();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			Logger.getLogger(IHMtoDATAImpl.class.getName()).log(Level.SEVERE, "Error in saving.");
 		}
 		try {
 			netLocalizer.acceptOrNotFriendship(user.getUid(), true);
 		} catch (UnknownUserException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			Logger.getLogger(IHMtoDATAImpl.class.getName()).log(Level.SEVERE, "Error in accepting user in group.");
 		}
 	}
 
@@ -564,7 +566,7 @@ public class IHMtoDATAImpl implements IHMtoDATA {
 			netLocalizer.acceptOrNotFriendship(user.getUid(), false);
 		} catch (UnknownUserException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			Logger.getLogger(IHMtoDATAImpl.class.getName()).log(Level.SEVERE, "Error in accepting user in group.");
 		}
 	}
 

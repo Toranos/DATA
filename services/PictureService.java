@@ -10,6 +10,8 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.UUID;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.imageio.ImageIO;
 
@@ -182,7 +184,7 @@ public class PictureService {
 	 * @param comment
 	 */
 	public boolean addComment(Comment comment) throws BadInformationException {
-		if (comment == null || comment.equals("")) {
+		if (comment == null) {
 			throw new BadInformationException("Comment empty");
 		}
 		if (comment.getUid() == null || comment.getUid().equals("")) {
@@ -238,7 +240,7 @@ public class PictureService {
 	 * @param note
 	 */
 	public boolean addNote(Note note) throws BadInformationException {
-		if (note == null || note.equals("")) {
+		if (note == null) {
 			throw new BadInformationException("Note empty");
 		}
 		if (note.getUid() == null || note.getUid().equals("")) {
@@ -355,7 +357,7 @@ public class PictureService {
 						baos);
 				packet =  baos.toByteArray();
 			} catch (IOException ex) {
-				ex.printStackTrace();  
+				Logger.getLogger(PictureService.class.getName()).log(Level.SEVERE, "Error in changing image to byte.");  
 			}
 		} catch (Exception e) {  
 			System.out.println("Exception during serialization: " + e);  

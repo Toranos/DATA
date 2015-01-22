@@ -10,6 +10,8 @@ import static org.junit.Assert.fail;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -106,7 +108,7 @@ public class UserServiceTest {
 			service.updateProfile(new User("test", "test", "test", "test", "", "test"));
 		} catch (IOException | BadInformationException e1) {
 			// TODO Auto-generated catch block
-			e1.printStackTrace();
+			Logger.getLogger(UserServiceTest.class.getName()).log(Level.SEVERE, "Error in test of checking profile.");
 		}
 		// Null login test
 		User user = new User(null, "test", "test", "test", "", "test");
