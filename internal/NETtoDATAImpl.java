@@ -184,6 +184,7 @@ public class NETtoDATAImpl implements NETtoDATA {
 
 	@Override
 	public List<Picture> getPictures(List<Tag> tags, User sendMan) {
+		List<Picture> pictures = pictureService.getPictures(tags, sendMan);
 		return pictureService.getPictures(tags, sendMan);
 	}
 

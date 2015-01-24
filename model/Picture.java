@@ -227,10 +227,17 @@ public class Picture implements Serializable {
         return null;
     }
 
-	public boolean asAccess(User sendMan) {
+	public boolean hasAccess(User sendMan, User currentUser) {
 		for(Rule rule : listRules){
-			if(rule.isCanView() && rule.getGroup().contain(sendMan)){
+			if(rule.getGroup().getNom().equals(Group.DEFAULT_GROUP_NAME) && rule.isCanView()){
 				return true;
+			}
+			for(Group g : currentUser.getListGroups()){
+				if(g.getNom().equals(rule.getGroup().getNom())){
+					if(rule.isCanView() && g.contain(sendMan)){
+						return true;
+					}
+				}
 			}
 		}
 		return false;

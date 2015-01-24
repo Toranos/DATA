@@ -18,6 +18,7 @@ import DATA.model.Comment;
 import DATA.model.Group;
 import DATA.model.Note;
 import DATA.model.Picture;
+import DATA.model.Rule;
 import DATA.model.Tag;
 import DATA.model.User;
 import DATA.services.GroupService;
@@ -587,35 +588,36 @@ public class IHMtoDATAImpl implements IHMtoDATA {
 
 	@Override
 	public boolean canView(Picture p) {
-		/*for(Rule r : p.getListRules()){
-			if(r.getGroup().getNom().equals(userService.getCurrentUser().getUid())){
-				return r.isCanView();
-			}
-		}
-		return false;*/
 		return true;
 	}
 
 	@Override
 	public boolean canComment(Picture p) {
-		/*for(Rule r : p.getListRules()){
-			if(r.getGroup().getNom().equals(userService.getCurrentUser().getUid())){
+		if(p.getUser().getUid().equals(userService.getCurrentUser().getUid())){
+			return true;
+		}
+		for(Rule r : p.getListRules()){
+			// La liste des droits permise par l'utilisateur sur cette image ont été ajouté dans 
+			// un groupe qui a pour nom l'UID de cet utilisateur
+			if(r.getGroup().getNom().equals(userService.getCurrentUser().getUid().toString())){
 				return r.isCanComment();
 			}
 		}
-		return false;*/
-		return true;
+		return false;
 	}
 
 	@Override
 	public boolean canRate(Picture p) {
-		/*for(Rule r : p.getListRules()){
-			if(r.getGroup().getNom().equals(userService.getCurrentUser().getUid())){
+		if(p.getUser().getUid().equals(userService.getCurrentUser().getUid())){
+			return true;
+		}
+		for(Rule r : p.getListRules()){
+			// La liste des droits permise par l'utilisateur sur cette image ont été ajouté dans 
+			// un groupe qui a pour nom l'UID de cet utilisateur
+			if(r.getGroup().getNom().equals(userService.getCurrentUser().getUid().toString())){
 				return r.isCanRate();
 			}
 		}
 		return false;
-		 */
-		return true;
 	}
 }
