@@ -62,7 +62,7 @@ public class IHMtoDATAImpl implements IHMtoDATA {
 	 */
 	@Override
 	public void addComment(Comment comment) throws BadInformationException {
-		if (comment == null || comment.equals("")) {
+		if (comment == null) {
 			throw new BadInformationException("Comment empty");
 		}
 		if (comment.getUid() == null) {
