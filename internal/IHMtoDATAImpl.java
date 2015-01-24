@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package DATA.internal;
 
@@ -8,6 +8,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import DATA.exceptions.BadInformationException;
 import DATA.exceptions.PictureAlreadyExisted;
@@ -41,8 +43,8 @@ public class IHMtoDATAImpl implements IHMtoDATA {
 	private PictureService pictureService;
 	private DATAtoIHM dataToIhm;
 	private NetLocalizer netLocalizer;
-	
-	/** 
+
+	/**
 	 * Constructor.
 	 */
 	public IHMtoDATAImpl() {
@@ -55,7 +57,7 @@ public class IHMtoDATAImpl implements IHMtoDATA {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see DATA.interfaces.IHMtoDATA#addComment(DATA.model.Comment, int)
 	 */
 	@Override
@@ -75,20 +77,20 @@ public class IHMtoDATAImpl implements IHMtoDATA {
 		if (comment.getPictureUserId() == null || comment.getPictureUserId().equals("")) {
 			throw new BadInformationException("PictureUserId empty");
 		}
-		
+
 		if (pictureService.addComment(comment) == false) {
 			try {
 				netLocalizer.addComment(comment, comment.getPictureUserId());
 			} catch (Exception e){
-				e.printStackTrace();
+				Logger.getLogger(IHMtoDATAImpl.class.getName()).log(Level.SEVERE, "Error in adding the comment.");
 			}
 		}
-		
+
 	}
 
 	@Override
 	public void addNote(Note note) throws BadInformationException {
-		if (note == null || note.equals("")) {
+		if (note == null) {
 			throw new BadInformationException("Note empty");
 		}
 		if (note.getUid() == null || note.getUid().equals("")) {
@@ -103,19 +105,19 @@ public class IHMtoDATAImpl implements IHMtoDATA {
 		if (note.getPictureUserId() == null || note.getPictureUserId().equals("")) {
 			throw new BadInformationException("PictureUserId empty");
 		}
-		
+
 		if (pictureService.addNote(note) == false) {
 			try {
 				netLocalizer.addNote(note, note.getPictureUserId());
 			} catch (Exception e){
-				e.printStackTrace();
+				Logger.getLogger(IHMtoDATAImpl.class.getName()).log(Level.SEVERE, "Error in adding the note.");
 			}
 		}
 	}
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see DATA.interfaces.IHMtoDATA#addGroup(DATA.model.Group)
 	 */
 	@Override
@@ -125,29 +127,29 @@ public class IHMtoDATAImpl implements IHMtoDATA {
 			dataToIhm.receiveReloadUserGroups();
 		} catch (BadInformationException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			Logger.getLogger(IHMtoDATAImpl.class.getName()).log(Level.SEVERE, "Error in receiveReloadUserGroups.");
 		}
 	}
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see DATA.interfaces.IHMtoDATA#addAvatar(String)
 	 */
 	@Override
 	public void addAvatar(String filename) {
 		pictureService.addAvatar(filename);
 		try {
-			userService.export_();
+			userService.save();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			Logger.getLogger(IHMtoDATAImpl.class.getName()).log(Level.SEVERE, "Error in saving.");
 		}
 	}
-	
+
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see DATA.interfaces.IHMtoDATA#addPicture(DATA.model.Picture)
 	 */
 	@Override
@@ -156,13 +158,13 @@ public class IHMtoDATAImpl implements IHMtoDATA {
 		try {
 			userService.save();
 		} catch (IOException e) {
-			e.printStackTrace();
+			Logger.getLogger(IHMtoDATAImpl.class.getName()).log(Level.SEVERE, "Error in saving.");
 		}
 	}
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see DATA.interfaces.IHMtoDATA#addUserInGroup(DATA.model.User,
 	 * DATA.model.Group)
 	 */
@@ -175,19 +177,19 @@ public class IHMtoDATAImpl implements IHMtoDATA {
 					netLocalizer.addFriend(user.getUid());
 				} catch (UnknownUserException e) {
 					// TODO Auto-generated catch block
-					e.printStackTrace();
+					Logger.getLogger(IHMtoDATAImpl.class.getName()).log(Level.SEVERE, "Error in adding the user in the group.");
 				}
 			}
 		}
 	}
-	
+
 	/*
 	 * (non-Javadoc)
 	 * @see DATA.interfaces.IHMtoDATA#deleteComment(DATA.model.Comment)
 	 */
 	@Override
 	public void deleteComment(Comment comment) throws BadInformationException {
-		if (comment == null || comment.equals("")) {
+		if (comment == null) {
 			throw new BadInformationException("Comment empty");
 		}
 		if (comment.getUid() == null || comment.getUid().equals("")) {
@@ -202,12 +204,12 @@ public class IHMtoDATAImpl implements IHMtoDATA {
 		if (comment.getPictureUserId() == null || comment.getPictureUserId().equals("")) {
 			throw new BadInformationException("PictureUserId empty");
 		}
-		
+
 		if (pictureService.deleteComment(comment) == false) {
 			try {
 				//netLocalizer.deleteComment(comment, comment.getPictureUserId());
 			} catch (Exception e){
-				e.printStackTrace();
+				Logger.getLogger(IHMtoDATAImpl.class.getName()).log(Level.SEVERE, "Error in deleting the comment.");
 			}
 		}
 
@@ -215,7 +217,7 @@ public class IHMtoDATAImpl implements IHMtoDATA {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see DATA.interfaces.IHMtoDATA#deleteGroup(DATA.model.Group)
 	 */
 	@Override
@@ -226,13 +228,13 @@ public class IHMtoDATAImpl implements IHMtoDATA {
 			userService.save();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			Logger.getLogger(IHMtoDATAImpl.class.getName()).log(Level.SEVERE, "Error in saving.");
 		}
 	}
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see DATA.interfaces.IHMtoDATA#deletePicture(DATA.model.Picture)
 	 */
 	@Override
@@ -241,13 +243,13 @@ public class IHMtoDATAImpl implements IHMtoDATA {
 		try {
 			userService.save();
 		} catch (IOException e) {
-			e.printStackTrace();
+			Logger.getLogger(IHMtoDATAImpl.class.getName()).log(Level.SEVERE, "Error in saving.");
 		}
 	}
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see DATA.interfaces.IHMtoDATA#deleteUserFromGroup(DATA.model.User,
 	 * DATA.model.Group)
 	 */
@@ -260,14 +262,14 @@ public class IHMtoDATAImpl implements IHMtoDATA {
 				netLocalizer.deleteFriend(user.getUid());
 			} catch (UnknownUserException e) {
 				// TODO Auto-generated catch block
-				e.printStackTrace();
+				Logger.getLogger(IHMtoDATAImpl.class.getName()).log(Level.SEVERE, "Error in deleting the user from the group.");
 			}
 		}
 	}
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see DATA.interfaces.IHMtoDATA#export()
 	 */
 	@Override
@@ -277,7 +279,7 @@ public class IHMtoDATAImpl implements IHMtoDATA {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see DATA.interfaces.IHMtoDATA#getUserById(java.util.UUID,
 	 * java.lang.String)
 	 */
@@ -287,13 +289,13 @@ public class IHMtoDATAImpl implements IHMtoDATA {
 			netLocalizer.getUserDetails(idUser, idRequest);
 		} catch (UnknownUserException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			Logger.getLogger(IHMtoDATAImpl.class.getName()).log(Level.SEVERE, "Error in getUserDetails.");
 		}
 	}
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see DATA.interfaces.IHMtoDATA#getUsersInGroup(DATA.model.Group)
 	 */
 	@Override
@@ -303,7 +305,7 @@ public class IHMtoDATAImpl implements IHMtoDATA {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see DATA.interfaces.IHMtoDATA#getUserNotInGroup(DATA.model.Group)
 	 */
 	@Override
@@ -314,7 +316,7 @@ public class IHMtoDATAImpl implements IHMtoDATA {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see DATA.interfaces.IHMtoDATA#getGroups()
 	 */
 	@Override
@@ -324,7 +326,7 @@ public class IHMtoDATAImpl implements IHMtoDATA {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see DATA.interfaces.IHMtoDATA#getGroupsUserNotIn(DATA.model.User)
 	 */
 	@Override
@@ -334,7 +336,7 @@ public class IHMtoDATAImpl implements IHMtoDATA {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see DATA.interfaces.IHMtoDATA#getPictureById(java.util.UUID, int)
 	 */
 	@Override
@@ -349,7 +351,7 @@ public class IHMtoDATAImpl implements IHMtoDATA {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see DATA.interfaces.IHMtoDATA#getPictures(DATA.model.User, int)
 	 */
 	@Override
@@ -361,14 +363,14 @@ public class IHMtoDATAImpl implements IHMtoDATA {
 				netLocalizer.getPictures(user.getUid(), idRequest);
 			} catch (UnknownUserException e) {
 				// TODO Auto-generated catch block
-				e.printStackTrace();
+				Logger.getLogger(IHMtoDATAImpl.class.getName()).log(Level.SEVERE, "Error in getting the picture.");
 			}
 		}
 	}
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see DATA.interfaces.IHMtoDATA#getPictures(java.util.List, int)
 	 */
 	@Override
@@ -376,7 +378,7 @@ public class IHMtoDATAImpl implements IHMtoDATA {
 		dataToIhm.receivePictures(pictureService.getPictures(listtag, userService.getCurrentUser()), idRequest);
 		netLocalizer.getPictures(listtag,idRequest);
 	}
-	
+
 	@Override
 	public void getPicturesByUsers(List<String> listUser, int idRequest) {
 		List<User> connectedUsers = netLocalizer.getConnectedUsers();
@@ -388,7 +390,7 @@ public class IHMtoDATAImpl implements IHMtoDATA {
 						netLocalizer.getPictures(connected.getUid(), idRequest);
 					} catch (UnknownUserException e) {
 						// TODO Auto-generated catch block
-						e.printStackTrace();
+						Logger.getLogger(IHMtoDATAImpl.class.getName()).log(Level.SEVERE, "Error in getting the picture.");
 					}
 				}
 			}
@@ -397,7 +399,7 @@ public class IHMtoDATAImpl implements IHMtoDATA {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see DATA.interfaces.IHMtoDATA#getPictures(int)
 	 */
 	@Override
@@ -408,7 +410,7 @@ public class IHMtoDATAImpl implements IHMtoDATA {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see DATA.interfaces.IHMtoDATA#getCurrentUser()
 	 */
 	@Override
@@ -418,18 +420,18 @@ public class IHMtoDATAImpl implements IHMtoDATA {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see DATA.interfaces.IHMtoDATA#import_(java.lang.String)
 	 */
 	@Override
 	public User import_(String parameter) throws FileNotFoundException,
-			ClassNotFoundException, IOException {
+	ClassNotFoundException, IOException {
 		return userService.import_(parameter);
 	}
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see DATA.interfaces.IHMtoDATA#updatePicture(DATA.model.Picture)
 	 */
 	@Override
@@ -440,12 +442,12 @@ public class IHMtoDATAImpl implements IHMtoDATA {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see DATA.interfaces.IHMtoDATA#updateProfile(DATA.model.User)
 	 */
 	@Override
 	public void updateProfile(User u) throws IOException,
-			BadInformationException {
+	BadInformationException {
 		if (userService.updateProfile(u)) {
 			userService.save();
 		};
@@ -453,7 +455,7 @@ public class IHMtoDATAImpl implements IHMtoDATA {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see DATA.interfaces.IHMtoDATA#signup(DATA.model.User)
 	 */
 	@Override
@@ -468,7 +470,7 @@ public class IHMtoDATAImpl implements IHMtoDATA {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see DATA.interfaces.IHMtoDATA#login(java.lang.String, java.lang.String)
 	 */
 	@Override
@@ -480,7 +482,7 @@ public class IHMtoDATAImpl implements IHMtoDATA {
 					netLocalizer.startAndConnectTo(u);
 				} catch (BusinessException | TechnicalException e) {
 					// TODO Auto-generated catch block
-					e.printStackTrace();
+					Logger.getLogger(IHMtoDATAImpl.class.getName()).log(Level.SEVERE, "Error in login.");
 				}
 				return true;
 			}
@@ -492,7 +494,7 @@ public class IHMtoDATAImpl implements IHMtoDATA {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see DATA.interfaces.IHMtoDATA#getAllUsers(java.lang.String,
 	 * java.lang.String)
 	 */
@@ -522,7 +524,7 @@ public class IHMtoDATAImpl implements IHMtoDATA {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see DATA.interfaces.IHMtoDATA#logout()
 	 */
 	@Override
@@ -536,7 +538,7 @@ public class IHMtoDATAImpl implements IHMtoDATA {
 			userService.setConnectedUsers(netLocalizer.disconnect());
 		} catch (BusinessException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			Logger.getLogger(IHMtoDATAImpl.class.getName()).log(Level.SEVERE, "Error in logout.");
 		}
 		userService.forceSave();
 		return true;
@@ -549,23 +551,23 @@ public class IHMtoDATAImpl implements IHMtoDATA {
 			userService.save();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			Logger.getLogger(IHMtoDATAImpl.class.getName()).log(Level.SEVERE, "Error in saving.");
 		}
 		try {
 			netLocalizer.acceptOrNotFriendship(user.getUid(), true);
 		} catch (UnknownUserException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			Logger.getLogger(IHMtoDATAImpl.class.getName()).log(Level.SEVERE, "Error in accepting user in group.");
 		}
 	}
-	
+
 	@Override
 	public void refuseUser(User user) {
 		try {
 			netLocalizer.acceptOrNotFriendship(user.getUid(), false);
 		} catch (UnknownUserException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			Logger.getLogger(IHMtoDATAImpl.class.getName()).log(Level.SEVERE, "Error in accepting user in group.");
 		}
 	}
 
@@ -581,22 +583,11 @@ public class IHMtoDATAImpl implements IHMtoDATA {
 
 	@Override
 	public synchronized void forceSave() throws IOException {
-		userService.forceSave();	
+		userService.forceSave();
 	}
 
 	@Override
 	public boolean canView(Picture p) {
-		//if(p.getUser().getUid().equals(userService.getCurrentUser().getUid())){
-		//	return true;
-		//}
-		/*for(Rule r : p.getListRules()){
-			// La liste des droits permise par l'utilisateur sur cette image ont été ajouté dans 
-			// un groupe qui a pour nom l'UID de cet utilisateur
-			if(r.getGroup().getNom().equals(userService.getCurrentUser().getUid().toString())){
-				return r.isCanView();
-			}
-		}
-		return false;*/
 		return true;
 	}
 
