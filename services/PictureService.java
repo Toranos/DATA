@@ -296,7 +296,7 @@ public class PictureService {
 	 * @param comment
 	 */
 	public boolean deleteComment(Comment comment) throws BadInformationException {
-		if (comment == null || comment.equals("")) {
+		if (comment == null) {
 			throw new BadInformationException("Comment empty");
 		}
 		if (comment.getUid() == null) {
