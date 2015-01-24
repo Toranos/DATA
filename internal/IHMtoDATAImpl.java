@@ -65,16 +65,16 @@ public class IHMtoDATAImpl implements IHMtoDATA {
 		if (comment == null || comment.equals("")) {
 			throw new BadInformationException("Comment empty");
 		}
-		if (comment.getUid() == null || comment.getUid().equals("")) {
+		if (comment.getUid() == null) {
 			throw new BadInformationException("Uid empty");
 		}
-		if (comment.getCommentUser().getUid() == null || comment.getCommentUser().getUid().equals("")) {
+		if (comment.getCommentUser().getUid() == null) {
 			throw new BadInformationException("CommentUserId empty");
 		}
-		if (comment.getPictureId() == null || comment.getPictureId().equals("")) {
+		if (comment.getPictureId() == null) {
 			throw new BadInformationException("PictureId empty");
 		}
-		if (comment.getPictureUserId() == null || comment.getPictureUserId().equals("")) {
+		if (comment.getPictureUserId() == null) {
 			throw new BadInformationException("PictureUserId empty");
 		}
 
@@ -93,16 +93,16 @@ public class IHMtoDATAImpl implements IHMtoDATA {
 		if (note == null) {
 			throw new BadInformationException("Note empty");
 		}
-		if (note.getUid() == null || note.getUid().equals("")) {
+		if (note.getUid() == null) {
 			throw new BadInformationException("Uid empty");
 		}
-		if (note.getNoteUser() == null || note.getNoteUser().equals("")) {
+		if (note.getNoteUser() == null) {
 			throw new BadInformationException("NoteUserId empty");
 		}
-		if (note.getPictureId() == null || note.getPictureId().equals("")) {
+		if (note.getPictureId() == null) {
 			throw new BadInformationException("PictureId empty");
 		}
-		if (note.getPictureUserId() == null || note.getPictureUserId().equals("")) {
+		if (note.getPictureUserId() == null) {
 			throw new BadInformationException("PictureUserId empty");
 		}
 
@@ -192,16 +192,16 @@ public class IHMtoDATAImpl implements IHMtoDATA {
 		if (comment == null) {
 			throw new BadInformationException("Comment empty");
 		}
-		if (comment.getUid() == null || comment.getUid().equals("")) {
+		if (comment.getUid() == null) {
 			throw new BadInformationException("Uid empty");
 		}
-		if (comment.getCommentUser().getUid() == null || comment.getCommentUser().getUid().equals("")) {
+		if (comment.getCommentUser().getUid() == null) {
 			throw new BadInformationException("CommentUserId empty");
 		}
-		if (comment.getPictureId() == null || comment.getPictureId().equals("")) {
+		if (comment.getPictureId() == null) {
 			throw new BadInformationException("PictureId empty");
 		}
-		if (comment.getPictureUserId() == null || comment.getPictureUserId().equals("")) {
+		if (comment.getPictureUserId() == null) {
 			throw new BadInformationException("PictureUserId empty");
 		}
 
