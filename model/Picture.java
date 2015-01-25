@@ -104,6 +104,7 @@ public class Picture implements Serializable {
     	for(Rule rule : p.getListRules()){
     		this.listRules.add(rule);
     	}
+    	this.uid = uid;
     	this.user = p.user;
     }
     
