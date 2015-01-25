@@ -53,4 +53,13 @@ public class Group implements Serializable {
 	public UUID getUid() {
 		return uid;
 	}
+
+	public boolean contain(User sendMan) {
+		for(User u : users){
+			if(u.getUid().equals(sendMan.getUid())){
+				return true;
+			}
+		}
+		return false;
+	}
 }

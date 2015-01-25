@@ -8,10 +8,7 @@ import java.util.UUID;
 import DATA.exceptions.BadInformationException;
 import DATA.model.Group;
 import DATA.model.PendingRequest;
-import DATA.model.Picture;
-import DATA.model.Tag;
 import DATA.model.User;
-import NET.NetLocalizer;
 
 /**
  * Service for pictures functionalities

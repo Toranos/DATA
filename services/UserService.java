@@ -12,6 +12,8 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import DATA.exceptions.BadInformationException;
 import DATA.model.Group;
@@ -36,6 +38,7 @@ public class UserService {
 
 	}
 
+	
 	/**
 	 * Check if the user information is correct for sign up
 	 * 
@@ -56,7 +59,7 @@ public class UserService {
 		try {
 			createAccountsFile(u);
 		} catch(IOException e){
-			e.printStackTrace();
+			Logger.getLogger(UserService.class.getName()).log(Level.SEVERE, "Error in creating user.");
 		}
 		
 		// Création du dossier utilisateur
@@ -68,10 +71,6 @@ public class UserService {
 			}
 		}
 		
-		/*
-		 * if (u.getListIP() == null || u.getListIP().isEmpty()) { throw new
-		 * BadInformationException("Password is empty"); }
-		 */
 		DataService.getInstance().setUser(u);
 		DataService.getInstance().setPathUser(new File(rootFile + u.getUid() + File.separator));
 		try {
@@ -79,7 +78,7 @@ public class UserService {
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			System.out.println("Erreur lors de la création du fichier de data");
-			e.printStackTrace();
+			Logger.getLogger(UserService.class.getName()).log(Level.SEVERE, "Error in creation data file.");
 		}
 		return u;
 	}
@@ -115,9 +114,9 @@ public class UserService {
 				}
 			}
 		} catch (IOException e1) {
-			e1.printStackTrace();
+			Logger.getLogger(UserService.class.getName()).log(Level.SEVERE, "Error checking profile.");
 		} catch (ClassNotFoundException e) {
-			e.printStackTrace();
+			Logger.getLogger(UserService.class.getName()).log(Level.SEVERE, "Error checking profile.");
 		}
 		return null;
 	}
@@ -193,7 +192,7 @@ public class UserService {
 
 	public boolean updateProfile(User u) throws IOException, BadInformationException {
 		User currentUser = DataService.getInstance().getUser();
-		if (u == null || u.equals("")) {
+		if (u == null) {
 			throw new BadInformationException("User empty");
 		}
 		if (!checkCredentialNotEmpty(u.getLogin(), u.getPassword())) {
@@ -268,7 +267,7 @@ public class UserService {
 			writer.close();
 		} else {
 			PrintWriter out = new PrintWriter(new FileWriter(accounts, true));
-			out.append(u.getLogin() + " " + u.getPassword() + " " + u.getUid());
+			out.append(System.lineSeparator() + u.getLogin() + " " + u.getPassword() + " " + u.getUid());
 			out.close();
 		}
 	}

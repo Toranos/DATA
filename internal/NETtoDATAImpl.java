@@ -3,11 +3,10 @@
  */
 package DATA.internal;
 
-
-import java.io.IOException;
-import java.util.Iterator;
 import java.util.List;
 import java.util.UUID;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import DATA.exceptions.BadInformationException;
 import DATA.interfaces.NETtoDATA;
@@ -18,13 +17,11 @@ import DATA.model.PendingRequest;
 import DATA.model.Picture;
 import DATA.model.Tag;
 import DATA.model.User;
-import DATA.services.DataService;
 import DATA.services.GroupService;
 import DATA.services.PictureService;
 import DATA.services.UserService;
 import IHM.Main;
 import IHM.interfaces.DATAtoIHM;
-import IHM.interfaces.DATAtoIHMimpl;
 import NET.NetLocalizer;
 import NET.exceptions.UnknownUserException;
 /**
@@ -58,7 +55,7 @@ public class NETtoDATAImpl implements NETtoDATA {
 		try{
 			pictureService.addComment(comment);
 		} catch (BadInformationException e){
-			e.printStackTrace();
+			Logger.getLogger(NETtoDATAImpl.class.getName()).log(Level.SEVERE, "Error in adding the comment.");
 		}
 	}
 	
@@ -71,7 +68,7 @@ public class NETtoDATAImpl implements NETtoDATA {
 		try{
 			pictureService.addNote(note);
 		} catch (BadInformationException e){
-			e.printStackTrace();
+			Logger.getLogger(NETtoDATAImpl.class.getName()).log(Level.SEVERE, "Error in adding the comment.");
 		}
 	}
 	
@@ -84,7 +81,7 @@ public class NETtoDATAImpl implements NETtoDATA {
 		try{
 			pictureService.deleteComment(comment);
 		} catch (BadInformationException e){
-			e.printStackTrace();
+			Logger.getLogger(NETtoDATAImpl.class.getName()).log(Level.SEVERE, "Error in deleting the comment.");
 		}
 	}
 
@@ -208,8 +205,7 @@ public class NETtoDATAImpl implements NETtoDATA {
 						break;
 				}
 			} catch (UnknownUserException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				Logger.getLogger(NETtoDATAImpl.class.getName()).log(Level.SEVERE, "Error in adding user in group.");
 			}
 		}
 	}
@@ -233,17 +229,32 @@ public class NETtoDATAImpl implements NETtoDATA {
 	}
 
 	@Override
-	public List<Picture> getPictures() {
-		return pictureService.getPictures(null);
+	public List<Picture> getPictures(User sendMan) {
+		return pictureService.getPictures(null, sendMan);
 	}
 
 	@Override
-	public List<Picture> getPictures(List<Tag> tags) {
-		return pictureService.getPictures(tags);
+	public List<Picture> getPictures(List<Tag> tags, User sendMan) {
+		List<Picture> pictures = pictureService.getPictures(tags, sendMan);
+		return pictureService.getPictures(tags, sendMan);
 	}
 
 	@Override
-	public Picture getPictureById(UUID id) {
-		return pictureService.getPictureById(id);
+	public Picture getPictureById(UUID id, User sendMan) {
+		Picture tempPicture = new Picture(pictureService.getPictureById(id, sendMan));
+		tempPicture.getListRules().add(pictureService.getMaxRule(id, sendMan));
+		return tempPicture;
 	}
+
+	/*@Override
+	public void checkPendingRequest(UUID userId) {
+		if(groupService.checkPendingRequest(userId)) {
+			try {
+				netLocalizer.addFriend(userId);
+			} catch (UnknownUserException e) {
+				// TODO Auto-generated catch block
+				Logger.getLogger(NETtoDATAImpl.class.getName()).log(Level.SEVERE, "Error in adding in group.");
+			}
+		}
+	}*/
 }

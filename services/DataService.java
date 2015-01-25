@@ -16,6 +16,7 @@ import java.util.TimerTask;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 import java.util.zip.ZipOutputStream;
+
 import DATA.model.User;
 
 /**
@@ -50,6 +51,11 @@ public class DataService implements Serializable {
 	private static final String profile = "profile.data";
 	
 	/**
+	 * Name of avatar without extension.
+	 */
+	private static final String avatar = "avatar";
+	
+	/**
 	 * Size of buffer for Zip.
 	 */
 	private static final int bufferZip = 2048;	
@@ -77,7 +83,7 @@ public class DataService implements Serializable {
 	/**
 	 * Variable checked if save is enabled or not. 
 	 */
-	private boolean enabled = true;
+	private boolean enabled = true;	
 	
 	/**
 	 * Return Singleton instance of DataService.
@@ -203,24 +209,18 @@ public class DataService implements Serializable {
 	 * @throws FileNotFoundException 
 	 * @throws ClassNotFoundException 
 	 */
-	public static void imports(File file) throws IOException, ClassNotFoundException {
+	public static void imports(File exportFile) throws IOException, ClassNotFoundException {
 		
 		// Check if the file existe or is readable.
-		if (file.exists() == false || file.canRead() == false) {
+		if (exportFile.exists() == false || exportFile.canRead() == false) {
 			throw new FileNotFoundException();
-		}
-		
-		// If the image dir does not exists, we create it.
-		File imageDir = new File(DataService.imageDir);
-		if (imageDir.exists() == false) {
-			imageDir.mkdirs();
 		}
 		
 		// Initialize Zip.
 		byte data[] = new byte[bufferZip];
 		FileOutputStream destDir = null;
 		BufferedOutputStream dest = new BufferedOutputStream(destDir);
-		FileInputStream fis = new FileInputStream(file.getPath());
+		FileInputStream fis = new FileInputStream(exportFile.getPath());
 		BufferedInputStream buffi = new BufferedInputStream(fis);
 		ZipInputStream zis = new ZipInputStream(buffi);
 		ZipEntry entry;
@@ -228,6 +228,10 @@ public class DataService implements Serializable {
 		
 		// Get file.
 		while((entry = zis.getNextEntry()) != null) {
+			File dir = new File(entry.getName()).getParentFile();
+			if (dir.exists() == false) {
+				dir.mkdirs();
+			}
 			FileOutputStream fos = new FileOutputStream(entry.getName());
 			dest = new BufferedOutputStream(fos, bufferZip);
 			int count;
@@ -244,10 +248,14 @@ public class DataService implements Serializable {
 		if (nbEntries == 0) {
 			throw new IOException();
 		}
+		
+		// Delete export file.
+		exportFile.delete();
 	}
 
 	/**
 	 * Save all information into one zip file.
+	 * @throws IOException
 	 */
 	public synchronized void exports() throws IOException {
 		File profile = new File(userPath.toString() + File.separatorChar + DataService.profile);
@@ -268,7 +276,7 @@ public class DataService implements Serializable {
 		// Add profile
 		FileInputStream fi = new FileInputStream(profile);
 	    BufferedInputStream buffi = new BufferedInputStream(fi, bufferZip);
-	    ZipEntry entry = new ZipEntry(profile.getName());
+	    ZipEntry entry = new ZipEntry(profile.getPath());
 	    out.putNextEntry(entry);
 	    int count;
 	    while((count = buffi.read(data, 0, bufferZip)) != -1) {
@@ -276,6 +284,23 @@ public class DataService implements Serializable {
 	    }
 	    out.closeEntry();
 	    buffi.close();
+	    
+	    // Add avatar if exists
+	    /*
+	    File avatarPath = new File(DataService.getInstance().getUser().getAvatar());
+	    File avatar = new File(userPath.toString() + File.separatorChar + avatarPath.getName());
+	    if (avatar.exists()) {
+	    	fi = new FileInputStream(avatar);
+	 	    buffi = new BufferedInputStream(fi, bufferZip);
+	 	    entry = new ZipEntry(avatar.getPath());
+	 	    out.putNextEntry(entry);
+	 	    while((count = buffi.read(data, 0, bufferZip)) != -1) {
+	 	        out.write(data, 0, count);
+	 	    }
+	 	    out.closeEntry();
+	 	    buffi.close();
+	    }	  
+	    */
 		
 		// Get all images.
 		File[] img = new File(userPath.toString() + File.separatorChar + DataService.imageDir).listFiles();
@@ -285,7 +310,7 @@ public class DataService implements Serializable {
 			for(File f : img) {
 			    fi = new FileInputStream(f);
 			    buffi = new BufferedInputStream(fi, bufferZip);
-			    entry = new ZipEntry(DataService.imageDir+File.separatorChar+f.getName());
+			    entry = new ZipEntry(userPath.toString()+File.separatorChar+DataService.imageDir+File.separatorChar+f.getName());
 			    out.putNextEntry(entry);
 			    while((count = buffi.read(data, 0, bufferZip)) != -1) {
 			        out.write(data, 0, count);
@@ -301,6 +326,13 @@ public class DataService implements Serializable {
 		
 		// Delete profile.
 		profile.delete();
+		
+		// Delete avatar.
+		/*
+		if (avatar.exists()) {
+			avatar.delete();
+		}
+		*/
 		
 		// Delete dirs.
 		new File(userPath.toString() + File.separatorChar + DataService.imageDir).delete();

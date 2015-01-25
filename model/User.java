@@ -5,10 +5,20 @@
  */
 package DATA.model;
 
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+import javafx.embed.swing.SwingFXUtils;
+import javafx.scene.image.Image;
+
+import javax.imageio.ImageIO;
 
 /**
  * 
@@ -26,11 +36,12 @@ public class User implements Serializable {
     private String password;
     private String firstname;
     private String lastname;
-    private String avatar;
+    private byte[] avatar;
     private String birthDate;
     private Boolean connected = false;
     private List<Picture> listPictures;
     private List<Group> listGroups;
+    private Group otherGroup;
     private List<String> listIP;
     private List<String> listConnectedUser;
     private List<PendingRequest> listPendingRequests;
@@ -40,6 +51,7 @@ public class User implements Serializable {
 		this.listConnectedUser = new ArrayList<String>();
 		this.listGroups = new ArrayList<Group>();
 		this.listGroups.add(new Group(Group.FRIENDS_GROUP_NAME));
+		this.otherGroup = new Group(Group.DEFAULT_GROUP_NAME);
 		this.listIP = new ArrayList<String>();
 		this.listPictures = new ArrayList<Picture>();
 		this.listPendingRequests = new ArrayList<PendingRequest>();
@@ -52,13 +64,14 @@ public class User implements Serializable {
 		this.listConnectedUser = new ArrayList<String>();
 		this.listGroups = new ArrayList<Group>();
 		this.listGroups.add(new Group(Group.FRIENDS_GROUP_NAME));
+		this.otherGroup = new Group(Group.DEFAULT_GROUP_NAME);
 		this.listIP = new ArrayList<String>();
 		this.listPictures = new ArrayList<Picture>();
 		this.listPendingRequests = new ArrayList<PendingRequest>();
     }
     
 	public User(String login, String password, String firstname,
-			String lastname, String avatar, String birthDate) {
+			String lastname, byte[] avatar, String birthDate) {
 		this.login = login;
 		this.password = password;
 		this.firstname = firstname;
@@ -69,6 +82,24 @@ public class User implements Serializable {
 		this.listConnectedUser = new ArrayList<String>();
 		this.listGroups = new ArrayList<Group>();
 		this.listGroups.add(new Group(Group.FRIENDS_GROUP_NAME));
+		this.otherGroup = new Group(Group.DEFAULT_GROUP_NAME);
+		this.listIP = new ArrayList<String>();
+		this.listPictures = new ArrayList<Picture>();
+		this.listPendingRequests = new ArrayList<PendingRequest>();
+	}
+	
+	public User(String login, String password, String firstname,
+			String lastname, String useless, String birthDate) {
+		this.login = login;
+		this.password = password;
+		this.firstname = firstname;
+		this.lastname = lastname;
+		this.birthDate = birthDate;
+		this.uid = UUID.randomUUID();
+		this.listConnectedUser = new ArrayList<String>();
+		this.listGroups = new ArrayList<Group>();
+		this.listGroups.add(new Group(Group.FRIENDS_GROUP_NAME));
+		this.otherGroup = new Group(Group.DEFAULT_GROUP_NAME);
 		this.listIP = new ArrayList<String>();
 		this.listPictures = new ArrayList<Picture>();
 		this.listPendingRequests = new ArrayList<PendingRequest>();
@@ -110,10 +141,10 @@ public class User implements Serializable {
 	public void setLastname(String lastname) {
 		this.lastname = lastname;
 	}
-	public String getAvatar() {
+	public byte[] getAvatar() {
 		return avatar;
 	}
-	public void setAvatar(String avatar) {
+	public void setAvatar(byte[] avatar) {
 		this.avatar = avatar;
 	}
 	public String getBirthDate() {
@@ -151,6 +182,9 @@ public class User implements Serializable {
 	}
 	public void setListPendingRequests(List<PendingRequest> listPendingRequests) {
 		this.listPendingRequests = listPendingRequests;
+	}	
+	public Group getOtherGroup() {
+		return otherGroup;
 	}
 	
 	/**
@@ -189,39 +223,39 @@ public class User implements Serializable {
 	 */
 	@Override
 	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
+		boolean isEqual = true;
+		if (obj == null) {
+			isEqual = false;
+		}
 		User other = (User) obj;
-		if (birthDate == null) {
-			if (other.birthDate != null)
-				return false;
-		} else if (!birthDate.equals(other.birthDate))
-			return false;
-		if (firstname == null) {
-			if (other.firstname != null)
-				return false;
-		} else if (!firstname.equals(other.firstname))
-			return false;
-		if (lastname == null) {
-			if (other.lastname != null)
-				return false;
-		} else if (!lastname.equals(other.lastname))
-			return false;
-		if (login == null) {
-			if (other.login != null)
-				return false;
-		} else if (!login.equals(other.login))
-			return false;
-		if (uid == null) {
-			if (other.uid != null)
-				return false;
-		} else if (!uid.equals(other.uid))
-			return false;
-		return true;
+		if (!uid.equals(other.uid)){
+			isEqual = false;
+		}
+		return isEqual;
 	}
 	
+	/*
+	 * (non-Javadoc)
+	 * @see java.lang.Object#hashCode()
+	 */
+	public int hashCode(){
+		return 0;
+	}
+	
+	/**
+	 * Getter the Avatar in Image object 
+	 * @return Image
+	 */
+	 public Image getAvatarImageObject() {
+	        ByteArrayInputStream in = new ByteArrayInputStream(avatar);
+	        try
+	        {
+	            BufferedImage read = ImageIO.read(in);
+	            return SwingFXUtils.toFXImage(read, null);
+	        } catch (IOException e)
+	        {
+	        	Logger.getLogger(User.class.getName()).log(Level.SEVERE, "Error in returning SwingFXUtils.toFXImage(read, null);");
+	        }
+	        return null;
+	 }
 }

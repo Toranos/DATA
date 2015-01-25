@@ -7,20 +7,19 @@ package DATA.model;
 
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.UUID;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
-import com.sun.xml.internal.messaging.saaj.util.Base64;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.scene.image.Image;
 
 import javax.imageio.ImageIO;
-import javax.swing.ImageIcon;
 
 /**
  *
@@ -89,6 +88,23 @@ public class Picture implements Serializable {
 		this.user = user;
 		this.uid = UUID.randomUUID();
 	}
+    
+    /**
+     * Create a copy of the picture (ony the rule list is different)
+     * @param p The picture to copy
+     */
+    public Picture(Picture p){
+    	this.filename = p.getFilename();
+    	this.description = p.getDescription();
+    	this.title = p.getTitle();
+    	this.listNotes = p.getListNotes();
+    	this.listTags = p.getListTags();
+    	this.listComments = p.getComments();
+    	this.listRules = new ArrayList<Rule>();
+    	for(Rule rule : p.getListRules()){
+    		this.listRules.add(rule);
+    	}
+    }
     
     public String getTitle() {
 		return title;
@@ -196,7 +212,7 @@ public class Picture implements Serializable {
             return SwingFXUtils.toFXImage(read, null);
         } catch (IOException e)
         {
-            e.printStackTrace();
+        	Logger.getLogger(Picture.class.getName()).log(Level.SEVERE, "Error in returning SwingFXUtils.toFXImage(read, null);");
         }
         return null;
     }
@@ -210,6 +226,22 @@ public class Picture implements Serializable {
         }
         return null;
     }
+
+	public boolean hasAccess(User sendMan, User currentUser) {
+		for(Rule rule : listRules){
+			if(rule.getGroup().getNom().equals(Group.DEFAULT_GROUP_NAME) && rule.isCanView()){
+				return true;
+			}
+			for(Group g : currentUser.getListGroups()){
+				if(g.getNom().equals(rule.getGroup().getNom())){
+					if(rule.isCanView() && g.contain(sendMan)){
+						return true;
+					}
+				}
+			}
+		}
+		return false;
+	}
 
 
 //    private static byte[] ImageToBase64(ImageIcon i) {
