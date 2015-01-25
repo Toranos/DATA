@@ -13,6 +13,7 @@ import DATA.interfaces.NETtoDATA;
 import DATA.model.Comment;
 import DATA.model.Group;
 import DATA.model.Note;
+import DATA.model.PendingRequest;
 import DATA.model.Picture;
 import DATA.model.Tag;
 import DATA.model.User;
@@ -85,6 +86,18 @@ public class NETtoDATAImpl implements NETtoDATA {
 	}
 
 	/* (non-Javadoc)
+	 * @see DATA.interfaces.NETtoDATA#deleteComment(DATA.model.Comment)
+	 */
+	@Override
+	public void deleteNote(Note note){
+		try{
+			pictureService.deleteNote(note);
+		} catch (BadInformationException e){
+			e.printStackTrace();
+		}
+	}
+	
+	/* (non-Javadoc)
 	 * @see DATA.interfaces.NETtoDATA#getConnectedIps()
 	 */
 	@Override
@@ -127,6 +140,30 @@ public class NETtoDATAImpl implements NETtoDATA {
 	}
 
 	/* (non-Javadoc)
+	 * @see DATA.interfaces.NETtoDATA#receiveFriendResponse(DATA.model.User)
+	 */
+	@Override
+	public void receiveUnfriendResponse(UUID userUid) {
+		groupService.receiveUnfriendResponse(userUid);
+	}
+	
+	/* (non-Javadoc)
+	 * @see DATA.interfaces.NETtoDATA#receiveFriendResponse(DATA.model.User)
+	 */
+	@Override
+	public void receiveCommentResponse(UUID commentUid) {
+		pictureService.receiveCommentResponse(commentUid);
+	}
+	
+	/* (non-Javadoc)
+	 * @see DATA.interfaces.NETtoDATA#receiveFriendResponse(DATA.model.User)
+	 */
+	@Override
+	public void receiveNoteResponse(UUID noteUid) {
+		pictureService.receiveNoteResponse(noteUid);
+	}
+	
+	/* (non-Javadoc)
 	 * @see DATA.interfaces.NETtoDATA#resultPictures(java.util.List, int)
 	 */
 	@Override
@@ -149,11 +186,25 @@ public class NETtoDATAImpl implements NETtoDATA {
 	public void helloUser(User user) {
 		user.setConnected(true);
 		dataToIhm.receiveConnectedUser(user);
-		if (groupService.checkUserPending(user) != null) {
+		for (PendingRequest pendingReq : groupService.getUserPending(user)) {
 			try {
-				netLocalizer.addFriend(user.getUid());
+				switch (pendingReq.getType()) {
+					case PendingRequest.ASK_FRIEND:
+						netLocalizer.addFriend(user.getUid());
+						break;
+					case PendingRequest.ASK_UNFRIEND:
+						netLocalizer.deleteFriend(user.getUid());		
+						break;
+					case PendingRequest.SEND_COMMENT:
+						netLocalizer.addComment(pendingReq.getComment(), user.getUid());
+						break;
+					case PendingRequest.SEND_NOTE:
+						netLocalizer.addNote(pendingReq.getNote(), user.getUid());
+						break;
+					default:
+						break;
+				}
 			} catch (UnknownUserException e) {
-				// TODO Auto-generated catch block
 				Logger.getLogger(NETtoDATAImpl.class.getName()).log(Level.SEVERE, "Error in adding user in group.");
 			}
 		}
@@ -195,7 +246,7 @@ public class NETtoDATAImpl implements NETtoDATA {
 		return tempPicture;
 	}
 
-	@Override
+	/*@Override
 	public void checkPendingRequest(UUID userId) {
 		if(groupService.checkPendingRequest(userId)) {
 			try {
@@ -205,6 +256,5 @@ public class NETtoDATAImpl implements NETtoDATA {
 				Logger.getLogger(NETtoDATAImpl.class.getName()).log(Level.SEVERE, "Error in adding in group.");
 			}
 		}
-	}
-
+	}*/
 }

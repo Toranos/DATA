@@ -20,6 +20,7 @@ import DATA.exceptions.PictureAlreadyExisted;
 import DATA.model.Comment;
 import DATA.model.Group;
 import DATA.model.Note;
+import DATA.model.PendingRequest;
 import DATA.model.Picture;
 import DATA.model.Rule;
 import DATA.model.Tag;
@@ -231,6 +232,7 @@ public class PictureService {
 		    }
 		    return true;
 		}  else {
+			DataService.getInstance().getUser().getListPendingRequests().add(new PendingRequest(comment));
 			return false;
 		}
 	}
@@ -287,6 +289,7 @@ public class PictureService {
 		    }
 		    return true;
 		}  else {
+			DataService.getInstance().getUser().getListPendingRequests().add(new PendingRequest(note));
 			return false;
 		}
 	}
@@ -338,6 +341,44 @@ public class PictureService {
 		}
 	}
 
+	public boolean deleteNote(Note note) throws BadInformationException {
+		if (note == null || note.equals("")) {
+			throw new BadInformationException("note empty");
+		}
+		if (note.getUid() == null || note.getUid().equals("")) {
+			throw new BadInformationException("Uid empty");
+		}
+		if (note.getNoteUser().getUid() == null || note.getNoteUser().getUid().equals("")) {
+			throw new BadInformationException("CommentUserId empty");
+		}
+		if (note.getPictureId() == null || note.getPictureId().equals("")) {
+			throw new BadInformationException("PictureId empty");
+		}
+		if (note.getPictureUserId() == null || note.getPictureUserId().equals("")) {
+			throw new BadInformationException("PictureUserId empty");
+		}
+		
+		User currentUser = DataService.getInstance().getUser();
+		if (currentUser.getUid().equals(note.getPictureUserId()) || currentUser.getUid().equals(note.getNoteUser().getUid())) {
+			Iterator<Picture> iterPicture = currentUser.getListPictures().iterator();
+		    while (iterPicture.hasNext()) {
+		    	if (iterPicture.next().getUid().equals(note.getPictureId())) {
+		    		Iterator<Note> iterNote = iterPicture.next().getListNotes().iterator();
+		    		while (iterNote.hasNext()) {
+		    			if (iterNote.next().getUid().equals(note.getUid())) {
+		    				iterNote.remove();
+		    				break;
+		    			}
+		    		}
+		    		break;
+		    	}
+		    }
+		    return true;
+		}  else {
+			return false;
+		}
+	}
+	
 	/**
 	 * Create byte array from image.
 	 * @param filename
@@ -377,6 +418,28 @@ public class PictureService {
 		}
 		DataService.getInstance().getUser().getListPictures().remove(picture);
 		picture = null;
+	}
+
+	public void receiveCommentResponse(UUID commentUid) {
+		List<PendingRequest> pendingRequests = DataService.getInstance().getUser().getListPendingRequests();
+		PendingRequest pendingRequestToRemove = null;
+		for (PendingRequest pendingRequest : pendingRequests) {
+			if(pendingRequest.getType() == PendingRequest.SEND_COMMENT && pendingRequest.getComment().getUid().equals(commentUid)) {
+				pendingRequestToRemove = pendingRequest;
+			}
+		}
+		pendingRequests.remove(pendingRequestToRemove);
+	}
+
+	public void receiveNoteResponse(UUID noteUid) {
+		List<PendingRequest> pendingRequests = DataService.getInstance().getUser().getListPendingRequests();
+		PendingRequest pendingRequestToRemove = null;
+		for (PendingRequest pendingRequest : pendingRequests) {
+			if(pendingRequest.getType() == PendingRequest.SEND_NOTE && pendingRequest.getNote().getUid().equals(noteUid)) {
+				pendingRequestToRemove = pendingRequest;
+			}
+		}
+		pendingRequests.remove(pendingRequestToRemove);
 	}
 	
 	/**

@@ -37,13 +37,25 @@ public class GroupService {
 			}
 		}
 		if(canAdd && groupToAdd.getNom().equals(Group.FRIENDS_GROUP_NAME)) {
-			DataService.getInstance().getUser().getListPendingRequests().add(new PendingRequest(user.getUid(), groupToAdd.getUid()));
+			addPendingRequestFriendship(new PendingRequest(user.getUid(), groupToAdd.getUid()));
 		} else if(canAdd) {
 			acceptUser(user, groupToAdd);
 		}
 		return canAdd;
 	}
 	
+	public void addPendingRequestFriendship(PendingRequest pendingRequest) {
+		List<PendingRequest> pendingRequests = DataService.getInstance().getUser().getListPendingRequests();
+		List<PendingRequest> pendingRequestsToRemove = new ArrayList<PendingRequest>();
+		for (PendingRequest pendingReq : pendingRequests) {
+			if(pendingReq.getToUID().equals(pendingRequest.getToUID()) && (pendingReq.getType() == PendingRequest.ASK_FRIEND || pendingReq.getType() == PendingRequest.ASK_UNFRIEND)) {
+				pendingRequestsToRemove.add(pendingReq);
+			}
+		}
+		pendingRequests.removeAll(pendingRequestsToRemove);
+		pendingRequests.add(pendingRequest);
+	}
+
 	/**
 	 * 
 	 * @param group
@@ -60,22 +72,7 @@ public class GroupService {
 		    }
 		}
 	}
-	
-	/**
-	 * 
-	 * @param user
-	 * @param group
-	 */
-	public PendingRequest checkUserPending(User user) {
-		User currentUser = DataService.getInstance().getUser();
-		for (PendingRequest pendingReq : currentUser.getListPendingRequests()) {
-			if(pendingReq.getToUID().equals(user.getUid())){
-				return pendingReq;
-			}
-		}
-		return null;
-	}
-	
+
 	/**
 	 * 
 	 * @return
@@ -110,14 +107,30 @@ public class GroupService {
 		PendingRequest pendReq = null;
 		User currentUser = DataService.getInstance().getUser();
 		for (PendingRequest pendingReq : currentUser.getListPendingRequests()) {
-			if(user.getUid().equals(pendingReq.getToUID())){
-				if(friends){
-					for(Group group : currentUser.getListGroups()){
-						if(group.getUid().equals(pendingReq.getGroupUID()) || group.getNom().equals(Group.FRIENDS_GROUP_NAME)){
-							group.getUsers().add(user);
-						}
+			if(pendingReq.getType() == PendingRequest.ASK_FRIEND && friends && user.getUid().equals(pendingReq.getToUID())){
+				for(Group group : currentUser.getListGroups()){
+					if(group.getUid().equals(pendingReq.getGroupUID()) || group.getNom().equals(Group.FRIENDS_GROUP_NAME)){
+						group.getUsers().add(user);
 					}
 				}
+				pendReq = pendingReq;
+			}
+		}
+		if(pendReq != null) {
+			currentUser.getListPendingRequests().remove(pendReq);
+		}
+	}
+	
+	/**
+	 * 
+	 * @param user
+	 * @param friends
+	 */
+	public void receiveUnfriendResponse(UUID userUid) {
+		PendingRequest pendReq = null;
+		User currentUser = DataService.getInstance().getUser();
+		for (PendingRequest pendingReq : currentUser.getListPendingRequests()) {
+			if(pendingReq.getType() == PendingRequest.ASK_UNFRIEND && userUid.equals(pendingReq.getToUID())) {
 				pendReq = pendingReq;
 			}
 		}
@@ -178,6 +191,7 @@ public class GroupService {
 	public void deleteUserFromGroup(User user, Group group){
 		List<Group> userListGroups=DataService.getInstance().getUser().getListGroups();
 		if (group.getNom().equals(Group.FRIENDS_GROUP_NAME)){
+			addPendingRequestFriendship((new PendingRequest(user.getUid())));
 			for (Group userGroup : userListGroups){
 				userGroup.getUsers().remove(user);
 			}
@@ -216,12 +230,19 @@ public class GroupService {
 		
 	}
 	
-	public boolean checkPendingRequest(UUID userId) {
-		for (PendingRequest pendReq : DataService.getInstance().getUser().getListPendingRequests()) {
-			if(pendReq.getToUID().equals(userId)){
-				return true;
+	/**
+	 * 
+	 * @param user
+	 * @param group
+	 */
+	public List<PendingRequest> getUserPending(User user) {
+		List<PendingRequest> pendingReqs = new ArrayList<PendingRequest>();
+		User currentUser = DataService.getInstance().getUser();
+		for (PendingRequest pendingReq : currentUser.getListPendingRequests()) {
+			if(pendingReq.getToUID().equals(user.getUid())){
+				pendingReqs.add(pendingReq);
 			}
 		}
-		return false;
+		return pendingReqs;
 	}
 }

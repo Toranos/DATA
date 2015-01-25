@@ -63,6 +63,17 @@ public interface NETtoDATA {
 	public void receiveFriendResponse(User user, boolean friends) ;
 	
 	/**
+	 * Inform that the current User of friend response.
+	 * @param idSender
+	 */
+	public void receiveCommentResponse(UUID commentUid);
+	
+	/**
+	 * Inform that the current User of friend response.
+	 * @param idSender
+	 */
+	public void receiveNoteResponse(UUID noteUid);
+	/**
 	 * Send list pictures asked by the User. 
 	 * @param pictures
 	 * @param idRequest
@@ -116,10 +127,8 @@ public interface NETtoDATA {
 	 * @param user
 	 */
 	public void notFriendAnymore(User user) ;
-	
-	/**
-	 * Inform that your friend remove you to his friend.
-	 * @param user
-	 */
-	public void checkPendingRequest(final UUID userId) ;
+
+	void deleteNote(Note note);
+
+	void receiveUnfriendResponse(UUID userUid);
 }
