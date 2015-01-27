@@ -129,6 +129,12 @@ public class PictureService {
 					break;
 				}
 			}
+			for(Group g : DataService.getInstance().getUser().getListGroups()){
+				if(!g.getNom().equals(Group.FRIENDS_GROUP_NAME)){
+					picture.getListRules().add(new Rule(true, true, true, picture, g));
+					break;
+				}
+			}
 			DataService.getInstance().getUser().getListPictures().add(picture);
 		}
 	}
@@ -479,5 +485,24 @@ public class PictureService {
 			}
 		}
 		return rule;
+	}
+
+	public void addGroupsRule(Group group) {
+		for(Picture p : DataService.getInstance().getUser().getListPictures()){
+			p.getListRules().add(new Rule(true, true, true, p, group));
+		}
+		
+	}
+
+	public void deleteGroupsRule(Group group) {
+		for(Picture p : DataService.getInstance().getUser().getListPictures()){
+			List<Rule> deletedRules = new ArrayList<Rule>();
+			for(Rule r : p.getListRules()){
+				if(r.getGroup().getNom().equals(group.getNom())){
+					deletedRules.add(r);
+				}
+			}
+			p.getListRules().removeAll(deletedRules);
+		}
 	}	
 }
