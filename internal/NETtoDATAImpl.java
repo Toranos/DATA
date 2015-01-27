@@ -241,9 +241,12 @@ public class NETtoDATAImpl implements NETtoDATA {
 
 	@Override
 	public Picture getPictureById(UUID id, User sendMan) {
-		Picture tempPicture = new Picture(pictureService.getPictureById(id, sendMan));
-		tempPicture.getListRules().add(pictureService.getMaxRule(id, sendMan));
-		return tempPicture;
+		Picture tempPicture = pictureService.getPictureById(id, sendMan);
+		if(tempPicture != null){
+			tempPicture.getListRules().add(pictureService.getMaxRule(id, sendMan));
+			return tempPicture;
+		}
+		return null;
 	}
 
 	/*@Override
