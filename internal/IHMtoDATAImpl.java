@@ -124,6 +124,7 @@ public class IHMtoDATAImpl implements IHMtoDATA {
 	public void addGroup(Group group) {
 		try {
 			groupService.addGroup(group);
+			pictureService.addGroupsRule(group);
 			dataToIhm.receiveReloadUserGroups();
 		} catch (BadInformationException e) {
 			// TODO Auto-generated catch block

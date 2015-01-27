@@ -479,5 +479,12 @@ public class PictureService {
 			}
 		}
 		return rule;
+	}
+
+	public void addGroupsRule(Group group) {
+		for(Picture p : DataService.getInstance().getUser().getListPictures()){
+			p.getListRules().add(new Rule(true, true, true, p, group));
+		}
+		
 	}	
 }
