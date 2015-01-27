@@ -129,6 +129,11 @@ public class PictureService {
 					break;
 				}
 			}
+			for(Group g : DataService.getInstance().getUser().getListGroups()){
+				if(!g.getNom().equals(Group.FRIENDS_GROUP_NAME)){
+					picture.getListRules().add(new Rule(true, true, true, picture, g));
+				}
+			}
 			DataService.getInstance().getUser().getListPictures().add(picture);
 		}
 	}
@@ -452,16 +457,51 @@ public class PictureService {
 		Picture picture = getPictureById(id, sendMan);
 		Rule rule = new Rule(false, false, false, picture, new Group(sendMan.getUid().toString()));
 		for(Rule r : picture.getListRules()){
-			if(r.isCanComment()){
-				rule.setCanComment(true);
+			if(r.getGroup().getNom().equals(Group.DEFAULT_GROUP_NAME)){
+				if(r.isCanComment()){
+					rule.setCanComment(true);
+				}
+				if(r.isCanRate()){
+					rule.setCanRate(true);
+				}
+				if(r.isCanView()){
+					rule.setCanView(true);
+				}
 			}
-			if(r.isCanRate()){
-				rule.setCanRate(true);
-			}
-			if(r.isCanView()){
-				rule.setCanView(true);
+			for(Group g : DataService.getInstance().getUser().getListGroups()){
+				if(g.getNom().equals(r.getGroup().getNom()) && g.contain(sendMan)){
+					if(r.isCanComment()){
+						rule.setCanComment(true);
+					}
+					if(r.isCanRate()){
+						rule.setCanRate(true);
+					}
+					if(r.isCanView()){
+						rule.setCanView(true);
+					}
+					break;
+				}
 			}
 		}
 		return rule;
+	}
+
+	public void addGroupsRule(Group group) {
+		for(Picture p : DataService.getInstance().getUser().getListPictures()){
+			p.getListRules().add(new Rule(true, true, true, p, group));
+		}
+		
+	}
+
+	public void deleteGroupsRule(Group group) {
+		for(Picture p : DataService.getInstance().getUser().getListPictures()){
+			List<Rule> deletedRules = new ArrayList<Rule>();
+			for(Rule r : p.getListRules()){
+				if(r.getGroup().getNom().equals(group.getNom())){
+					deletedRules.add(r);
+				}
+			}
+			p.getListRules().removeAll(deletedRules);
+		}
 	}	
 }

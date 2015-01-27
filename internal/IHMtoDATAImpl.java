@@ -124,6 +124,7 @@ public class IHMtoDATAImpl implements IHMtoDATA {
 	public void addGroup(Group group) {
 		try {
 			groupService.addGroup(group);
+			pictureService.addGroupsRule(group);
 			dataToIhm.receiveReloadUserGroups();
 		} catch (BadInformationException e) {
 			// TODO Auto-generated catch block
@@ -223,6 +224,7 @@ public class IHMtoDATAImpl implements IHMtoDATA {
 	@Override
 	public void deleteGroup(Group group) {
 		groupService.deleteGroup(group);
+		pictureService.deleteGroupsRule(group);
 		dataToIhm.receiveReloadUserGroups();
 		try {
 			userService.save();
