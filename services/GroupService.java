@@ -107,13 +107,15 @@ public class GroupService {
 		PendingRequest pendReq = null;
 		User currentUser = DataService.getInstance().getUser();
 		for (PendingRequest pendingReq : currentUser.getListPendingRequests()) {
-			if(pendingReq.getType() == PendingRequest.ASK_FRIEND && friends && user.getUid().equals(pendingReq.getToUID())){
-				for(Group group : currentUser.getListGroups()){
-					if(group.getUid().equals(pendingReq.getGroupUID()) || group.getNom().equals(Group.FRIENDS_GROUP_NAME)){
-						group.getUsers().add(user);
+			if(pendingReq.getType() == PendingRequest.ASK_FRIEND && user.getUid().equals(pendingReq.getToUID())) {
+				pendReq = pendingReq;
+				if(friends){
+					for(Group group : currentUser.getListGroups()){
+						if(group.getUid().equals(pendingReq.getGroupUID()) || group.getNom().equals(Group.FRIENDS_GROUP_NAME)){
+							group.getUsers().add(user);
+						}
 					}
 				}
-				pendReq = pendingReq;
 			}
 		}
 		if(pendReq != null) {
