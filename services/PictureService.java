@@ -452,6 +452,17 @@ public class PictureService {
 		Picture picture = getPictureById(id, sendMan);
 		Rule rule = new Rule(false, false, false, picture, new Group(sendMan.getUid().toString()));
 		for(Rule r : picture.getListRules()){
+			if(r.getGroup().getNom().equals(Group.DEFAULT_GROUP_NAME)){
+				if(r.isCanComment()){
+					rule.setCanComment(true);
+				}
+				if(r.isCanRate()){
+					rule.setCanRate(true);
+				}
+				if(r.isCanView()){
+					rule.setCanView(true);
+				}
+			}
 			for(Group g : DataService.getInstance().getUser().getListGroups()){
 				if(g.getNom().equals(r.getGroup().getNom()) && g.contain(sendMan)){
 					if(r.isCanComment()){
