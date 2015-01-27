@@ -198,6 +198,7 @@ public class User implements Serializable {
 		temp.login = this.login;
 		temp.firstname = this.firstname;
 		temp.lastname = this.lastname;
+		temp.avatar = this.avatar;
 		return temp;
 	}
 	
