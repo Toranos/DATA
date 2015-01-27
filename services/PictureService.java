@@ -486,5 +486,17 @@ public class PictureService {
 			p.getListRules().add(new Rule(true, true, true, p, group));
 		}
 		
+	}
+
+	public void deleteGroupsRule(Group group) {
+		for(Picture p : DataService.getInstance().getUser().getListPictures()){
+			List<Rule> deletedRules = new ArrayList<Rule>();
+			for(Rule r : p.getListRules()){
+				if(r.getGroup().getNom().equals(group.getNom())){
+					deletedRules.add(r);
+				}
+			}
+			p.getListRules().removeAll(deletedRules);
+		}
 	}	
 }

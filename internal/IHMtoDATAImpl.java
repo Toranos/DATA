@@ -224,6 +224,7 @@ public class IHMtoDATAImpl implements IHMtoDATA {
 	@Override
 	public void deleteGroup(Group group) {
 		groupService.deleteGroup(group);
+		pictureService.deleteGroupsRule(group);
 		dataToIhm.receiveReloadUserGroups();
 		try {
 			userService.save();
