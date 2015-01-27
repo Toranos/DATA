@@ -110,7 +110,7 @@ public class PictureService {
 	 * @param filename
 	 */
 	public void addAvatar(String filename) {
-		DataService.getInstance().getUser().setAvatar(imageToByte(filename));;
+		DataService.getInstance().getUser().setAvatar(imageToByte(filename));
 	}
 	
 	/**
