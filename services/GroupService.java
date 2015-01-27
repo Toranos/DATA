@@ -104,11 +104,11 @@ public class GroupService {
 	 * @param friends
 	 */
 	public void receiveFriendResponse(User user, boolean friends) {
-		PendingRequest pendReq = null;
+		List<PendingRequest> pendingRequestsToRemove = new ArrayList<PendingRequest>();
 		User currentUser = DataService.getInstance().getUser();
 		for (PendingRequest pendingReq : currentUser.getListPendingRequests()) {
 			if(pendingReq.getType() == PendingRequest.ASK_FRIEND && user.getUid().equals(pendingReq.getToUID())) {
-				pendReq = pendingReq;
+				pendingRequestsToRemove.add(pendingReq);
 				if(friends){
 					for(Group group : currentUser.getListGroups()){
 						if(group.getUid().equals(pendingReq.getGroupUID()) || group.getNom().equals(Group.FRIENDS_GROUP_NAME)){
@@ -118,9 +118,7 @@ public class GroupService {
 				}
 			}
 		}
-		if(pendReq != null) {
-			currentUser.getListPendingRequests().remove(pendReq);
-		}
+		currentUser.getListPendingRequests().removeAll(pendingRequestsToRemove);
 	}
 	
 	/**
@@ -129,16 +127,14 @@ public class GroupService {
 	 * @param friends
 	 */
 	public void receiveUnfriendResponse(UUID userUid) {
-		PendingRequest pendReq = null;
+		List<PendingRequest> pendingRequestsToRemove = new ArrayList<PendingRequest>();
 		User currentUser = DataService.getInstance().getUser();
 		for (PendingRequest pendingReq : currentUser.getListPendingRequests()) {
 			if(pendingReq.getType() == PendingRequest.ASK_UNFRIEND && userUid.equals(pendingReq.getToUID())) {
-				pendReq = pendingReq;
+				pendingRequestsToRemove.add(pendingReq);
 			}
 		}
-		if(pendReq != null) {
-			currentUser.getListPendingRequests().remove(pendReq);
-		}
+		currentUser.getListPendingRequests().removeAll(pendingRequestsToRemove);
 	}
 	
 	public void addGroup(Group group) throws BadInformationException{
