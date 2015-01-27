@@ -227,10 +227,14 @@ public class DataService implements Serializable {
 		int nbEntries = 0;
 		
 		// Get file.
+		File profileFile = null;
 		while((entry = zis.getNextEntry()) != null) {
 			File dir = new File(entry.getName()).getParentFile();
 			if (dir.exists() == false) {
 				dir.mkdirs();
+			}
+			if (profileFile == null) {
+				profileFile = new File(entry.getName());
 			}
 			FileOutputStream fos = new FileOutputStream(entry.getName());
 			dest = new BufferedOutputStream(fos, bufferZip);
@@ -251,6 +255,14 @@ public class DataService implements Serializable {
 		
 		// Delete export file.
 		exportFile.delete();
+		
+		// Update account data file
+		ObjectInputStream ois = null;
+		ois = new ObjectInputStream(new FileInputStream(profileFile));
+		DataService tmp = (DataService) ois.readObject();
+		ois.close();
+		UserService uService = new UserService();
+		uService.createAccountsFile(tmp.getUser());
 	}
 
 	/**
