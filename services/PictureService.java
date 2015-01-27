@@ -129,6 +129,12 @@ public class PictureService {
 					break;
 				}
 			}
+			for(Group g : DataService.getInstance().getUser().getListGroups()){
+				if(!g.getNom().equals(Group.FRIENDS_GROUP_NAME)){
+					picture.getListRules().add(new Rule(true, true, true, picture, g));
+					break;
+				}
+			}
 			DataService.getInstance().getUser().getListPictures().add(picture);
 		}
 	}
