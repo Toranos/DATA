@@ -208,7 +208,7 @@ public class IHMtoDATAImpl implements IHMtoDATA {
 
 		if (pictureService.deleteComment(comment) == false) {
 			try {
-				//netLocalizer.deleteComment(comment, comment.getPictureUserId());
+				netLocalizer.deleteComment(comment, comment.getPictureUserId());
 			} catch (Exception e){
 				Logger.getLogger(IHMtoDATAImpl.class.getName()).log(Level.SEVERE, "Error in deleting the comment.");
 			}

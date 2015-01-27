@@ -324,7 +324,7 @@ public class PictureService {
 		Picture tmpPicture = null;
 		Comment tmpComment = null;
 	    	
-		if (currentUser.getUid().equals(comment.getPictureUserId()) || currentUser.getUid().equals(comment.getCommentUser().getUid())) {
+		if (currentUser.getUid().equals(comment.getPictureUserId())) {
 			Iterator<Picture> iterPicture = currentUser.getListPictures().iterator();
 		    while (iterPicture.hasNext()) {
 		    	tmpPicture = iterPicture.next();
@@ -341,7 +341,8 @@ public class PictureService {
 		    	}
 		    }
 		    return true;
-		}  else {
+		} else {
+			DataService.getInstance().getUser().getListPendingRequests().add(new PendingRequest(comment));
 			return false;
 		}
 	}
