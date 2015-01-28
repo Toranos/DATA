@@ -118,8 +118,7 @@ public class NETtoDATAImpl implements NETtoDATA {
 	 */
 	@Override
 	public void infoUser(User user, int idRequest) {
-		// TODO Auto-generated method stub
-
+		dataToIhm.receiveFullUser(user,idRequest);
 	}
 
 	/* (non-Javadoc)
