@@ -248,15 +248,17 @@ public class User implements Serializable {
 	 * @return Image
 	 */
 	 public Image getAvatarImageObject() {
-	        ByteArrayInputStream in = new ByteArrayInputStream(avatar);
-	        try
-	        {
-	            BufferedImage read = ImageIO.read(in);
-	            return SwingFXUtils.toFXImage(read, null);
-	        } catch (IOException e)
-	        {
-	        	Logger.getLogger(User.class.getName()).log(Level.SEVERE, "Error in returning SwingFXUtils.toFXImage(read, null);");
-	        }
+		 	if(avatar != null) {
+		        ByteArrayInputStream in = new ByteArrayInputStream(avatar);
+		        try
+		        {
+		            BufferedImage read = ImageIO.read(in);
+		            return SwingFXUtils.toFXImage(read, null);
+		        } catch (IOException e)
+		        {
+		        	Logger.getLogger(User.class.getName()).log(Level.SEVERE, "Error in returning SwingFXUtils.toFXImage(read, null);");
+		        }
+		 	}
 	        return null;
 	 }
 }
