@@ -42,7 +42,7 @@ public class PictureService {
 	 * @param UUID of the Picture
 	 * @return	The picture identified
 	 */
-	public Picture getPictureById(UUID pictureUid, User sendMan) {
+	public Picture getPictureById(UUID pictureUid) {
 		List<Picture> pictures = DataService.getInstance().getUser().getListPictures();
 		for (Picture pic : pictures) {
 			if (pic.getUid().equals(pictureUid)) {
@@ -161,7 +161,7 @@ public class PictureService {
 		String name = f.getName();
 		if (name.lastIndexOf(".") > 0) {
 		    ext = name.substring(name.lastIndexOf("."));
-		    if (!ext.equals(".png") && !ext.equals(".jpg") && !ext.equals(".jpeg") && !ext.equals(".gif") && !ext.equals(".bmp")) {
+		    if (!".png".equals(ext) && !".png".equals(ext) && !".jpeg".equals(ext) && !".gif".equals(ext) && !".bmp".equals(ext)) {
 		    	ext = ".png";
 		    }
 		} 
@@ -348,19 +348,19 @@ public class PictureService {
 	}
 
 	public boolean deleteNote(Note note) throws BadInformationException {
-		if (note == null || note.equals("")) {
+		if (note == null || "".equals(note)) {
 			throw new BadInformationException("note empty");
 		}
-		if (note.getUid() == null || note.getUid().equals("")) {
+		if (note.getUid() == null || "".equals(note.getUid())) {
 			throw new BadInformationException("Uid empty");
 		}
-		if (note.getNoteUser().getUid() == null || note.getNoteUser().getUid().equals("")) {
+		if (note.getNoteUser().getUid() == null || "".equals(note.getNoteUser().getUid())) {
 			throw new BadInformationException("CommentUserId empty");
 		}
-		if (note.getPictureId() == null || note.getPictureId().equals("")) {
+		if (note.getPictureId() == null || "".equals(note.getPictureId())) {
 			throw new BadInformationException("PictureId empty");
 		}
-		if (note.getPictureUserId() == null || note.getPictureUserId().equals("")) {
+		if (note.getPictureUserId() == null || "".equals(note.getPictureUserId())) {
 			throw new BadInformationException("PictureUserId empty");
 		}
 		
@@ -407,8 +407,7 @@ public class PictureService {
 				Logger.getLogger(PictureService.class.getName()).log(Level.SEVERE, "Error in changing image to byte.");  
 			}
 		} catch (Exception e) {  
-			System.out.println("Exception during serialization: " + e);  
-			System.exit(0);  
+			Logger.getLogger(PictureService.class.getName()).log(Level.SEVERE, "Exception during serialization: " + e);  
 		}
 		return packet;
 	}
@@ -455,7 +454,7 @@ public class PictureService {
 	 * @return		a rule
 	 */
 	public Rule getMaxRule(UUID id, User sendMan) {
-		Picture picture = getPictureById(id, sendMan);
+		Picture picture = getPictureById(id);
 		Rule rule = new Rule(false, false, false, picture, new Group(sendMan.getUid().toString()));
 		for(Rule r : picture.getListRules()){
 			if(r.getGroup().getNom().equals(Group.DEFAULT_GROUP_NAME)){

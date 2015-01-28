@@ -343,7 +343,7 @@ public class IHMtoDATAImpl implements IHMtoDATA {
 	 */
 	@Override
 	public void getPictureById(UUID pictureUid, int idRequest) {
-		Picture myPic = pictureService.getPictureById(pictureUid, userService.getCurrentUser());
+		Picture myPic = pictureService.getPictureById(pictureUid);
 		if (myPic != null) {
 			dataToIhm.receivePicture(myPic, idRequest);
 		} else {
